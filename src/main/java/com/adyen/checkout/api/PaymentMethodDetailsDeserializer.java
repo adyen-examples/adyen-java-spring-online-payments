@@ -29,6 +29,8 @@ public class PaymentMethodDetailsDeserializer extends JsonDeserializer<PaymentMe
                 return codec.treeToValue(node, DotpayDetails.class);
             case "giropay":
                 return codec.treeToValue(node, GiropayDetails.class);
+            // case "sepadirectdebit":
+            //     return codec.treeToValue(node, SepaDirectDebitDetails.class);
             case "klarna":
             case "klarna_paynow":
             case "klarna_account":
