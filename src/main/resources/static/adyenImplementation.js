@@ -25,7 +25,9 @@ async function initCheckout() {
         },
       },
       onSubmit: (state, component) => {
-        handleSubmission(state, component, "/api/initiatePayment");
+        if (state.isValid) {
+          handleSubmission(state, component, "/api/initiatePayment");
+        }
       },
       onAdditionalDetails: (state, component) => {
         handleSubmission(state, component, "/api/submitAdditionalDetails");
@@ -63,14 +65,12 @@ function filterUnimplemented(pm) {
 // Event handlers called when the shopper selects the pay button,
 // or when additional information is required to complete the payment
 async function handleSubmission(state, component, url) {
-  if (state.isValid) {
-    try {
-      const res = await callServer(url, state.data);
-      handleServerResponse(res, component);
-    } catch (error) {
-      console.error(error);
-      alert("Error occurred. Look at console for details");
-    }
+  try {
+    const res = await callServer(url, state.data);
+    handleServerResponse(res, component);
+  } catch (error) {
+    console.error(error);
+    alert("Error occurred. Look at console for details");
   }
 }
 
