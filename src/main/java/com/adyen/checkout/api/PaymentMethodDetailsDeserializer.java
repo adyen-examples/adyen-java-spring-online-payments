@@ -8,6 +8,7 @@ import com.adyen.model.checkout.details.AchDetails;
 import com.adyen.model.checkout.details.DotpayDetails;
 import com.adyen.model.checkout.details.GiropayDetails;
 import com.adyen.model.checkout.details.KlarnaDetails;
+// import com.adyen.model.checkout.details.SepaDirectDebitDetails;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;

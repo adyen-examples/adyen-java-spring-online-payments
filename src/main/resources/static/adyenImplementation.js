@@ -48,7 +48,7 @@ function filterUnimplemented(pm) {
       "ideal",
       "dotpay",
       "giropay",
-      // "sepadirectdebit",
+      "sepadirectdebit",
       "directEbanking",
       "ach",
       "alipay",
