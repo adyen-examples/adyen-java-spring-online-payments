@@ -369,12 +369,6 @@ a:hover {
   height: 100%;
 }
 
-@media screen and (max-width: 1076px) {
-  .payment-container {
-    align-self: center;
-  }
-}
-
 /* end Payments page */
 
 
