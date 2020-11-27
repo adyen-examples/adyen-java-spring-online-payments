@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,24 +66,31 @@ public class CheckoutResource {
      * @throws ApiException from Adyen API.
      */
     @PostMapping("/initiatePayment")
-    public ResponseEntity<PaymentsResponse> payments(@RequestBody PaymentsRequest body) throws IOException, ApiException {
+    public ResponseEntity<PaymentsResponse> payments(@RequestBody PaymentsRequest body, HttpServletRequest request) throws IOException, ApiException {
         var paymentRequest = new PaymentsRequest();
-        paymentRequest.setMerchantAccount(merchantAccount);
-        paymentRequest.setChannel(PaymentsRequest.ChannelEnum.WEB);
+        paymentRequest.setMerchantAccount(merchantAccount); // required
+        paymentRequest.setChannel(PaymentsRequest.ChannelEnum.WEB); // required
 
         var amount = new Amount()
             .currency(findCurrency(body.getPaymentMethod().getType()))
-            .value(1000L);
+            .value(1000L); // value is 10€ in minor units
         paymentRequest.setAmount(amount);
 
         var orderRef = UUID.randomUUID().toString();
-        paymentRequest.setReference(orderRef);
+        paymentRequest.setReference(orderRef); // required
+        // we pass the orderRef in return URL to get paymentData from cache during redirects
         paymentRequest.setReturnUrl("http://localhost:8080/api/handleShopperRedirect?orderRef=" + orderRef);
+
+        // required for 3ds2 native flow
         paymentRequest.setAdditionalData(Collections.singletonMap("allow3DS2", "true"));
+        // required for 3ds2 native flow
+        paymentRequest.setOrigin("http://localhost:8080");
+        // required for 3ds2
+        paymentRequest.setBrowserInfo(body.getBrowserInfo());
+        // required by some issuers for 3ds2
+        paymentRequest.setShopperIP(request.getRemoteAddr());
 
         paymentRequest.setPaymentMethod(body.getPaymentMethod());
-        paymentRequest.setBrowserInfo(body.getBrowserInfo());
-        paymentRequest.setOrigin(body.getOrigin());
 
         // required for Klarna
         if (body.getPaymentMethod().getType().contains("klarna")) {
