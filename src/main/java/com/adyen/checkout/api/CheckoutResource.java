@@ -79,6 +79,7 @@ public class CheckoutResource {
         var orderRef = UUID.randomUUID().toString();
         paymentRequest.setReference(orderRef); // required
         // we pass the orderRef in return URL to get paymentData from cache during redirects
+        // required for 3ds2 redirect flow
         paymentRequest.setReturnUrl("http://localhost:8080/api/handleShopperRedirect?orderRef=" + orderRef);
 
         // required for 3ds2 native flow
