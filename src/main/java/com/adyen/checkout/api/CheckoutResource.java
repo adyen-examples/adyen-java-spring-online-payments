@@ -32,7 +32,6 @@ public class CheckoutResource {
     private String merchantAccount;
 
     private final Checkout checkout;
-    private final HashMap<String, String> paymentDataStore = new HashMap<>();
 
     public CheckoutResource(@Value("${ADYEN_API_KEY}") String apiKey) {
         var client = new Client(apiKey, Environment.TEST);
@@ -78,7 +77,6 @@ public class CheckoutResource {
 
         var orderRef = UUID.randomUUID().toString();
         paymentRequest.setReference(orderRef); // required
-        // we pass the orderRef in return URL to get paymentData from cache during redirects
         // required for 3ds2 redirect flow
         paymentRequest.setReturnUrl("http://localhost:8080/api/handleShopperRedirect?orderRef=" + orderRef);
 
@@ -111,10 +109,6 @@ public class CheckoutResource {
 
         log.info("REST request to make Adyen payment {}", paymentRequest);
         var response = checkout.payments(paymentRequest);
-        if (response.getAction() != null && !response.getAction().getPaymentData().isEmpty()) {
-            // set payment data to local store for submitting details request on redirect
-            paymentDataStore.put(orderRef, response.getAction().getPaymentData());
-        }
         return ResponseEntity.ok()
             .body(response);
     }
@@ -127,7 +121,7 @@ public class CheckoutResource {
      * @throws ApiException from Adyen API.
      */
     @PostMapping("/submitAdditionalDetails")
-    public ResponseEntity<PaymentsResponse> payments(@RequestBody PaymentsDetailsRequest detailsRequest) throws IOException, ApiException {
+    public ResponseEntity<PaymentsDetailsResponse> payments(@RequestBody PaymentsDetailsRequest detailsRequest) throws IOException, ApiException {
         log.info("REST request to make Adyen payment details {}", detailsRequest);
         var response = checkout.paymentsDetails(detailsRequest);
         return ResponseEntity.ok()
@@ -144,33 +138,11 @@ public class CheckoutResource {
     @GetMapping("/handleShopperRedirect")
     public RedirectView redirect(@RequestParam(required = false) String payload, @RequestParam(required = false) String redirectResult, @RequestParam String orderRef) throws IOException, ApiException {
         var detailsRequest = new PaymentsDetailsRequest();
-        if (payload != null && !payload.isEmpty()) {
-            detailsRequest.setDetails(Collections.singletonMap("payload", payload));
-        } else if (redirectResult != null && !redirectResult.isEmpty()) {
+        if (redirectResult != null && !redirectResult.isEmpty()) {
             detailsRequest.setDetails(Collections.singletonMap("redirectResult", redirectResult));
+        } else if (payload != null && !payload.isEmpty()) {
+            detailsRequest.setDetails(Collections.singletonMap("payload", payload));
         }
-        detailsRequest.setPaymentData(paymentDataStore.get(orderRef));
-
-        return getRedirectView(detailsRequest);
-    }
-
-    /**
-     * {@code POST  /handleShopperRedirect} : Handle redirect during payment.
-     *
-     * @return the {@link RedirectView} with status {@code 302}
-     * @throws IOException  from Adyen API.
-     * @throws ApiException from Adyen API.
-     */
-    @PostMapping(
-        path = "/handleShopperRedirect",
-        consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public RedirectView redirect(PaymentRedirectVM payload, @RequestParam String orderRef) throws IOException, ApiException {
-        var detailsRequest = new PaymentsDetailsRequest();
-        var details = new HashMap<String, String>();
-        details.put("MD", payload.getMD());
-        details.put("PaRes", payload.getPaRes());
-        detailsRequest.setDetails(details);
-        detailsRequest.setPaymentData(paymentDataStore.get(orderRef));
 
         return getRedirectView(detailsRequest);
     }
