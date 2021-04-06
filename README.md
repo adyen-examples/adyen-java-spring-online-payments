@@ -18,6 +18,7 @@ This repository includes examples of PCI-compliant UI integrations for online pa
     -   iDEAL
     -   Klarna (Pay now, Pay later, Slice it)
     -   SOFORT
+    -   PayPal
 
 The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries#java)).
 

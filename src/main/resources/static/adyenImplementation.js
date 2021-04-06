@@ -23,6 +23,17 @@ async function initCheckout() {
             currency: "EUR",
           },
         },
+        paypal: {
+          amount: {
+            value: 1000,
+            currency: "USD",
+          },
+          environment: "test", // Change this to "live" when you're ready to accept live PayPal payments
+          countryCode: "US", // Only needed for test. This will be automatically retrieved when you are in production.
+          onCancel: (data, component) => {
+            component.setStatus('ready');
+          },
+        }
       },
       onSubmit: (state, component) => {
         if (state.isValid) {
@@ -36,7 +47,7 @@ async function initCheckout() {
     // `spring.jackson.default-property-inclusion=non_null` needs to set in
     // src/main/resources/application.properties to avoid NPE here
     const checkout = new AdyenCheckout(configuration);
-    checkout.create(type).mount(document.getElementById(type));
+    checkout.create(type).mount(document.getElementById("payment"));
   } catch (error) {
     console.error(error);
     alert("Error occurred. Look at console for details");
@@ -57,6 +68,7 @@ function filterUnimplemented(pm) {
       "klarna_paynow",
       "klarna",
       "klarna_account",
+      "paypal",
     ].includes(it.type)
   );
   return pm;

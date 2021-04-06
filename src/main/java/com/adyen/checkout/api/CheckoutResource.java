@@ -3,13 +3,11 @@ package com.adyen.checkout.api;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -91,8 +89,9 @@ public class CheckoutResource {
 
         paymentRequest.setPaymentMethod(body.getPaymentMethod());
 
+        var type = body.getPaymentMethod().getType();
         // required for Klarna
-        if (body.getPaymentMethod().getType().contains("klarna")) {
+        if (type.contains("klarna")) {
             paymentRequest.setCountryCode("DE");
             paymentRequest.setShopperReference("1234");
             paymentRequest.setShopperEmail("youremail@email.com");
@@ -105,6 +104,8 @@ public class CheckoutResource {
                 new LineItem().quantity(2L).amountExcludingTax(248L).taxPercentage(2100L).description("Headphones").id("Item 2").taxAmount(52L).amountIncludingTax(300L)
             );
             paymentRequest.setLineItems(lineItems);
+        } else if (type.contains("paypal")) {
+            paymentRequest.setCountryCode("US");
         }
 
         log.info("REST request to make Adyen payment {}", paymentRequest);
@@ -172,6 +173,7 @@ public class CheckoutResource {
     /* ################# UTILS ###################### */
     private String findCurrency(String type) {
         switch (type) {
+            case "paypal":
             case "ach":
                 return "USD";
             case "wechatpayqr":
