@@ -35,12 +35,6 @@ The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Ady
 git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.git
 ```
 
-2. Navigate to the root directory and run:
-
-```
-./gradlew build
-```
-
 ## Usage
 
 1. Set environment variables for your [API key](https://docs.adyen.com/user-management/how-to-get-the-api-key), [Client Key](https://docs.adyen.com/user-management/client-side-authentication) - Remember to add `http://localhost:8080` as an origin for client key, and merchant account name:
