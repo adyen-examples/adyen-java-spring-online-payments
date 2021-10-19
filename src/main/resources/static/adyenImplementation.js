@@ -46,7 +46,7 @@ async function initCheckout() {
     };
     // `spring.jackson.default-property-inclusion=non_null` needs to set in
     // src/main/resources/application.properties to avoid NPE here
-    const checkout = new AdyenCheckout(configuration);
+    const checkout = await new AdyenCheckout(configuration);
     checkout.create(type).mount(document.getElementById("payment"));
   } catch (error) {
     console.error(error);
