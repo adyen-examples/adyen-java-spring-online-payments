@@ -67,7 +67,7 @@ async function callAdyenCheckout(session){
       onPaymentCompleted: (result, component) => {
         console.info("onPaymentCompleted");
         console.info(result, component);
-        handleServerResponse(result, component)
+        handleServerResponse(result, component);
       },
       onError: (error, component) => {
         console.error("onError");
