@@ -31,13 +31,13 @@ async function finalizeCheckout() {
   }
 }
 
-async function callAdyenCheckout(sessionData){
+async function callAdyenCheckout(session){
   return new AdyenCheckout(
     {
       clientKey,
       locale: "en_US",
       environment: "test",
-      session: sessionData,
+      session: session,
       showPayButton: true,
       paymentMethodsConfiguration: {
         hasHolderName: true,
