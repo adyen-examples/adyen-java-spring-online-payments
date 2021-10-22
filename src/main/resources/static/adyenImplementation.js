@@ -1,124 +1,82 @@
 const clientKey = document.getElementById("clientKey").innerHTML;
-const type = document.getElementById("type").innerHTML;
 
-async function initCheckout() {
+// Used to finalize a checkout call in case of redirect
+const urlParams = new URLSearchParams(window.location.search);
+const sessionId = urlParams.get('sessionId'); // Unique identifier for the payment session
+const redirectResult = urlParams.get('redirectResult');
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const sessionId = urlParams.get('sessionId');
-  const redirectResult = urlParams.get('redirectResult');
+// Typical checkout experience
+async function doCheckout() {
+  const type = document.getElementById("type").innerHTML;
 
-  if(!sessionId){
-    try {
-      const checkoutSessionResponse = await callServer("/api/sessions?type=" + type);
-      const configuration = {
-        clientKey,
-        locale: "en_US",
-        environment: "test",
-        session: checkoutSessionResponse,
-        showPayButton: true,
-        paymentMethodsConfiguration: {
-          hasHolderName: true,
-          holderNameRequired: true,
-          billingAddressRequired: true,
-          ideal: {
-            showImage: true,
-          },
-          card: {
-            hasHolderName: true,
-            holderNameRequired: true,
-            name: "Credit or debit card",
-            amount: {
-              value: 1000,
-              currency: "EUR",
-            },
-          },
-          paypal: {
-            amount: {
-              value: 1000,
-              currency: "USD",
-            },
-            environment: "test", // Change this to "live" when you're ready to accept live PayPal payments
-            countryCode: "US", // Only needed for test. This will be automatically retrieved when you are in production.
-          }
-        },
-        onPaymentCompleted: (result, component) => {
-          console.info("onPaymentCompleted");
-          console.info(result, component);
-          handleServerResponse(result, component)
-        },
-        onError: (error, component) => {
-          console.error("onError");
-          console.error(error.name, error.message, error.stack, component);
-          handleServerResponse(error, component)
-        },
-      };
-      // `spring.jackson.default-property-inclusion=non_null` needs to set in
-      // src/main/resources/application.properties to avoid NPE here
-      const checkout = await new AdyenCheckout(configuration);
-      checkout.create(type).mount(document.getElementById("payment"));
-    } catch (error) {
-      console.error("mounting error");
+  try {
+    const checkoutSessionResponse = await callServer("/api/sessions?type=" + type);
+    const checkout = await callAdyenCheckout(checkoutSessionResponse);
+    checkout.create(type).mount(document.getElementById("payment"));
 
-      console.error(error);
-      alert("Error occurred. Look at console for details");
-    }
-
+  } catch (error) {
+    console.error(error);
+    alert("Error occurred. Look at console for details");
   }
-  else{
-    try {
-      const configuration = {
-        clientKey,
-          locale: "en_US",
-        environment: "test",
-        session: {
-          id: sessionId, // Unique identifier for the payment session.
-        },
-        showPayButton: true,
-        paymentMethodsConfiguration: {
+}
+
+// Some payment methods use redirects. This is where we finalize the operation
+async function finalizeCheckout() {
+  try {
+    const checkout = await callAdyenCheckout({id: sessionId});
+    checkout.submitDetails({details: {redirectResult}});
+  } catch (error) {
+    console.error(error);
+    alert("Error occurred. Look at console for details");
+  }
+}
+
+async function callAdyenCheckout(sessionData){
+  return new AdyenCheckout(
+    {
+      clientKey,
+      locale: "en_US",
+      environment: "test",
+      session: sessionData,
+      showPayButton: true,
+      paymentMethodsConfiguration: {
         hasHolderName: true,
-          holderNameRequired: true,
-          billingAddressRequired: true,
-          ideal: {
+        holderNameRequired: true,
+        billingAddressRequired: true,
+        ideal: {
           showImage: true,
         },
         card: {
           hasHolderName: true,
-            holderNameRequired: true,
-            name: "Credit or debit card",
-            amount: {
+          holderNameRequired: true,
+          name: "Credit or debit card",
+          amount: {
             value: 1000,
-              currency: "EUR",
+            currency: "EUR",
           },
         },
         paypal: {
           amount: {
             value: 1000,
-              currency: "USD",
+            currency: "USD",
           },
           environment: "test", // Change this to "live" when you're ready to accept live PayPal payments
-            countryCode: "US", // Only needed for test. This will be automatically retrieved when you are in production.
+          countryCode: "US", // Only needed for test. This will be automatically retrieved when you are in production.
         }
       },
-        onPaymentCompleted: (result, component) => {
-          console.info(result, component);
-          handleServerResponse(result, component)
-        },
-          onError: (error, component) => {
+      onPaymentCompleted: (result, component) => {
+        console.info("onPaymentCompleted");
+        console.info(result, component);
+        handleServerResponse(result, component)
+      },
+      onError: (error, component) => {
+        console.error("onError");
         console.error(error.name, error.message, error.stack, component);
         handleServerResponse(error, component)
       },
-      };
-
-      const checkout = await AdyenCheckout(configuration);
-
-      checkout.submitDetails({details: {redirectResult}});
-    } catch (error) {
-      console.error(error);
-      alert("Error occurred. Look at console for details");
     }
-  }
+  );
 }
-
 
 // Calls your server endpoints
 async function callServer(url, data) {
@@ -133,7 +91,7 @@ async function callServer(url, data) {
   return await res.json();
 }
 
-function handleServerResponse(res, component) {
+function handleServerResponse(res, _component) {
     switch (res.resultCode) {
       case "Authorised":
         window.location.href = "/result/success";
@@ -151,4 +109,9 @@ function handleServerResponse(res, component) {
     }
 }
 
-initCheckout();
+if(!sessionId) {
+  doCheckout();
+}
+else{
+  finalizeCheckout();
+}

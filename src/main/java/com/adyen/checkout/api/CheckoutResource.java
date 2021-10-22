@@ -48,7 +48,7 @@ public class CheckoutResource {
         checkoutSession.merchantAccount(merchantAccount);
         checkoutSession.setChannel(CreateCheckoutSessionRequest.ChannelEnum.WEB);
         checkoutSession.setReference(orderRef); // required
-        checkoutSession.setReturnUrl("http://localhost:8080/checkout?type=" + type +"&orderRef=" + orderRef);
+        checkoutSession.setReturnUrl("http://localhost:8080/redirect?orderRef=" + orderRef);
         checkoutSession.setAmount(amount);
 
         log.info("REST request to create Adyen Payment Session {}", checkoutSession);
