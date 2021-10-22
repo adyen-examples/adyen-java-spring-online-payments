@@ -6,12 +6,13 @@ const sessionId = urlParams.get('sessionId'); // Unique identifier for the payme
 const redirectResult = urlParams.get('redirectResult');
 
 // Typical checkout experience
-async function doCheckout() {
+async function startCheckout() {
+  // Used in the demo to know which type of checkout was chosen
   const type = document.getElementById("type").innerHTML;
 
   try {
     const checkoutSessionResponse = await callServer("/api/sessions?type=" + type);
-    const checkout = await callAdyenCheckout(checkoutSessionResponse);
+    const checkout = await createAdyenCheckout(checkoutSessionResponse);
     checkout.create(type).mount(document.getElementById("payment"));
 
   } catch (error) {
@@ -23,7 +24,7 @@ async function doCheckout() {
 // Some payment methods use redirects. This is where we finalize the operation
 async function finalizeCheckout() {
   try {
-    const checkout = await callAdyenCheckout({id: sessionId});
+    const checkout = await createAdyenCheckout({id: sessionId});
     checkout.submitDetails({details: {redirectResult}});
   } catch (error) {
     console.error(error);
@@ -31,7 +32,7 @@ async function finalizeCheckout() {
   }
 }
 
-async function callAdyenCheckout(session){
+async function createAdyenCheckout(session){
   return new AdyenCheckout(
     {
       clientKey,
@@ -40,9 +41,6 @@ async function callAdyenCheckout(session){
       session: session,
       showPayButton: true,
       paymentMethodsConfiguration: {
-        hasHolderName: true,
-        holderNameRequired: true,
-        billingAddressRequired: true,
         ideal: {
           showImage: true,
         },
@@ -109,9 +107,4 @@ function handleServerResponse(res, _component) {
     }
 }
 
-if(!sessionId) {
-  doCheckout();
-}
-else{
-  finalizeCheckout();
-}
+if (!sessionId) { startCheckout() } else { finalizeCheckout(); }
