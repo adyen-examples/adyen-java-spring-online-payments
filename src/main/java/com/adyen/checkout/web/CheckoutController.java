@@ -35,4 +35,10 @@ public class CheckoutController {
         model.addAttribute("type", type);
         return "result";
     }
+
+    @GetMapping("/redirect")
+    public String redirect(Model model) {
+        model.addAttribute("clientKey", clientKey);
+        return "redirect";
+    }
 }
