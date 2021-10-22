@@ -72,7 +72,7 @@ async function callAdyenCheckout(session){
       onError: (error, component) => {
         console.error("onError");
         console.error(error.name, error.message, error.stack, component);
-        handleServerResponse(error, component)
+        handleServerResponse(error, component);
       },
     }
   );
