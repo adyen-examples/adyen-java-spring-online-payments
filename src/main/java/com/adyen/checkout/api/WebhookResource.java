@@ -33,7 +33,11 @@ public class WebhookResource {
           item -> {
               try {
                   if (new HMACValidator().validateHMAC(item, hmacKey)) {
-                      log.info("Received webhook with event " + item.getEventCode() + " for " + item.getMerchantReference() + " with reference" + item.getOriginalReference());
+                      log.info("Received webhook with event {} : \n" +
+                          "Merchant Reference: {}\n" +
+                          "Alias : {}\n" +
+                          "PSP reference : {}"
+                          , item.getEventCode(), item.getMerchantReference(), item.getAdditionalData().get("alias"), item.getPspReference());
                   } else {
                       log.warn("Could not validate HMAC Key for incoming webhook message. Have you set the environment variable?");
                   }
