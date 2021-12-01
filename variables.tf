@@ -15,3 +15,35 @@ variable "environment" {
   type        = string
   default     = "development"
 }
+
+# -----
+# Adyen credentials
+
+variable "adyen_client_key" {
+  type        = string
+  description = "Client Key from our Adyen account for this application"
+  sensitive = true
+}
+
+variable "adyen_api_key" {
+  type        = string
+  description = "API Key from our Adyen account for this application"
+  sensitive = true
+}
+
+variable "adyen_hmac_key" {
+  type        = string
+  description = "HMAC Key from our Adyen account for this application"
+  sensitive = true
+}
+
+variable "adyen_merchant_account" {
+  type        = string
+  description = "Adyen Merchant Account to use for this application"
+}
+
+variable "adyen_return_url" {
+  type        = string
+  description = "Return URL for Adyen webhooks"
+  default = "https://localhost:8080"
+}

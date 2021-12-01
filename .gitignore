@@ -37,3 +37,4 @@ env.tmp
 .terraform
 .terraform*
 terraform.tfstate*
+terraform.tfvars
