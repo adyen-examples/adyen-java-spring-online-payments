@@ -41,9 +41,3 @@ variable "adyen_merchant_account" {
   type        = string
   description = "Adyen Merchant Account to use for this application"
 }
-
-variable "adyen_return_url" {
-  type        = string
-  description = "Return URL for Adyen webhooks"
-  default = "https://localhost:8080"
-}

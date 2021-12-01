@@ -1,3 +1,7 @@
+locals{
+    domain = "${var.namespace}-${var.environment}-${substr(uuid(),0 , 8)}"
+}
+
 terraform {
   required_providers {
     aws = {
@@ -53,6 +57,7 @@ resource "aws_elastic_beanstalk_environment" "tfenvtest" {
   application         = aws_elastic_beanstalk_application.tftest.name
   solution_stack_name = "64bit Amazon Linux 2 v3.2.8 running Corretto 11"
   version_label = aws_elastic_beanstalk_application_version.beanstalk_myapp_version.name
+  cname_prefix = local.domain
 
   setting {
     namespace = "aws:ec2:instances"
@@ -100,6 +105,6 @@ resource "aws_elastic_beanstalk_environment" "tfenvtest" {
   setting {
     name = "ADYEN_RETURN_URL"
     namespace = "aws:elasticbeanstalk:application:environment"
-    value = var.adyen_return_url
+    value = "https://${local.domain}.eu-west-1.elasticbeanstalk.com"
   }
 }
