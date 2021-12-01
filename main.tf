@@ -1,5 +1,6 @@
 locals{
     domain = "${var.namespace}-${var.environment}-${substr(uuid(),0 , 8)}"
+    domain_url = "http://${local.domain}.eu-west-1.elasticbeanstalk.com"
 }
 
 terraform {
@@ -105,6 +106,11 @@ resource "aws_elastic_beanstalk_environment" "tfenvtest" {
   setting {
     name = "ADYEN_RETURN_URL"
     namespace = "aws:elasticbeanstalk:application:environment"
-    value = "https://${local.domain}.eu-west-1.elasticbeanstalk.com"
+    value = local.domain_url
   }
+}
+
+output "demo_url" {
+  value       = local.domain_url
+  description = "The URL of the demo that is being hosted"
 }
