@@ -16,6 +16,21 @@ variable "environment" {
   default     = "development"
 }
 
+# ----
+# AWS Settings
+
+variable "aws_profile" {
+    description = "AWS Profile tu use for deployment"
+    type        = string
+    default     = "default"
+}
+
+variable "aws_region" {
+    description = "AWS Region to use for deployment"
+    type        = string
+    default     = "eu-west-1"
+}
+
 # -----
 # Adyen credentials
 
