@@ -88,6 +88,45 @@ That's it! Every time you test a new payment method, your server will receive a 
 
 You can find more information about webhooks in [this detailed blog post](https://www.adyen.com/blog/Integrating-webhooks-notifications-with-Adyen-Checkout).
 
+## Deploying this example to the cloud
+
+As part of this example, we are providing a [Terraform](https://www.terraform.io/) configuration file that can be used to deploy this demo to the Amazon cloud on a [Beanstalk](https://aws.amazon.com/elasticbeanstalk/) environment.
+
+ ⚠️ This part will deploy ressource in the cloud and can incur charges ⚠️.
+
+
+### Extra prerequisites
+
+* The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html), with a configured profile (and an AWS account).
+* The [Terraform](https://www.terraform.io/) CLI, with the `terraform` executable in your PATH.
+* Ready to use Adyen API and client keys.
+
+### Usage
+
+* Compile the project: `./gradlew build`
+* Create a `terraform.tfvars` file in the root directory of this repository. Here is a example : 
+
+```json
+adyen_api_key = "testApiKey"
+adyen_merchant_account = "testMerchantAccount"
+adyen_client_key = "testClientKey"
+adyen_hmac_key = "testHMACKey"
+```
+
+* Run the `terraform init` command to initialize the Terraform configuration, and `terraform apply` to deploy the environment.
+* At the end of the deployment, Terraform will output several URLs : 
+
+```
+adyen_url = "https://ca-test.adyen.com/ca/ca/config/showthirdparty.shtml"
+demo_url = "http://adyen-spring-development-cc66dd5f.eu-west-1.elasticbeanstalk.com"
+environment_url = "https://eu-west-1.console.aws.amazon.com/elasticbeanstalk/home?region=eu-west-1#/applications"
+```
+
+* You can access the demo using the `demo_url`.
+* The `adyen_url` can be used to create a [notification webhook](https://docs.adyen.com/development-resources/webhooks) in the Adyen customer area.
+* Use `terraform destroy` to remove the environment and avoid being charged for the resources more than necessary.
+* The `environment_url` can be used to access the AWS Beanstalk environment and possibly update the configuration.
+
 ## Contributing
 
 We commit all our new features directly into our GitHub repository. Feel free to request or suggest new features or code changes yourself as well!
