@@ -73,6 +73,13 @@ resource "aws_elastic_beanstalk_environment" "adyen_test_application_environment
    value = "aws-elasticbeanstalk-ec2-role"
   }
 
+  // Sends logs to Cloudwatch
+  setting {
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
+    name = "StreamLogs"
+    value = "true"
+  }
+
   setting {
     name = "PORT"
     namespace = "aws:elasticbeanstalk:application:environment"
