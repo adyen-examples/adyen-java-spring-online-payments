@@ -1,17 +1,17 @@
 package com.adyen.checkout.api;
 
 import com.adyen.model.notification.NotificationRequest;
+import com.adyen.model.notification.NotificationRequestItem;
 import com.adyen.util.HMACValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.SignatureException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * REST controller for receiving Adyen webhooks
@@ -24,6 +24,14 @@ public class WebhookResource {
     @Value("${ADYEN_HMAC_KEY}")
     private String hmacKey;
 
+    private final List<NotificationRequestItem> notificationItems = new ArrayList<>();
+
+    // Providing an endpoint to show all received webhooks. You don't want to do that on production
+    @GetMapping("webhooks")
+    public List<NotificationRequestItem> getItems(){
+        return notificationItems;
+    }
+
     @PostMapping("/webhooks/notifications")
     public ResponseEntity<String> webhooks(@RequestBody NotificationRequest notificationRequest){
 
@@ -31,19 +39,22 @@ public class WebhookResource {
 
         notificationRequest.getNotificationItems().forEach(
           item -> {
-              try {
-                  if (new HMACValidator().validateHMAC(item, hmacKey)) {
+              notificationItems.add(item); // Populating the view list
+
+              // We recommend to activate HMAC validation in the webhooks for security reasons
+//              try {
+//                  if (new HMACValidator().validateHMAC(item, hmacKey)) {
                       log.info("Received webhook with event {} : \n" +
                           "Merchant Reference: {}\n" +
                           "Alias : {}\n" +
                           "PSP reference : {}"
                           , item.getEventCode(), item.getMerchantReference(), item.getAdditionalData().get("alias"), item.getPspReference());
-                  } else {
-                      log.warn("Could not validate HMAC Key for incoming webhook message. Have you set the environment variable?");
-                  }
-              } catch (SignatureException e) {
-                  log.error("Error while validating HMAC Key", e);
-              }
+//                  } else {
+//                      log.warn("Could not validate HMAC Key for incoming webhook message. Have you set the environment variable?");
+//                  }
+//              } catch (SignatureException e) {
+//                  log.error("Error while validating HMAC Key", e);
+//              }
           }
         );
 
