@@ -21,7 +21,7 @@ import java.util.List;
 public class WebhookResource {
     private final Logger log = LoggerFactory.getLogger(WebhookResource.class);
 
-    @Value("${ADYEN_HMAC_KEY}")
+    @Value("${ADYEN_HMAC_KEY:#{null}}")
     private String hmacKey;
 
     private final List<NotificationRequestItem> notificationItems = new ArrayList<>();
@@ -34,8 +34,6 @@ public class WebhookResource {
 
     @PostMapping("/webhooks/notifications")
     public ResponseEntity<String> webhooks(@RequestBody NotificationRequest notificationRequest){
-
-//        log.info("RECEIVED WEBHOOK notification {}", notificationRequest);
 
         notificationRequest.getNotificationItems().forEach(
           item -> {

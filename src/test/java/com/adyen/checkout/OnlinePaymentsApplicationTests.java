@@ -14,7 +14,6 @@ class OnlinePaymentsApplicationTests {
         System.setProperty("ADYEN_API_KEY", "testKey");
         System.setProperty("ADYEN_MERCHANT_ACCOUNT", "testAccount");
         System.setProperty("ADYEN_CLIENT_KEY", "testKey");
-        System.setProperty("ADYEN_HMAC_KEY", "testKey");
     }
 
     @AfterAll
@@ -22,7 +21,6 @@ class OnlinePaymentsApplicationTests {
         System.clearProperty("ADYEN_API_KEY");
         System.clearProperty("ADYEN_MERCHANT_ACCOUNT");
         System.clearProperty("ADYEN_CLIENT_KEY");
-        System.clearProperty("ADYEN_HMAC_KEY");
     }
 
 	@Test

@@ -75,8 +75,8 @@ This demo provides simple webhook integration at `/api/webhooks/notifications`. 
 
 ### Making your server reachable
 
-One possibility is to use a service like [ngrok](https://ngrok.com/product) (which can be used for free). Once you have 
-set up ngrok, make sure to add the provided URL to the list of allowed origin in the credentials part of your customer area.
+One possibility is to use a service like [ngrok] (which can be used for free). 
+Once you have  set up ngrok, make sure to add the provided ngrok URL to the list of Allowed Origins in the “API Credentials" part of your Customer Area.
 
 ### Setting up a webhook
 
@@ -92,7 +92,7 @@ You can find more information about webhooks in [this detailed blog post](https:
 
 As part of this example, we are providing a [Terraform](https://www.terraform.io/) configuration file that can be used to deploy this demo to the Amazon cloud on a [Beanstalk](https://aws.amazon.com/elasticbeanstalk/) environment.
 
- ⚠️ This part will deploy ressource in the cloud and can incur charges ⚠️.
+ ⚠️ This part will deploy (AWS) cloud resources and can incur charges ⚠️.
 
 
 ### Extra prerequisites
@@ -106,7 +106,7 @@ As part of this example, we are providing a [Terraform](https://www.terraform.io
 * Compile the project: `./gradlew build`
 * Create a `terraform.tfvars` file in the root directory of this repository. Here is a example : 
 
-```json
+```
 adyen_api_key = "testApiKey"
 adyen_merchant_account = "testMerchantAccount"
 adyen_client_key = "testClientKey"
