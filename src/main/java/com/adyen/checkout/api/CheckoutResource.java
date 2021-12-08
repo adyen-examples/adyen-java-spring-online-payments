@@ -11,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -29,6 +26,9 @@ public class CheckoutResource {
 
     @Value("${ADYEN_MERCHANT_ACCOUNT}")
     private String merchantAccount;
+
+    @Value("${ADYEN_RETURN_URL:http://localhost:8080}")
+    private String returnUrl;
 
     private final Checkout checkout;
 
@@ -48,7 +48,8 @@ public class CheckoutResource {
         checkoutSession.merchantAccount(merchantAccount);
         checkoutSession.setChannel(CreateCheckoutSessionRequest.ChannelEnum.WEB);
         checkoutSession.setReference(orderRef); // required
-        checkoutSession.setReturnUrl("http://localhost:8080/redirect?orderRef=" + orderRef);
+        checkoutSession.setReturnUrl(returnUrl + "/redirect?orderRef=" + orderRef);
+
         checkoutSession.setAmount(amount);
 
         log.info("REST request to create Adyen Payment Session {}", checkoutSession);

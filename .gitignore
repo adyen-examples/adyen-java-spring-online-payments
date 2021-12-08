@@ -33,3 +33,8 @@ out/
 ### VS Code ###
 .vscode/
 env.tmp
+
+.terraform
+.terraform*
+terraform.tfstate*
+terraform.tfvars
