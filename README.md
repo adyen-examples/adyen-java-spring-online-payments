@@ -131,6 +131,8 @@ environment_url = "https://eu-west-1.console.aws.amazon.com/elasticbeanstalk/hom
 
 We commit all our new features directly into our GitHub repository. Feel free to request or suggest new features or code changes yourself as well!
 
+Find out more in our [Contributing](https://github.com/adyen-examples/.github/blob/main/CONTRIBUTING.md) guidelines.
+
 ## License
 
 MIT license. For more information, see the **LICENSE** file in the root directory.
