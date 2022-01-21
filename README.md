@@ -40,12 +40,19 @@ git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.gi
 
 ## Usage
 
-1. Set environment variables for your [API key](https://docs.adyen.com/user-management/how-to-get-the-api-key), [Client Key](https://docs.adyen.com/user-management/client-side-authentication) - Remember to add `http://localhost:8080` as an origin for client key, and merchant account name:
+1. Set environment variables for the required configuration
+    - [API key](https://docs.adyen.com/user-management/how-to-get-the-api-key)
+    - [Client Key](https://docs.adyen.com/user-management/client-side-authentication)
+    - [Merchant Account](https://docs.adyen.com/account/account-structure)
+    - [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures)
+    - 
+Remember to include `http://localhost:8080` in the list of Allowed Origins
 
 ```shell
 export ADYEN_API_KEY=yourAdyenApiKey
 export ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
 export ADYEN_CLIENT_KEY=yourAdyenClientKey
+export ADYEN_HMAC_KEY=yourHmacKey
 ```
 
 On Windows CMD you can use below commands instead
@@ -54,6 +61,7 @@ On Windows CMD you can use below commands instead
 set ADYEN_API_KEY=yourAdyenApiKey
 set ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
 set ADYEN_CLIENT_KEY=yourAdyenClientKey
+set ADYEN_HMAC_KEY=yourHmacKey
 ```
 
 2. Start the server:
