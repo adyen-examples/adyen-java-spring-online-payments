@@ -37,7 +37,7 @@ public class WebhookResource {
      * @param notificationRequest
      * @return
      */
-    @PostMapping("/webhook/notifications")
+    @PostMapping("/webhooks/notifications")
     public ResponseEntity<String> webhooks(@RequestBody NotificationRequest notificationRequest){
 
         notificationRequest.getNotificationItems().forEach(
