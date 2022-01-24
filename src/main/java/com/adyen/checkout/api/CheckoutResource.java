@@ -1,6 +1,7 @@
 package com.adyen.checkout.api;
 
 import com.adyen.Client;
+import com.adyen.checkout.ApplicationProperty;
 import com.adyen.enums.Environment;
 import com.adyen.model.Amount;
 import com.adyen.model.checkout.CreateCheckoutSessionRequest;
@@ -9,7 +10,7 @@ import com.adyen.service.Checkout;
 import com.adyen.service.exception.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,16 +25,21 @@ import java.util.UUID;
 public class CheckoutResource {
     private final Logger log = LoggerFactory.getLogger(CheckoutResource.class);
 
-    @Value("${ADYEN_MERCHANT_ACCOUNT}")
-    private String merchantAccount;
-
-    @Value("${ADYEN_RETURN_URL:http://localhost:8080}")
-    private String returnUrl;
+    private ApplicationProperty applicationProperty;
 
     private final Checkout checkout;
 
-    public CheckoutResource(@Value("${ADYEN_API_KEY}") String apiKey) {
-        var client = new Client(apiKey, Environment.TEST);
+    @Autowired
+    public CheckoutResource(ApplicationProperty applicationProperty) {
+
+        this.applicationProperty = applicationProperty;
+
+        if(applicationProperty.getApiKey() == null) {
+            log.warn("ADYEN_KEY is UNDEFINED");
+            throw new RuntimeException("ADYEN_KEY is UNDEFINED");
+        }
+
+        var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
         this.checkout = new Checkout(client);
     }
 
@@ -45,10 +51,11 @@ public class CheckoutResource {
             .value(1000L); // value is 10€ in minor units
 
         var checkoutSession = new CreateCheckoutSessionRequest();
-        checkoutSession.merchantAccount(merchantAccount);
+        checkoutSession.merchantAccount(this.applicationProperty.getMerchantAccount());
+        // (optional) set WEB to filter out payment methods available only for this platform
         checkoutSession.setChannel(CreateCheckoutSessionRequest.ChannelEnum.WEB);
         checkoutSession.setReference(orderRef); // required
-        checkoutSession.setReturnUrl(returnUrl + "/redirect?orderRef=" + orderRef);
+        checkoutSession.setReturnUrl(this.applicationProperty.getReturnUrl() + "/redirect?orderRef=" + orderRef);
 
         checkoutSession.setAmount(amount);
 
