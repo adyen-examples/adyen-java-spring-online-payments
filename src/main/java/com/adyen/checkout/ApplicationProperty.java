@@ -1,11 +1,13 @@
 package com.adyen.checkout;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ApplicationProperty {
+
+    @Value("${server.port}")
+    private int serverPort;
 
     @Value("${ADYEN_API_KEY:#{null}}")
     private String apiKey;
@@ -21,6 +23,14 @@ public class ApplicationProperty {
 
     @Value("${ADYEN_RETURN_URL:http://localhost:8080}")
     private String returnUrl;
+
+    public int getServerPort() {
+        return serverPort;
+    }
+
+    public void setServerPort(int serverPort) {
+        this.serverPort = serverPort;
+    }
 
     public String getApiKey() {
         return apiKey;
