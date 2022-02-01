@@ -23,8 +23,4 @@ class OnlinePaymentsApplicationTests {
         System.clearProperty("ADYEN_CLIENT_KEY");
     }
 
-	@Test
-	void contextLoads() {
-	}
-
 }

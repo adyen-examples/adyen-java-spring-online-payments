@@ -40,22 +40,37 @@ git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.gi
 
 ## Usage
 
-1. Set environment variables for your [API key](https://docs.adyen.com/user-management/how-to-get-the-api-key), [Client Key](https://docs.adyen.com/user-management/client-side-authentication) - Remember to add `http://localhost:8080` as an origin for client key, and merchant account name:
+1. Set environment variables for the required configuration
+    - [API key](https://docs.adyen.com/user-management/how-to-get-the-api-key)
+    - [Client Key](https://docs.adyen.com/user-management/client-side-authentication)
+    - [Merchant Account](https://docs.adyen.com/account/account-structure)
+    - [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures)
+   
+Remember to include `http://localhost:8080` in the list of Allowed Origins
 
+On Linux/Mac export env variables 
 ```shell
 export ADYEN_API_KEY=yourAdyenApiKey
 export ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
 export ADYEN_CLIENT_KEY=yourAdyenClientKey
+export ADYEN_HMAC_KEY=yourHmacKey
 ```
 
 On Windows CMD you can use below commands instead
-
 ```shell
 set ADYEN_API_KEY=yourAdyenApiKey
 set ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
 set ADYEN_CLIENT_KEY=yourAdyenClientKey
+set ADYEN_HMAC_KEY=yourHmacKey
 ```
 
+Alternatively it is possible to define the settings in the `application.properties`
+```# application.properties
+ADYEN_API_KEY=yourAdyenApiKey
+ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
+ADYEN_CLIENT_KEY=yourAdyenClientKey
+ADYEN_HMAC_KEY=yourHmacKey
+```
 2. Start the server:
 
 ```
@@ -68,25 +83,28 @@ To try out integrations with test card numbers and payment method details, see [
 
 ## Testing webhooks
 
-This demo provides simple webhook integration at `/api/webhooks/notifications`. For it to work, you need to:
+This demo provides a simple webhook integration at `/api/webhooks/notifications`. You will need to:
 
-* Provide a way for Adyen's servers to reach your running application
-* Add a standard webhook in your customer area
+* Make sure Adyen's server is able to reach you application
+* Define a standard webhook in your Customer Area
+
 
 ### Making your server reachable
 
-One possibility is to use a service like [ngrok] (which can be used for free). 
-Once you have  set up ngrok, make sure to add the provided ngrok URL to the list of Allowed Origins in the “API Credentials" part of your Customer Area.
+Your application runs on the cloud: this is normally enough (your server accepts incoming requests)
+
+Your application runs on your local machine: you need to use a service like [ngrok](https://ngrok.com/) to "tunnel" the webhook notifications.
+
+Once you have set up ngrok, make sure to add the provided ngrok URL to the list of **Allowed Origins** in the “API Credentials" of your Customer Area.
 
 ### Setting up a webhook
 
-* In the developers -> webhooks part of the customer area, create a new 'standard notifications' webhook.
-* Make sure to check 'Accept self-signed', 'Accept non-trusted root certificates' (test only) and Active.
-* In additional settings, add the data you want to receive. A good example is 'Payment Account Reference'.
+* In the “Developers" -> “Webhooks" section create a new ‘Standard notification' webhook.
+* In “Additional Settings” section configure (if necessary) the additional data you want to receive (i.e. 'Payment Account Reference’).
 
-That's it! Every time you test a new payment method, your server will receive a notification from Adyen's server.
+That's it! Every time you perform a payment method, your server will receive a notification from Adyen's server.
 
-You can find more information about webhooks in [this detailed blog post](https://www.adyen.com/blog/Integrating-webhooks-notifications-with-Adyen-Checkout).
+You can find more information in the [Webhooks documentation](https://docs.adyen.com/development-resources/webhooks) and in [this blog post](https://www.adyen.com/blog/Integrating-webhooks-notifications-with-Adyen-Checkout).
 
 ## Deploying this example to the cloud
 
