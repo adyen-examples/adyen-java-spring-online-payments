@@ -1,8 +1,5 @@
 # Adyen [online payment](https://docs.adyen.com/checkout) integration demos
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments)
-
-
 This repository includes examples of PCI-compliant UI integrations for online payments with Adyen. Within this demo app, you'll find a simplified version of an e-commerce website, complete with commented code to highlight key features and concepts of Adyen's API. Check out the underlying code to see how you can integrate Adyen to give your shoppers the option to pay with their preferred payment methods, all in a seamless checkout experience.
 
 ![Card checkout demo](src/main/resources/static/images/cardcheckout.gif)
@@ -25,6 +22,15 @@ This repository includes examples of PCI-compliant UI integrations for online pa
 
 The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries#java)).
 
+## Run this integration in seconds using [Gitpod](https://gitpod.io/)
+
+* Make sure you have a test account
+* Go to [gitpod account variables](https://gitpod.io/variables).
+* Set the ADYEN_API_KEY, ADYEN_CLIENT_KEY, ADYEN_HMAC_KEY and ADYEN_MERCHANT_ACCOUNT variables
+* Click the button below!
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments)
+
 ## Requirements
 
 -   Java 11
@@ -45,10 +51,10 @@ git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.gi
     - [Client Key](https://docs.adyen.com/user-management/client-side-authentication)
     - [Merchant Account](https://docs.adyen.com/account/account-structure)
     - [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures)
-   
+
 Remember to include `http://localhost:8080` in the list of Allowed Origins
 
-On Linux/Mac export env variables 
+On Linux/Mac export env variables
 ```shell
 export ADYEN_API_KEY=yourAdyenApiKey
 export ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
@@ -122,7 +128,7 @@ As part of this example, we are providing a [Terraform](https://www.terraform.io
 ### Usage
 
 * Compile the project: `./gradlew build`
-* Create a `terraform.tfvars` file in the root directory of this repository. Here is a example : 
+* Create a `terraform.tfvars` file in the root directory of this repository. Here is a example :
 
 ```
 adyen_api_key = "testApiKey"
@@ -132,7 +138,7 @@ adyen_hmac_key = "testHMACKey"
 ```
 
 * Run the `terraform init` command to initialize the Terraform configuration, and `terraform apply` to deploy the environment.
-* At the end of the deployment, Terraform will output several URLs : 
+* At the end of the deployment, Terraform will output several URLs :
 
 ```
 adyen_url = "https://ca-test.adyen.com/ca/ca/config/showthirdparty.shtml"
