@@ -24,7 +24,7 @@ The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Ady
 
 ## Run this integration in seconds using [Gitpod](https://gitpod.io/)
 
-* Make sure you have a test account
+* Open your [Adyen Test Account](https://ca-test.adyen.com/ca/ca/overview/default.shtml) and create a set of [API keys](https://docs.adyen.com/user-management/how-to-get-the-api-key).
 * Go to [gitpod account variables](https://gitpod.io/variables).
 * Set the ADYEN_API_KEY, ADYEN_CLIENT_KEY, ADYEN_HMAC_KEY and ADYEN_MERCHANT_ACCOUNT variables
 * Click the button below!
