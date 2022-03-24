@@ -1,7 +1,7 @@
 tasks:
 - init: ./gradlew bootJar
   command: |
-        if [ -z ${ADYEN_HMAC_KEY+x} ] && [[ -z ${ADYEN_API_KEY+x} ]] && [[ -z ${ADYEN_CLIENT_KEY+x} ]] && [[ -z ${ADYEN_MERCHANT_ACCOUNT+x} ]]; then
+        if [ -z ${ADYEN_HMAC_KEY+x} ] || [[ -z ${ADYEN_API_KEY+x} ]] || [[ -z ${ADYEN_CLIENT_KEY+x} ]] || [[ -z ${ADYEN_MERCHANT_ACCOUNT+x} ]]; then
             echo "Expected environment variables not found. Please set the ADYEN_HMAC_KEY, ADYEN_API_KEY, ADYEN_CLIENT_KEY, ADYEN_MERCHANT_ACCOUNT environment variables and rerun session https://gitpod.io/variables."
         else
             ./gradlew bootRun
