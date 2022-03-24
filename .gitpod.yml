@@ -1,6 +1,12 @@
 tasks:
 - init: ./gradlew bootJar
-  command: if [ -n "$ADYEN_HMAC_KEY" ]; then ./gradlew bootRun else echo "$ADYEN_HMAC_KEY not found. Please set environment variables and rerun session https://gitpod.io/variables." fi
+  command:
+    - |
+        if [ -z ${ADYEN_HMAC_KEY+x} ]; then
+            echo "ADYEN_HMAC_KEY environment variable not found. Please set environment variables and rerun session https://gitpod.io/variables."
+        else
+            ./gradlew bootRun
+        fi
 
 # exposed ports
 ports:
