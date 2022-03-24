@@ -31,6 +31,8 @@ The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Ady
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments)
 
+_NOTE: To allow the Adyen Drop-In and Components to load, you have to add gitpod.io as allowed origin for your chosen set of [API Credentials](https://ca-test.adyen.com/ca/ca/config/api_credentials_new.shtml)_
+
 ## Requirements
 
 -   Java 11
