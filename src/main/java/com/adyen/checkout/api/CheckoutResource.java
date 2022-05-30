@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ import java.util.UUID;
 public class CheckoutResource {
     private final Logger log = LoggerFactory.getLogger(CheckoutResource.class);
 
-    private ApplicationProperty applicationProperty;
+    private final ApplicationProperty applicationProperty;
 
     private final Checkout checkout;
 
@@ -44,7 +45,7 @@ public class CheckoutResource {
     }
 
     @PostMapping("/sessions")
-    public ResponseEntity<CreateCheckoutSessionResponse> sessions(@RequestParam String type) throws IOException, ApiException {
+    public ResponseEntity<CreateCheckoutSessionResponse> sessions(@RequestHeader String host, @RequestParam String type, HttpServletRequest request) throws IOException, ApiException {
         var orderRef = UUID.randomUUID().toString();
         var amount = new Amount()
             .currency("EUR")
@@ -55,7 +56,7 @@ public class CheckoutResource {
         // (optional) set WEB to filter out payment methods available only for this platform
         checkoutSession.setChannel(CreateCheckoutSessionRequest.ChannelEnum.WEB);
         checkoutSession.setReference(orderRef); // required
-        checkoutSession.setReturnUrl(this.applicationProperty.getReturnUrl() + "/redirect?orderRef=" + orderRef);
+        checkoutSession.setReturnUrl(request.getScheme() + "://" + host + "/redirect?orderRef=" + orderRef);
 
         checkoutSession.setAmount(amount);
 
