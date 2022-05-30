@@ -21,9 +21,6 @@ public class ApplicationProperty {
     @Value("${ADYEN_HMAC_KEY:#{null}}")
     private String hmacKey;
 
-    @Value("${ADYEN_RETURN_URL:http://localhost:8080}")
-    private String returnUrl;
-
     public int getServerPort() {
         return serverPort;
     }
@@ -54,14 +51,6 @@ public class ApplicationProperty {
 
     public void setClientKey(String clientKey) {
         this.clientKey = clientKey;
-    }
-
-    public String getReturnUrl() {
-        return returnUrl;
-    }
-
-    public void setReturnUrl(String returnUrl) {
-        this.returnUrl = returnUrl;
     }
 
     public String getHmacKey() {
