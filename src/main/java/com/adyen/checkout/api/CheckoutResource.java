@@ -6,6 +6,7 @@ import com.adyen.enums.Environment;
 import com.adyen.model.Amount;
 import com.adyen.model.checkout.CreateCheckoutSessionRequest;
 import com.adyen.model.checkout.CreateCheckoutSessionResponse;
+import com.adyen.model.checkout.LineItem;
 import com.adyen.service.Checkout;
 import com.adyen.service.exception.ApiException;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -49,16 +51,21 @@ public class CheckoutResource {
         var orderRef = UUID.randomUUID().toString();
         var amount = new Amount()
             .currency("EUR")
-            .value(1000L); // value is 10€ in minor units
+            .value(10000L); // value is 100€ in minor units
 
         var checkoutSession = new CreateCheckoutSessionRequest();
+        checkoutSession.countryCode("NL");
         checkoutSession.merchantAccount(this.applicationProperty.getMerchantAccount());
         // (optional) set WEB to filter out payment methods available only for this platform
         checkoutSession.setChannel(CreateCheckoutSessionRequest.ChannelEnum.WEB);
         checkoutSession.setReference(orderRef); // required
         checkoutSession.setReturnUrl(request.getScheme() + "://" + host + "/redirect?orderRef=" + orderRef);
-
         checkoutSession.setAmount(amount);
+        // set lineItems required for some payment methods (ie Klarna)
+        checkoutSession.setLineItems(Arrays.asList(
+            new LineItem().quantity(1L).amountIncludingTax(5000L).description("Sunglasses"),
+            new LineItem().quantity(1L).amountIncludingTax(5000L).description("Headphones"))
+        );
 
         log.info("REST request to create Adyen Payment Session {}", checkoutSession);
         var response = checkout.sessions(checkoutSession);
