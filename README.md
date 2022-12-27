@@ -37,7 +37,7 @@ The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Ady
 
 ## Requirements
 
--   Java 11
+-   Java 17
 -   Network access to maven central
 
 ## Installation
