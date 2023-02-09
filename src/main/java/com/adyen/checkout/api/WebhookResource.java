@@ -7,6 +7,7 @@ import com.adyen.util.HMACValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,7 +54,7 @@ public class WebhookResource {
             var item = notificationRequestItem.get();
 
             try {
-                if (new HMACValidator().validateHMAC(item, this.applicationProperty.getHmacKey())) {
+                if (getHmacValidator().validateHMAC(item, this.applicationProperty.getHmacKey())) {
                     log.info("Received webhook with event {} : \n" +
                                     "Merchant Reference: {}\n" +
                                     "Alias : {}\n" +
@@ -92,5 +93,10 @@ public class WebhookResource {
         // producer.flush();
         // producer.close();
 
+    }
+
+    @Bean
+    public HMACValidator getHmacValidator() {
+        return new HMACValidator();
     }
 }
