@@ -3,7 +3,7 @@ package com.adyen.checkout.api;
 import com.adyen.Client;
 import com.adyen.checkout.ApplicationProperty;
 import com.adyen.enums.Environment;
-import com.adyen.model.Amount;
+import com.adyen.model.checkout.Amount;
 import com.adyen.model.checkout.CreateCheckoutSessionRequest;
 import com.adyen.model.checkout.CreateCheckoutSessionResponse;
 import com.adyen.model.checkout.LineItem;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
+
 
 /**
  * REST controller for using Adyen checkout API
