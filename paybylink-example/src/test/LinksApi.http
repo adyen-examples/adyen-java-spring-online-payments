@@ -1,0 +1,52 @@
+# All links, should be empty on startup
+GET http://localhost:8082/api/links
+Accept: application/json
+
+###
+
+# Adding a new link, should fail without amount
+POST http://localhost:8082/api/links
+Content-Type: application/json
+
+{}
+
+###
+
+# Adding a new link, should return a link
+POST http://localhost:8082/api/links
+Content-Type: application/json
+
+{
+  "amount": 100
+}
+
+###
+
+# Adding a new link with reference, should return a link
+POST http://localhost:8082/api/links
+Content-Type: application/json
+
+{
+  "amount": 100,
+  "reference": "unique reference"
+}
+
+###
+
+# All links, should contain one link
+GET http://localhost:8082/api/links
+Accept: application/json
+
+
+#### Adyen API
+#
+#GET https://checkout-test.adyen.com/v69/paymentLinks/{{linkId}}
+#Content-Type: application/json
+#x-API-key: {{apiKey}}
+#
+#
+#### Trying generic GET
+#
+#GET https://checkout-test.adyen.com/v69/paymentLinks
+#Content-Type: application/json
+#x-API-key: {{apiKey}}
