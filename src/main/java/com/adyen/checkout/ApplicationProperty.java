@@ -21,6 +21,15 @@ public class ApplicationProperty {
     @Value("${ADYEN_HMAC_KEY:#{null}}")
     private String hmacKey;
 
+    @Value("${webhook.url}")
+    private String webhookUrl;
+
+    @Value("${webhook.username}")
+    private String webhookUsername;
+
+    @Value("${webhook.password}")
+    private String webhookPassword;
+
     public int getServerPort() {
         return serverPort;
     }
@@ -59,5 +68,29 @@ public class ApplicationProperty {
 
     public void setHmacKey(String hmacKey) {
         this.hmacKey = hmacKey;
+    }
+
+    public String getWebhookUrl() {
+        return webhookUrl;
+    }
+
+    public void setWebhookUrl(String webhookUrl) {
+        this.webhookUrl = webhookUrl;
+    }
+
+    public String getWebhookUsername() {
+        return webhookUsername;
+    }
+
+    public void setWebhookUsername(String webhookUsername) {
+        this.webhookUsername = webhookUsername;
+    }
+
+    public String getWebhookPassword() {
+        return webhookPassword;
+    }
+
+    public void setWebhookPassword(String webhookPassword) {
+        this.webhookPassword = webhookPassword;
     }
 }
