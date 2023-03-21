@@ -19,7 +19,11 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
-      - name: Grant execute permission for gradlew
+      - name: Grant checkout-example execute permission for gradlew
         run: chmod +x checkout-example/gradlew
-      - name: Build with Gradle
+      - name: Build checkout-example with Gradle
         run: cd checkout-example; ./gradlew build
+      - name: Grant paybylink-example execute permission for gradlew
+        run: chmod +x paybylink-example/gradlew
+      - name: Build paybylink-example with Gradle
+        run: cd paybylink-example; ./gradlew build
