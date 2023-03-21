@@ -19,7 +19,7 @@ The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Ady
 ## Requirements
 
 -   Java 17
--   Node 17
+-   Node 17 (to build the frontend. See `build.gradle` for details)
 -   Network access to maven central
 
 ## Installation
