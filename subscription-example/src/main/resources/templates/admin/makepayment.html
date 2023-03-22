@@ -1,0 +1,23 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title th:text="${type}"></title>
+</head>
+<body>
+<div layout:fragment="content" class="status-container">
+  <div class="status">
+    <img th:if="${result == 'success'}" src="/images/thank-you.svg" class="status-image" alt="">
+    <img th:if="${result == 'error'}" src="/images/error.svg" class="status-image" alt="">
+
+    <p class="status-message">
+      <span th:if="${type == 'success' }">Successfully authorised a payment with RecurringDetailReference: th:text="${recurringDetailReference}"</span>
+      <span th:if="${type == 'error' }">
+        Payment failed for RecurringDetailReference th:text="${recurringDetailReference}". See logs for more information about the response
+      </span>
+    </p>
+    <a class="button" href="/admin">Return</a>
+  </div>
+</div>
+</body>
