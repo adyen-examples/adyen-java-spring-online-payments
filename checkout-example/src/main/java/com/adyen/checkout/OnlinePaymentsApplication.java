@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 
 
-//@SpringBootApplication
 @SpringBootApplication(exclude = {JacksonAutoConfiguration.class})
 public class OnlinePaymentsApplication {
 
