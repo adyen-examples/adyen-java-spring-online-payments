@@ -40,11 +40,16 @@ public class WebhookResource {
      * Process incoming Webhook notification: get NotificationRequestItem, validate HMAC signature,
      * consume the event asynchronously, send response ["accepted"]
      *
-     * @param notificationRequest
+     * @param notificationRequestPayload
      * @return
      */
     @PostMapping("/webhooks/notifications")
     public ResponseEntity<String> webhooks(@RequestBody NotificationRequest notificationRequest) {
+//    public ResponseEntity<String> webhooks(@RequestBody String notificationRequestPayload) throws Exception {
+
+//        log.info(notificationRequestPayload);
+//        var notificationRequest = NotificationRequest.fromJson(notificationRequestPayload);
+
 
         // fetch first (and only) NotificationRequestItem
         var notificationRequestItem = notificationRequest.getNotificationItems().stream().findFirst();

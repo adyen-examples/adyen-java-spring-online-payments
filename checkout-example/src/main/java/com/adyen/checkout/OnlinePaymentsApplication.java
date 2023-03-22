@@ -6,9 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 
 
-@SpringBootApplication
+//@SpringBootApplication
+@SpringBootApplication(exclude = {JacksonAutoConfiguration.class})
 public class OnlinePaymentsApplication {
 
     private static final Logger log = LoggerFactory.getLogger(OnlinePaymentsApplication.class);
