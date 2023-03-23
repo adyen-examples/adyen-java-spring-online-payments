@@ -28,7 +28,7 @@ jobs:
       - name: Start checkout-example container
         run: docker run --rm -d --name checkout-example -p 8080:8080 -e ADYEN_API_KEY="${{ secrets.ADYEN_API_KEY }}" -e ADYEN_MERCHANT_ACCOUNT=${{ secrets.ADYEN_MERCHANT_ACCOUNT }} -e ADYEN_CLIENT_KEY=${{ secrets.ADYEN_CLIENT_KEY }} -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} checkout-example:latest
       - name: Run testing suite
-        run: docker run --rm --name adyen-testing-suite --network host ghcr.io/adyen-examples/adyen-testing-suite:main
+        run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=checkout --network host ghcr.io/adyen-examples/adyen-testing-suite:main
 
   subscription:
 
@@ -50,5 +50,5 @@ jobs:
       - name: Start subscription-example container
         run: docker run --rm -d --name subscription-example -p 8080:8080 -e ADYEN_API_KEY="${{ secrets.ADYEN_API_KEY }}" -e ADYEN_MERCHANT_ACCOUNT=${{ secrets.ADYEN_MERCHANT_ACCOUNT }} -e ADYEN_CLIENT_KEY=${{ secrets.ADYEN_CLIENT_KEY }} -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} subscription-example:latest
       - name: Run testing suite
-        run: docker run --rm --name adyen-testing-suite --network host ghcr.io/adyen-examples/adyen-testing-suite:main
+        run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=subscription --network host ghcr.io/adyen-examples/adyen-testing-suite:main
 
