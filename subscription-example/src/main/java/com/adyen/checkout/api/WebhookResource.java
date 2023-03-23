@@ -59,19 +59,24 @@ public class WebhookResource {
                 }
 
                 // consume payload
+                if(item.isSuccess()) {
 
-                if(item.getEventCode().equals("AUTHORISATION") && item.getAdditionalData() != null && item.getAdditionalData().get("recurring.shopperReference") != null) {
-                    // webhook with recurring token
-                    log.info("Recurring authorized - recurringDetailReference {}", item.getAdditionalData().get("recurring.recurringDetailReference"));
+                    if (item.getEventCode().equals("AUTHORISATION") && item.getAdditionalData() != null && item.getAdditionalData().get("recurring.shopperReference") != null) {
+                        // webhook with recurring token
+                        log.info("Recurring authorized - recurringDetailReference {}", item.getAdditionalData().get("recurring.recurringDetailReference"));
 
-                    // save token
-                    Storage.add(item.getAdditionalData().get("recurring.recurringDetailReference"), item.getPaymentMethod(), item.getAdditionalData().get("recurring.shopperReference"));
-                } else if (item.getEventCode().equals("AUTHORISATION")) {
-                    // webhook with payment authorisation
-
-                    log.info("Payment authorized - PspReference {}", item.getPspReference());
+                        // save token
+                        Storage.add(item.getAdditionalData().get("recurring.recurringDetailReference"), item.getPaymentMethod(), item.getAdditionalData().get("recurring.shopperReference"));
+                    } else if (item.getEventCode().equals("AUTHORISATION")) {
+                        // webhook with payment authorisation
+                        log.info("Payment authorized - PspReference {}", item.getPspReference());
+                    } else {
+                        // unexpected eventCode
+                        log.warn("Unexpected eventCode: " + item.getEventCode());
+                    }
                 } else {
-                    log.warn("Unexpected eventCode: " + item.getEventCode());
+                    // Operation has failed: check the reason field for failure information.
+                    log.info("Operation has failed: " + item.getReason());
                 }
 
             } catch (SignatureException e) {
