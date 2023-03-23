@@ -7,6 +7,7 @@ import com.adyen.enums.Environment;
 import com.adyen.model.Amount;
 import com.adyen.model.checkout.PaymentsRequest;
 import com.adyen.model.checkout.PaymentsResponse;
+import com.adyen.model.checkout.details.StoredPaymentMethodDetails;
 import com.adyen.model.recurring.DisableRequest;
 import com.adyen.service.Checkout;
 import com.adyen.service.Recurring;
@@ -70,9 +71,9 @@ public class AdminController {
             paymentRequest.setAmount(new Amount().currency("EUR").value(1199L));
             paymentRequest.setReference(orderRef);
             paymentRequest.setShopperInteraction(PaymentsRequest.ShopperInteractionEnum.CONTAUTH);
+            paymentRequest.setShopperReference(Storage.SHOPPER_REFERENCE);
             paymentRequest.setRecurringProcessingModel(PaymentsRequest.RecurringProcessingModelEnum.SUBSCRIPTION);
-//            set payment method (TODO)
-//            paymentRequest.setPaymentMethodItem("storedPaymentMethodId", "123");
+            paymentRequest.setPaymentMethod(new StoredPaymentMethodDetails().storedPaymentMethodId(recurringDetailReference));
 
             response = this.checkout.payments(paymentRequest);
             log.info("payment response {}", response);
@@ -84,9 +85,6 @@ public class AdminController {
             }
 
         } catch (ApiException e) {
-            log.error("ApiException", e.getError());
-            log.error("ApiException", e.getError().getMessage());
-            log.error("ApiException", e.getError().getInvalidFields());
             log.error("ApiException", e);
             result = "error";
         } catch (Exception e) {
@@ -115,6 +113,9 @@ public class AdminController {
             var response = this.recurring.disable(disableRequest);
             log.info("disable response {}", response);
 
+            Storage.remove(recurringDetailReference, Storage.SHOPPER_REFERENCE);
+
+            log.info("remove token {}", recurringDetailReference);
             result = "success";
 
         } catch (Exception e) {
