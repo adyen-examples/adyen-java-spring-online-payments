@@ -1,39 +1,51 @@
 tasks:
-- before: |
-    # Stores last segment of the Workspace Context URL in $path and trims spaces.
-    # `gp info` prints information about the current Gitpod workspace.
-    # `awk -F'/' '/Workspace Context URL/{print $NF}'` looks for the line containing 'Workspace Context URL' and prints the last field separated by "/".
-    # `tr -d '[:space:]'` removes any leading or trailing whitespace from the path.
-    echo "Retrieving the last part of the Workspace Context URL ..."
-    path=$(gp info | awk -F'/' '/Workspace Context URL/{print $NF}' | tr -d '[:space:]')
-    echo "Path '$path' is set."
-
-    sdk install java 17.0.4.1-tem < /dev/null
-  command: |
-      if [ [[ -z ${ADYEN_API_KEY+x} ]] || [[ -z ${ADYEN_CLIENT_KEY+x} ]] || [[ -z ${ADYEN_MERCHANT_ACCOUNT+x} ]]; then
-          echo "Expected environment variables not found. Please set the ADYEN_API_KEY, ADYEN_CLIENT_KEY, ADYEN_MERCHANT_ACCOUNT environment variables and rerun session https://gitpod.io/variables."
-          exit 1
-
-      # Run the application based on specified $path.
-      echo "Starting application for '$path' ..."
+  - name: Gitpod Task
+    before: |
+      # Stores last segment of the Workspace Context URL in $path and trims spaces.
+      # `gp info` prints information about the current Gitpod workspace.
+      # `awk -F'/' '/Workspace Context URL/{print $NF}'` looks for the line containing 'Workspace Context URL' and prints the last field separated by "/".
+      # `tr -d '[:space:]'` removes any leading or trailing whitespace from the path.
+      echo "Retrieving the last part of the Workspace Context URL ..."
+      path=$(gp info | awk -F'/' '/Workspace Context URL/{print $NF}' | tr -d '[:space:]')
+      echo "Path '$path' is set."
+      
+      # Install JDK
+      echo "Installing JDK ..."
+      sdk install java 17.0.4.1-tem < /dev/null
+      
+      echo "Build gradle for '$path' ..."
       case "$path" in
         "checkout-example")
+          echo "Build checkout-example application"
           cd checkout-example && ./gradlew bootJar
         ;;
         "subscription-example")
+          echo "Build subscription-example application"
           cd subscription-example && ./gradlew bootJar
         ;;
         *)
-          echo "Starting the default checkout-example application instead because '$path' is not defined ..."
+          echo "Build default checkout-example application instead because '$path' is not defined ..."
           cd checkout-example && ./gradlew bootJar
         ;;
       esac
+      
+      
+    command: |
+      # Check if environment variables are set in https://gitpod.io/variables.
+      echo "Checking if environment variables are set ..."
+      if [ -z ${ADYEN_HMAC_KEY+x} ] || [[ -z ${ADYEN_API_KEY+x} ]] || [[ -z ${ADYEN_CLIENT_KEY+x} ]] || [[ -z ${ADYEN_MERCHANT_ACCOUNT+x} ]]; then
+        echo "Expected environment variables not found. Please set the ADYEN_HMAC_KEY, ADYEN_API_KEY, ADYEN_CLIENT_KEY, ADYEN_MERCHANT_ACCOUNT environment variables and rerun session https://gitpod.io/variables."
+        exit 1
+      fi
 
-# exposed ports
+      # Run the application based on specified $path.
+      echo "Starting application for '$path' in $(pwd)"
+      ./gradlew bootRun
+
 ports:
-- port: 8080
-  onOpen: open-preview
-  visibility: public
+  - port: 8080
+    onOpen: open-preview
+    visibility: public
 
 vscode:
   extensions:
