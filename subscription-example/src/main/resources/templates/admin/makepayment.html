@@ -12,9 +12,11 @@
     <img th:if="${result == 'error'}" src="/images/error.svg" class="status-image" alt="">
 
     <p class="status-message">
-      <span th:if="${result == 'success' }">Successfully authorised a payment with RecurringDetailReference: th:text="${recurringDetailReference}"</span>
+      <span th:if="${result == 'success' }">
+        Successfully authorised a payment with RecurringDetailReference: <span th:text="${recurringDetailReference}">recurringDetailReference here</span>.
+      </span>
       <span th:if="${result == 'error' }">
-        Payment failed for RecurringDetailReference th:text="${recurringDetailReference}". See logs for more information about the response
+        Payment failed for RecurringDetailReference <span th:text="${recurringDetailReference}">recurringDetailReference here</span>. See logs for more information about the response.
       </span>
     </p>
     <a class="button" href="/admin">Return</a>

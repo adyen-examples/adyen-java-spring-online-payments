@@ -12,9 +12,11 @@
     <img th:if="${result == 'error'}" src="/images/error.svg" class="status-image" alt="">
 
     <p class="status-message">
-      <span th:if="${type == 'success' }">Disabled RecurringDetailReference th:text="${recurringDetailReference}"</span>
+      <span th:if="${type == 'success' }">
+        Disabled RecurringDetailReference <span th:text="${recurringDetailReference}">recurringDetailReference here</span>.
+      </span>
       <span th:if="${type == 'error' }">
-        Could not disable RecurringDetailReference th:text="${recurringDetailReference}". See logs for more information about the response
+        Could not disable RecurringDetailReference <span th:text="${recurringDetailReference}">recurringDetailReference here</span>. See logs for more information about the response.
       </span>
     </p>
     <a class="button" href="/admin">Return</a>
