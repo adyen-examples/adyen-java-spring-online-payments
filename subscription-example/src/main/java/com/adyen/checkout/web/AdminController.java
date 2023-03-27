@@ -78,7 +78,7 @@ public class AdminController {
             response = this.checkout.payments(paymentRequest);
             log.info("payment response {}", response);
 
-            if(response.getResultCode().getValue().equals(PaymentsResponse.ResultCodeEnum.AUTHORISED)) {
+            if(response.getResultCode().equals(PaymentsResponse.ResultCodeEnum.AUTHORISED)) {
                 result = "success";
             } else {
                 result = "error";
