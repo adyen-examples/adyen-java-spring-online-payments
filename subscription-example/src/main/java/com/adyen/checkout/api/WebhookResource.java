@@ -58,6 +58,8 @@ public class WebhookResource {
                     throw new RuntimeException("Invalid HMAC signature");
                 }
 
+                log.info("Received webhook success:{} eventCode:{}", item.isSuccess(), item.getEventCode());
+
                 // consume payload
                 if(item.isSuccess()) {
 
