@@ -1,0 +1,45 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title>Shopper View</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+  <div class='main-container'>
+    <div class="info">
+      <h1>SHOPPER VIEW</h1>
+      <div class="shopper-view-container">
+        <p>This demo shows how tokenization works. Pick a preferred payment method and initiate a payment request. </p>
+        <p>Once completed, we will show you how you can make a payment using the token in the <a href="/admin">Admin panel</a>.</p>
+        <p>Make sure the payment method you want to use are enabled for your account.
+          Refer <a href="https://docs.adyen.com/payment-methods#add-payment-methods-to-your-account">the documentation</a> to add missing payment methods.
+          To learn more, check out the documentation about <a href="https://docs.adyen.com/online-payments/tokenization"> tokenization.</a></p>
+      </div>
+    </div>
+
+    <ul class="integration-list">
+
+      <li class="integration-list-item">
+        <a href="/preview?type=dropin" class="integration-list-item-link">
+          <div class="title-container">
+            <p class="integration-list-item-title">Drop-in</p>
+          </div>
+        </a>
+      </li>
+
+      <li class="integration-list-item">
+        <a href="/preview?type=card" class="integration-list-item-link">
+          <div class="title-container">
+            <p class="integration-list-item-title">Card</p>
+          </div>
+        </a>
+      </li>
+
+    </ul>
+
+  </div>
+</div>
+</body>
+</html>
