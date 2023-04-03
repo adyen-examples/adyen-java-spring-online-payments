@@ -1,0 +1,46 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title>Admin View</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+  <div class='main-container'>
+    <div class="info">
+    <h1>ADMIN PANEL</h1>
+    <div class="admin-panel-container">
+      <p>This <b>admin panel</b> shows all saved tokens that we have received through webhooks. Please follow the readme to ensure that you have setup your webhooks correctly to receive tokens asynchronously.</p>
+      <p>Note that a shopper can have multiple saved tokens per payment method.</p>
+      <p>Below you can find a list of saved tokens. Select a token to initiate a payment (or disable the token) on behalf of the shopper. To learn more, check out the documentation about <a href="https://docs.adyen.com/online-payments/tokenization"> tokenization.</a></p>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="admin-panel-token-container">
+    <div th:if="${not #lists.isEmpty(tokens)}">
+
+      <div th:each="token: ${tokens}">
+        <b>ShopperReference:  <span th:text=${token.shopperReference}>shopperReference here</span></b><br/><br/>
+        <ul class="adminList">
+          <li>
+            PaymentMethod: <span th:text=${token.paymentMethod}>payment method here</span>
+            RecurringDetailReference: <span th:text=${token.recurringReference}>token here</span>
+            <a th:href="@{'/admin/makepayment/' + ${token.recurringReference}}">Make Payment</a> |
+            <a th:href="@{'/admin/disable/' + ${token.recurringReference}}">Disable</a>
+          </li>
+        </ul>
+        </div>
+      </div>
+      <div th:if="${#lists.isEmpty(tokens)}">
+        <p><b>No RecurringDetailReferences (tokens) are stored. You can add a token by purchasing a subscription in the <a href="/">Shopper View</a>.</b></p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

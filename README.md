@@ -1,7 +1,17 @@
 # Adyen Online Payment Integration Demos
 
+[![Java CI with Gradle](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/build.yml/badge.svg)](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/build.yml) 
+[![E2E (Playwright)](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/e2e.yml/badge.svg)](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/e2e.yml)
+
 This repository includes a collection of PCI-compliant UI integrations that show how to integrate with Adyen using different payment methods. 
 The demos below leverages Adyen's API Library for Java using Spring ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Documentation](https://docs.adyen.com/development-resources/libraries?tab=java_2)).
+
+Get started by navigating to one of the supported demos below.
+
+| Demos | Description | Details |
+| --: | :-- | :-- |
+| [`Checkout Example`](checkout-example) | E-commerce checkout flow with different payment methods. | [See below](#checkout-example) | 
+| [`Subscription Example`](subscription-example) | Subscription flow using Adyen tokenization. | [See below](#subscription-example) | 
 
 
 ## [Checkout Example](checkout-example)
@@ -24,6 +34,16 @@ If you want to know more about Pay by link, check out our related [blog post](ht
 
 ![Pay By Link Demo](paybylink-example/src/main/resources/images/paybylink.gif)
 
+
+## [Subscription Example](subscription-example)
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/subscription-example)
+
+The [subscription example](subscription-example) repository includes a tokenization example for subscriptions. Within this demo app, you'll find a simplified version of a website that offers a music subscription service.
+The shopper can purchase a subscription and administrators can manage the saved (tokenized) payment methods on a separate admin panel.
+The panel allows admins to make payments on behalf of the shopper using this token.
+
+![Subscription Demo](subscription-example/src/main/resources/static/images/cardsubscription.gif)
 
 ## Contributing
 
