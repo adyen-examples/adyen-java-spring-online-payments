@@ -7,6 +7,7 @@ import com.adyen.paybylink.service.PaymentLinkService;
 import com.adyen.service.exception.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -18,12 +19,11 @@ public class PaymentLinkController {
 
     private final Logger log = LoggerFactory.getLogger(PaymentLinkController.class);
 
-    private final ApplicationProperty applicationProperty;
+    @Autowired
     private PaymentLinkService paymentLinkService;
 
 
     public PaymentLinkController(ApplicationProperty applicationProperty) {
-        this.applicationProperty = applicationProperty;
 
         if(applicationProperty.getApiKey() == null) {
             log.warn("ADYEN_KEY is UNDEFINED");
