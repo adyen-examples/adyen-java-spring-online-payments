@@ -17,12 +17,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PaymentLinkService {
     private final Logger log = LoggerFactory.getLogger(PaymentLinkService.class);
 
-    private HashMap links = new HashMap<String, PaymentLinkResource>();
+    private final HashMap<String, PaymentLinkResource> links = new HashMap<>();
 
     private final ApplicationProperty applicationProperty;
 
@@ -42,16 +43,16 @@ public class PaymentLinkService {
 
     public List<PaymentLinkResource> getLinks(){
         updateLinks();
-        return new ArrayList<PaymentLinkResource>(links.values());
+        return new ArrayList<>(links.values());
     }
 
     public PaymentLinkResource getLink(String id){
         updateLink(id);
-        return (PaymentLinkResource) links.get(id);
+        return links.get(id);
     }
 
-    public PaymentLinkResource addLink(NewLinkRequest request) throws IOException, ApiException {
-        PaymentLinkResource paymentLinkResource = createPaymentLink(request.getAmount(), request.getReference());
+    public PaymentLinkResource addLink(NewLinkRequest request, String returnUrl) throws IOException, ApiException {
+        PaymentLinkResource paymentLinkResource = createPaymentLink(request.getAmount(), request.getReference(), returnUrl);
         links.put(paymentLinkResource.getId(), paymentLinkResource);
 
         return paymentLinkResource;
@@ -62,7 +63,7 @@ public class PaymentLinkService {
      */
 
     private void updateLinks(){
-        links.forEach((key, value) -> {updateLink((String) key);});
+        links.forEach((key, value) -> updateLink(key));
     }
 
     private void updateLink(String id) {
@@ -81,14 +82,19 @@ public class PaymentLinkService {
         return paymentLinks.retrieve(id);
     }
 
-    private PaymentLinkResource createPaymentLink(Long value, String reference) throws IOException, ApiException {
+    private PaymentLinkResource createPaymentLink(Long value, String reference, String returnUrl) throws IOException, ApiException {
 
         Amount amount = new Amount();
         amount.currency("EUR");
         amount.value(value);
 
+        if(reference == null) {
+            reference = UUID.randomUUID().toString();
+        }
+
         CreatePaymentLinkRequest createPaymentLinkRequest = new CreatePaymentLinkRequest();
         createPaymentLinkRequest.merchantAccount(applicationProperty.getMerchantAccount());
+        createPaymentLinkRequest.setReturnUrl(returnUrl);
         createPaymentLinkRequest.amount(amount);
         createPaymentLinkRequest.reference(reference);
 

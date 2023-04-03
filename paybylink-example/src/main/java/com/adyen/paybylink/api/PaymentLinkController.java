@@ -5,6 +5,7 @@ import com.adyen.paybylink.ApplicationProperty;
 import com.adyen.paybylink.model.NewLinkRequest;
 import com.adyen.paybylink.service.PaymentLinkService;
 import com.adyen.service.exception.ApiException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,10 @@ public class PaymentLinkController {
     }
 
     @PostMapping("/links")
-    public PaymentLinkResource createLink(@RequestBody NewLinkRequest newLinkRequest) throws IOException, ApiException {
-        return paymentLinkService.addLink(newLinkRequest);
+    public PaymentLinkResource createLink(@RequestBody NewLinkRequest newLinkRequest, HttpServletRequest request) throws IOException, ApiException {
+
+        String returnUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        return paymentLinkService.addLink(newLinkRequest, returnUrl);
     }
 
     @GetMapping("/links")
