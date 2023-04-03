@@ -16,7 +16,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'com.adyen:adyen-java-api-library:18.1.2'
+    implementation 'com.adyen:adyen-java-api-library:19.0.0'
 
 }
 
