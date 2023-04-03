@@ -1,5 +1,7 @@
 # Adyen [Pay by link](https://www.adyen.com/pay-by-link) integration demo
 
+If you want to know more about Pay by link, check out our related [blog post](https://www.adyen.com/blog/pay-by-link-for-developers) or the [documentation](https://docs.adyen.com/checkout/pay-by-link).
+
 ## Run this integration in seconds using [Gitpod](https://gitpod.io/)
 
 * Open your [Adyen Test Account](https://ca-test.adyen.com/ca/ca/overview/default.shtml) and create a set of [API keys](https://docs.adyen.com/user-management/how-to-get-the-api-key).
@@ -11,10 +13,14 @@
 
 ## Details
 
+
 This repository demonstrates a very minimal application allowing you to create payment links, and monitor their status.
 Bear in mind that the list of payment links is only stored in memory and will be lost once the application is stopped.
 
 The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries#java)).
+
+![Pay By Link Demo](src/main/resources/images/paybylink.gif)
+
 
 ## Requirements
 
@@ -49,7 +55,7 @@ set ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
 2. Start the server:
 
 ```
-./gradlew run
+./gradlew bootRun
 ```
 
 3. Visit [http://localhost:8080/](http://localhost:8080/) to select an integration type.
