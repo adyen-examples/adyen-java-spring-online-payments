@@ -1,0 +1,41 @@
+package com.adyen.paybylink;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ApplicationProperty {
+
+    @Value("${server.port}")
+    private int serverPort;
+
+    @Value("${ADYEN_API_KEY:#{null}}")
+    private String apiKey;
+
+    @Value("${ADYEN_MERCHANT_ACCOUNT:#{null}}")
+    private String merchantAccount;
+
+    public int getServerPort() {
+        return serverPort;
+    }
+
+    public void setServerPort(int serverPort) {
+        this.serverPort = serverPort;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public String getMerchantAccount() {
+        return merchantAccount;
+    }
+
+    public void setMerchantAccount(String merchantAccount) {
+        this.merchantAccount = merchantAccount;
+    }
+}

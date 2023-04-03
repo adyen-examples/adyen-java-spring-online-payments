@@ -8,11 +8,11 @@ tasks:
       echo "Retrieving the last part of the Workspace Context URL ..."
       path=$(gp info | awk -F'/' '/Workspace Context URL/{print $NF}' | tr -d '[:space:]')
       echo "Path '$path' is set."
-      
+
       # Install JDK
       echo "Installing JDK ..."
       sdk install java 17.0.4.1-tem < /dev/null
-      
+
       echo "Build gradle for '$path' ..."
       case "$path" in
         "checkout-example")
@@ -23,13 +23,17 @@ tasks:
           echo "Build subscription-example application"
           cd subscription-example && ./gradlew bootJar
         ;;
+        "paybylink-example")
+          echo "Build paybylink-example application"
+          cd paybylink-example && ./gradlew bootJar
+        ;;
         *)
           echo "Build default checkout-example application instead because '$path' is not defined ..."
           cd checkout-example && ./gradlew bootJar
         ;;
       esac
-      
-      
+
+
     command: |
       # Check if environment variables are set in https://gitpod.io/variables.
       echo "Checking if environment variables are set ..."

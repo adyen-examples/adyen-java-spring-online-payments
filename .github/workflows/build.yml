@@ -7,7 +7,6 @@ on:
 
 jobs:
   build-checkout:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -20,13 +19,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
-      - name: Grant execute permission for gradlew
+      - name: Grant checkout-example execute permission for gradlew
         run: chmod +x checkout-example/gradlew
-      - name: Build with Gradle
+      - name: Build checkout-example with Gradle
         run: cd checkout-example; ./gradlew build
 
   build-subscription:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -43,3 +41,21 @@ jobs:
         run: chmod +x subscription-example/gradlew
       - name: Build with Gradle
         run: cd subscription-example; ./gradlew build
+
+build-paybylinks:
+  runs-on: ubuntu-latest
+  strategy:
+    matrix:
+      java: [ '17' ]
+  name: Java ${{ matrix.Java }} sample
+  steps:
+    - uses: actions/checkout@v3
+    - name: Setup java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: ${{ matrix.java }}
+    - name: Grant execute permission for gradlew
+      run: chmod +x paybylink-example/gradlew
+    - name: Build with Gradle
+      run: cd paybylink-example; ./gradlew build
