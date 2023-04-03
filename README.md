@@ -8,10 +8,11 @@ The demos below leverages Adyen's API Library for Java using Spring ([GitHub](ht
 
 Get started by navigating to one of the supported demos below.
 
-| Demos | Description | Details |
-| --: | :-- | :-- |
-| [`Checkout Example`](checkout-example) | E-commerce checkout flow with different payment methods. | [See below](#checkout-example) | 
-| [`Subscription Example`](subscription-example) | Subscription flow using Adyen tokenization. | [See below](#subscription-example) | 
+|                                          Demos | Description                                              | Details                            |
+|-----------------------------------------------:|:---------------------------------------------------------|:-----------------------------------|
+|         [`Checkout Example`](checkout-example) | E-commerce checkout flow with different payment methods. | [See below](#checkout-example)     | 
+|     [`Pay By Link Example`](paybylink-example) | Create payment links in seconds.                         | [See below](#paybylink-example)    | 
+| [`Subscription Example`](subscription-example) | Subscription flow using Adyen tokenization.              | [See below](#subscription-example) | 
 
 
 ## [Checkout Example](checkout-example)
