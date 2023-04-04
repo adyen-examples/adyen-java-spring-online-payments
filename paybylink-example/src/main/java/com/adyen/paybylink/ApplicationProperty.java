@@ -15,6 +15,9 @@ public class ApplicationProperty {
     @Value("${ADYEN_MERCHANT_ACCOUNT:#{null}}")
     private String merchantAccount;
 
+    @Value("${ADYEN_HMAC_KEY:#{null}}")
+    private String hmacKey;
+
     public int getServerPort() {
         return serverPort;
     }
@@ -37,5 +40,13 @@ public class ApplicationProperty {
 
     public void setMerchantAccount(String merchantAccount) {
         this.merchantAccount = merchantAccount;
+    }
+
+    public String getHmacKey() {
+        return hmacKey;
+    }
+
+    public void setHmacKey(String hmacKey) {
+        this.hmacKey = hmacKey;
     }
 }

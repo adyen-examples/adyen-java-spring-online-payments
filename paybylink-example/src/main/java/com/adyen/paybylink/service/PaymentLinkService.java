@@ -23,7 +23,7 @@ import java.util.UUID;
 public class PaymentLinkService {
     private final Logger log = LoggerFactory.getLogger(PaymentLinkService.class);
 
-    private final HashMap<String, PaymentLinkResource> links = new HashMap<>();
+    private static final HashMap<String, PaymentLinkResource> links = new HashMap<>();
 
     private final ApplicationProperty applicationProperty;
 
@@ -66,7 +66,7 @@ public class PaymentLinkService {
         links.forEach((key, value) -> updateLink(key));
     }
 
-    private void updateLink(String id) {
+    public void updateLink(String id) {
         try {
             links.put(id, getPaymentLink(id));
         } catch (IOException | ApiException e) {
