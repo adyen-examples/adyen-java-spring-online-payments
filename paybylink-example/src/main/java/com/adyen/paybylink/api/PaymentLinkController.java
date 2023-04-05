@@ -1,6 +1,6 @@
 package com.adyen.paybylink.api;
 
-import com.adyen.model.checkout.PaymentLinkResource;
+import com.adyen.model.checkout.PaymentLinkResponse;
 import com.adyen.paybylink.ApplicationProperty;
 import com.adyen.paybylink.model.NewLinkRequest;
 import com.adyen.paybylink.service.PaymentLinkService;
@@ -35,19 +35,19 @@ public class PaymentLinkController {
     }
 
     @PostMapping("/links")
-    public PaymentLinkResource createLink(@RequestBody NewLinkRequest newLinkRequest, HttpServletRequest request) throws IOException, ApiException {
+    public PaymentLinkResponse createLink(@RequestBody NewLinkRequest newLinkRequest, HttpServletRequest request) throws IOException, ApiException {
 
         String returnUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         return paymentLinkService.addLink(newLinkRequest, returnUrl);
     }
 
     @GetMapping("/links")
-    public List<PaymentLinkResource> getAllLinks(){
+    public List<PaymentLinkResponse> getAllLinks(){
         return paymentLinkService.getLinks();
     }
 
     @GetMapping("/links/{id}")
-    public PaymentLinkResource getLink(@PathVariable String id){
+    public PaymentLinkResponse getLink(@PathVariable String id){
         return paymentLinkService.getLink(id);
     }
 }
