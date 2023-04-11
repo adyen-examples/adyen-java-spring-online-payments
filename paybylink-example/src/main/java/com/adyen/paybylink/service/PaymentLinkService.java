@@ -2,15 +2,15 @@ package com.adyen.paybylink.service;
 
 import com.adyen.Client;
 import com.adyen.enums.Environment;
-import com.adyen.model.Amount;
+import com.adyen.model.checkout.Amount;
 import com.adyen.model.checkout.CreatePaymentLinkRequest;
-import com.adyen.model.checkout.PaymentLinkResource;
+import com.adyen.model.checkout.PaymentLinkResponse;
 import com.adyen.paybylink.ApplicationProperty;
 import com.adyen.paybylink.model.NewLinkRequest;
+import com.adyen.service.Checkout;
 import com.adyen.service.exception.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.adyen.service.PaymentLinks;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -23,11 +23,11 @@ import java.util.UUID;
 public class PaymentLinkService {
     private final Logger log = LoggerFactory.getLogger(PaymentLinkService.class);
 
-    private static final HashMap<String, PaymentLinkResource> links = new HashMap<>();
+    private static final HashMap<String, PaymentLinkResponse> links = new HashMap<>();
 
     private final ApplicationProperty applicationProperty;
 
-    private final PaymentLinks paymentLinks;
+    private final Checkout checkout;
 
     public PaymentLinkService(ApplicationProperty applicationProperty) {
         this.applicationProperty = applicationProperty;
@@ -38,21 +38,21 @@ public class PaymentLinkService {
         }
 
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
-        this.paymentLinks = new PaymentLinks(client);
+        this.checkout = new Checkout(client);
     }
 
-    public List<PaymentLinkResource> getLinks(){
+    public List<PaymentLinkResponse> getLinks(){
         updateLinks();
         return new ArrayList<>(links.values());
     }
 
-    public PaymentLinkResource getLink(String id){
+    public PaymentLinkResponse getLink(String id){
         updateLink(id);
         return links.get(id);
     }
 
-    public PaymentLinkResource addLink(NewLinkRequest request, String returnUrl) throws IOException, ApiException {
-        PaymentLinkResource paymentLinkResource = createPaymentLink(request.getAmount(), request.getReference(), returnUrl);
+    public PaymentLinkResponse addLink(NewLinkRequest request, String returnUrl) throws IOException, ApiException {
+        PaymentLinkResponse paymentLinkResource = createPaymentLink(request.getAmount(), request.getReference(), returnUrl);
         links.put(paymentLinkResource.getId(), paymentLinkResource);
 
         return paymentLinkResource;
@@ -77,12 +77,11 @@ public class PaymentLinkService {
     /**
      * Adyen API Wrapper
      */
-
-    private PaymentLinkResource getPaymentLink(String id) throws IOException, ApiException {
-        return paymentLinks.retrieve(id);
+    private PaymentLinkResponse getPaymentLink(String id) throws IOException, ApiException {
+        return checkout.getPaymentLinks(id);
     }
 
-    private PaymentLinkResource createPaymentLink(Long value, String reference, String returnUrl) throws IOException, ApiException {
+    private PaymentLinkResponse createPaymentLink(Long value, String reference, String returnUrl) throws IOException, ApiException {
 
         Amount amount = new Amount();
         amount.currency("EUR");
@@ -98,6 +97,6 @@ public class PaymentLinkService {
         createPaymentLinkRequest.amount(amount);
         createPaymentLinkRequest.reference(reference);
 
-        return paymentLinks.create(createPaymentLinkRequest);
+        return checkout.paymentLinks(createPaymentLinkRequest);
     }
 }
