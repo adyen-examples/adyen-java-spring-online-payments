@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import java.io.IOException;
 
 
-@SpringBootApplication(exclude = {JacksonAutoConfiguration.class})
+@SpringBootApplication
 public class OnlinePaymentsApplication {
 
     private static final Logger log = LoggerFactory.getLogger(OnlinePaymentsApplication.class);

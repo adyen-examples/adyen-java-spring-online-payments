@@ -7,6 +7,8 @@ import com.adyen.model.management.*;
 import com.adyen.service.exception.ApiException;
 import com.adyen.service.management.ApiCredentialsMerchantLevel;
 import com.adyen.service.management.WebhooksMerchantLevel;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +85,8 @@ public class ZeroConfig {
                 saveZeroConfigData(data);
 
             }
+        } catch (ApiException e) {
+            log.error("An ApiException has occurred: " +  e.getError());
         } catch (Exception e) {
             log.error("An error has occurred", e);
         }
@@ -101,6 +105,8 @@ public class ZeroConfig {
 
         var resp = this.credentialsMerchantLevel.createApiCredential(applicationProperty.getMerchantAccount(), req);
 
+        log.info("createApiCredential {}", resp);
+
         return resp;
     }
 
@@ -109,16 +115,20 @@ public class ZeroConfig {
         String hostname = InetAddress.getLoopbackAddress().getHostName();
         int port = this.applicationProperty.getServerPort();
 
+        log.info("hostname: " + hostname);
+        log.info("port: " + port);
+
         var req = new CreateMerchantWebhookRequest()
                 .description("ZeroConfig")
                 .type("standard")
                 .active(true)
-                .communicationFormat(CreateMerchantWebhookRequest.CommunicationFormatEnum.json)
+                .communicationFormat(CreateMerchantWebhookRequest.CommunicationFormatEnum.JSON)
                 .username(this.applicationProperty.getWebhookUsername())
                 .password(this.applicationProperty.getWebhookPassword())
                 .url(this.applicationProperty.getWebhookUrl());
 
         var resp = this.webhooksMerchantLevel.setUpWebhook(applicationProperty.getMerchantAccount(), req);
+        log.info("createWebhook {}", resp);
 
         return resp;
 
@@ -127,6 +137,7 @@ public class ZeroConfig {
     public GenerateHmacKeyResponse createHmacKey(String webhookId) throws IOException, ApiException {
 
         var resp = this.webhooksMerchantLevel.generateHmacKey(applicationProperty.getMerchantAccount(), webhookId);
+        log.info("createHmacKey {}", resp);
 
         return resp;
     }
@@ -149,14 +160,18 @@ public class ZeroConfig {
     private  void saveZeroConfigData(ZeroConfigData data) throws IOException {
         log.info("Saving " + ZERO_CONFIG_DATA_FILE);
 
-        String json =  JSON.getGson().toJson(data);
+        String json =  getGson().toJson(data);
         Files.write(Paths.get(ZERO_CONFIG_DATA_FILE), json.getBytes(StandardCharsets.UTF_8));
     }
 
     private ZeroConfigData readZeroConfigData() throws IOException {
         String json = Files.readString(Paths.get(ZERO_CONFIG_DATA_FILE));
 
-        return JSON.getGson().fromJson(json, ZeroConfigData.class);
+        return getGson().fromJson(json, ZeroConfigData.class);
+    }
+
+    private Gson getGson() {
+        return new GsonBuilder().setPrettyPrinting().create();
     }
 
 
