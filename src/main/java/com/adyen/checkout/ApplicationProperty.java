@@ -21,13 +21,13 @@ public class ApplicationProperty {
     @Value("${ADYEN_HMAC_KEY:#{null}}")
     private String hmacKey;
 
-    @Value("${webhook.url}")
+    @Value("${webhook.url:#{null}}")
     private String webhookUrl;
 
-    @Value("${webhook.username}")
+    @Value("${webhook.username:#{null}}")
     private String webhookUsername;
 
-    @Value("${webhook.password}")
+    @Value("${webhook.password:#{null}}")
     private String webhookPassword;
 
     public int getServerPort() {

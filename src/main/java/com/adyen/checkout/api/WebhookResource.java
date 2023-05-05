@@ -28,10 +28,10 @@ public class WebhookResource {
     public WebhookResource(ApplicationProperty applicationProperty) {
         this.applicationProperty = applicationProperty;
 
-        if (this.applicationProperty.getHmacKey() == null) {
-            log.warn("ADYEN_HMAC_KEY is UNDEFINED (Webhook cannot be authenticated)");
-            //throw new RuntimeException("ADYEN_HMAC_KEY is UNDEFINED");
-        }
+//        if (this.applicationProperty.getHmacKey() == null) {
+//            log.warn("ADYEN_HMAC_KEY is UNDEFINED (Webhook cannot be authenticated)");
+//            //throw new RuntimeException("ADYEN_HMAC_KEY is UNDEFINED");
+//        }
     }
 
     /**

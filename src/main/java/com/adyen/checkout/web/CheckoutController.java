@@ -19,9 +19,9 @@ public class CheckoutController {
     public CheckoutController(ApplicationProperty applicationProperty) {
         this.applicationProperty = applicationProperty;
 
-        if(this.applicationProperty.getClientKey() == null) {
-            log.warn("ADYEN_CLIENT_KEY is undefined ");
-        }
+//        if(this.applicationProperty.getClientKey() == null) {
+//            log.warn("ADYEN_CLIENT_KEY is undefined ");
+//        }
     }
 
     @Autowired
