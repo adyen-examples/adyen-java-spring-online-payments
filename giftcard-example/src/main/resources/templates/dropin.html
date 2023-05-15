@@ -1,0 +1,33 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title>Checkout</title>
+</head>
+<body>
+<div layout:fragment="content" id="payment-page">
+  <!-- Hidden divs with data passed from the Express server -->
+  <div id="clientKey" class="hidden" th:text="${clientKey}"></div>
+  <div id="type" class="hidden" th:text="${type}"></div>
+  <main class="preview-page">
+    <section class="cart">
+      <div class="container">
+        <p>Select the giftcard payment method in the list to make your payment. Giftcard Test card numbers (e.g. 6036280000000000000) can be found on <a href="https://docs.adyen.com/development-resources/testing/test-card-numbers#gift-cards" target="_blank">this page</a>.</p>
+      </div>
+    </section>
+
+  <br/>
+
+  </main>
+  <div class="container">
+    <!-- The Checkout integration type will be rendered below.-->
+    <!-- Drop-in includes styling out-of-the-box, so no additional styling is needed. -->
+    <div class="payment-container">
+      <div id="payment" class="payment"></div>
+    </div>
+  </div>
+  <!-- Adyen Component client code -->
+  <script type="text/javascript" src="/adyenDropinImplementation.js"></script>
+</div>
+</body>

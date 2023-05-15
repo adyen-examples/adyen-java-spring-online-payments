@@ -1,0 +1,43 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title>Select type</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <div class='main-container'>
+    <div class="info">
+      <h1>Select a demo</h1>
+      <p>Click to view an interactive example of a PCI-compliant UI integration for gift card payments.</p>
+      <p>
+        Make sure that the payment method/gift card you want to use are enabled for your account.
+        Refer <a href="https://docs.adyen.com/payment-methods#add-payment-methods-to-your-account">the documentation</a> to add missing
+        payment methods and <a href="https://docs.adyen.com/payment-methods/gift-cards">gift cards</a>.
+      </p>
+      <p>To learn more about client-side integration solutions, check out gift card payments for
+        <a href="https://docs.adyen.com/payment-methods/gift-cards/web-drop-in">Drop in</a>
+        and/or
+        <a href="https://docs.adyen.com/payment-methods/gift-cards/web-component">Components</a>.
+      </p>
+    </div>
+    <ul class="integration-list">
+      <li class="integration-list-item">
+        <a href="/preview?type=dropin" class="integration-list-item-link">
+          <div class="title-container">
+            <p class="integration-list-item-title">Drop-in</p>
+          </div>
+        </a>
+      </li>
+      <li class="integration-list-item">
+        <a href="/preview?type=giftcard" class="integration-list-item-link">
+          <div class="title-container">
+            <p class="integration-list-item-title">Gift Card Component</p>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
