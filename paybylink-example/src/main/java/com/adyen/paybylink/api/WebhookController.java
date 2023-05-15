@@ -63,9 +63,9 @@ public class WebhookController {
                     log.info("""
                             Received webhook with event {} :\s
                             Merchant Reference: {}
-                            Alias : {}
+                            PaymentLinkId : {}
                             PSP reference : {}"""
-                            , item.getEventCode(), item.getMerchantReference(), item.getAdditionalData().get("alias"), item.getPspReference());
+                            , item.getEventCode(), item.getMerchantReference(), item.getAdditionalData().get("paymentLinkId"), item.getPspReference());
 
                     // consume event asynchronously
                     consumeEvent(item);
