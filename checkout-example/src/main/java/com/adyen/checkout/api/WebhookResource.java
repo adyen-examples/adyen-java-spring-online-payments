@@ -38,10 +38,10 @@ public class WebhookResource {
     }
 
     /**
-     * Process the incoming Webhook: get NotificationRequestItem, validate HMAC signature,
+     * Process the incoming Webhook event: get NotificationRequestItem, validate HMAC signature,
      * consume the event asynchronously, send response ["accepted"]
      *
-     * @param json Payload of the webhook
+     * @param json Payload of the webhook event
      * @return
      */
     @PostMapping("/webhooks/notifications")
