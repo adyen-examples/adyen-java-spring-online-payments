@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.security.SignatureException;
 
 /**
- * REST controller for receiving Adyen webhook notifications
+ * REST controller for receiving Adyen webhooks
  */
 @RestController
 @RequestMapping("/api")
@@ -33,7 +33,7 @@ public class WebhookResource {
 
         if (this.applicationProperty.getHmacKey() == null) {
             log.warn("ADYEN_HMAC_KEY is UNDEFINED (Webhook cannot be authenticated)");
-            //throw new RuntimeException("ADYEN_HMAC_KEY is UNDEFINED");
+            throw new RuntimeException("ADYEN_HMAC_KEY is UNDEFINED");
         }
     }
 
@@ -72,20 +72,36 @@ public class WebhookResource {
                 if (item.isSuccess()) {
                     if (item.getEventCode().equals("AUTHORISATION")) {
 
-                        log.info("Payment authorized - pspReference: " + item.getPspReference() + " eventCode: " + item.getEventCode());
+                        log.info("Payment authorized - pspReference:" + item.getPspReference() + " eventCode:" + item.getEventCode());
 
                     } else if (item.getEventCode().equals("ORDER_OPENED")) {
 
-                        log.info("Order is opened - pspReference: " + item.getPspReference() + " eventCode: " + item.getEventCode());
+                        log.info("Order is opened - pspReference:" + item.getPspReference() + " eventCode:" + item.getEventCode());
                     } else if (item.getEventCode().equals("ORDER_CLOSED")) {
 
-                        log.info("Order is closed - pspReference: " + item.getPspReference() + " eventCode: " + item.getEventCode());
+                        log.info("Order is closed - pspReference:" + item.getPspReference() + " eventCode:" + item.getEventCode());
+
+                        // looking for order-n-pspReference
+                        boolean loop = true;
+                        int i = 1;
+                        while (loop) {
+                            if (item.getAdditionalData().containsKey("order-" + i + "-pspReference")) {
+                                String paymentPspReference = item.getAdditionalData().get("order-" + i + "-pspReference");
+                                String paymentAmount = item.getAdditionalData().get("order-" + i + "-paymentAmount");
+                                String paymentMethod = item.getAdditionalData().get("order-" + i + "-paymentMethod");
+                                log.info("Payment #" + i + " pspReference:" + paymentPspReference + " amount:" + paymentAmount +
+                                    " paymentMethod:" + paymentMethod);
+
+                                i++;
+                            } else {
+                                loop = false;
+                            }
+                        }
+
                     }
                 } else {
                     // Operation has failed: check the reason field for failure information.
                     log.info("Event " + item.getEventCode() + " has failed: " + item.getReason());
-
-                    // looking for order-n-pspReference
                 }
 
             } catch (SignatureException e) {
