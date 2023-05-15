@@ -52,6 +52,7 @@ public class PaymentLinkService {
     }
 
     public PaymentLinkResponse addLink(NewLinkRequest request, String returnUrl) throws IOException, ApiException {
+
         PaymentLinkResponse paymentLinkResource = createPaymentLink(request.getAmount(), request.getReference(), returnUrl);
         links.put(paymentLinkResource.getId(), paymentLinkResource);
 
@@ -85,7 +86,7 @@ public class PaymentLinkService {
 
         Amount amount = new Amount();
         amount.currency("EUR");
-        amount.value(value);
+        amount.value(value * 100);  // convert to minor units
 
         if(reference == null) {
             reference = UUID.randomUUID().toString();
