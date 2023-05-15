@@ -7,7 +7,7 @@ import com.adyen.model.checkout.CreatePaymentLinkRequest;
 import com.adyen.model.checkout.PaymentLinkResponse;
 import com.adyen.paybylink.ApplicationProperty;
 import com.adyen.paybylink.model.NewLinkRequest;
-import com.adyen.service.Checkout;
+import com.adyen.service.checkout.PaymentLinksApi;
 import com.adyen.service.exception.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ public class PaymentLinkService {
 
     private final ApplicationProperty applicationProperty;
 
-    private final Checkout checkout;
+    private final PaymentLinksApi paymentLinksApi;
 
     public PaymentLinkService(ApplicationProperty applicationProperty) {
         this.applicationProperty = applicationProperty;
@@ -38,7 +38,7 @@ public class PaymentLinkService {
         }
 
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
-        this.checkout = new Checkout(client);
+        this.paymentLinksApi = new PaymentLinksApi(client);
     }
 
     public List<PaymentLinkResponse> getLinks(){
@@ -52,6 +52,7 @@ public class PaymentLinkService {
     }
 
     public PaymentLinkResponse addLink(NewLinkRequest request, String returnUrl) throws IOException, ApiException {
+
         PaymentLinkResponse paymentLinkResource = createPaymentLink(request.getAmount(), request.getReference(), returnUrl);
         links.put(paymentLinkResource.getId(), paymentLinkResource);
 
@@ -78,14 +79,14 @@ public class PaymentLinkService {
      * Adyen API Wrapper
      */
     private PaymentLinkResponse getPaymentLink(String id) throws IOException, ApiException {
-        return checkout.getPaymentLinks(id);
+        return paymentLinksApi.getPaymentLink(id);
     }
 
     private PaymentLinkResponse createPaymentLink(Long value, String reference, String returnUrl) throws IOException, ApiException {
 
         Amount amount = new Amount();
         amount.currency("EUR");
-        amount.value(value);
+        amount.value(value * 100);  // convert to minor units
 
         if(reference == null) {
             reference = UUID.randomUUID().toString();
@@ -97,6 +98,6 @@ public class PaymentLinkService {
         createPaymentLinkRequest.amount(amount);
         createPaymentLinkRequest.reference(reference);
 
-        return checkout.paymentLinks(createPaymentLinkRequest);
+        return paymentLinksApi.paymentLinks(createPaymentLinkRequest);
     }
 }
