@@ -4,13 +4,10 @@ import com.adyen.Client;
 import com.adyen.checkout.ApplicationProperty;
 import com.adyen.checkout.util.Storage;
 import com.adyen.enums.Environment;
-import com.adyen.model.Amount;
-import com.adyen.model.checkout.PaymentsRequest;
-import com.adyen.model.checkout.PaymentsResponse;
-import com.adyen.model.checkout.details.StoredPaymentMethodDetails;
+import com.adyen.model.checkout.*;
 import com.adyen.model.recurring.DisableRequest;
-import com.adyen.service.Checkout;
-import com.adyen.service.Recurring;
+import com.adyen.service.RecurringApi;
+import com.adyen.service.checkout.PaymentsApi;
 import com.adyen.service.exception.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +26,8 @@ public class AdminController {
 
     private final Logger log = LoggerFactory.getLogger(AdminController.class);
 
-    private final Checkout checkout;
-    private final Recurring recurring;
+    private final PaymentsApi paymentsApi;
+    private final RecurringApi recurring;
 
     @Autowired
     public AdminController(ApplicationProperty applicationProperty) {
@@ -42,8 +39,8 @@ public class AdminController {
         }
 
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
-        this.checkout = new Checkout(client);
-        this.recurring = new Recurring(client);
+        this.paymentsApi = new PaymentsApi(client);
+        this.recurring = new RecurringApi(client);
 
     }
 
@@ -61,24 +58,25 @@ public class AdminController {
         log.info("/admin/makepayment/{}", recurringDetailReference);
 
         String result;
-        PaymentsResponse response = null;
+        PaymentResponse response = null;
 
         try {
             var orderRef = UUID.randomUUID().toString();
 
-            var paymentRequest = new PaymentsRequest();
+            var paymentRequest = new PaymentRequest();
             paymentRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount());
             paymentRequest.setAmount(new Amount().currency("EUR").value(1199L));
             paymentRequest.setReference(orderRef);
-            paymentRequest.setShopperInteraction(PaymentsRequest.ShopperInteractionEnum.CONTAUTH);
+            paymentRequest.setShopperInteraction(PaymentRequest.ShopperInteractionEnum.CONTAUTH);
             paymentRequest.setShopperReference(Storage.SHOPPER_REFERENCE);
-            paymentRequest.setRecurringProcessingModel(PaymentsRequest.RecurringProcessingModelEnum.SUBSCRIPTION);
-            paymentRequest.setPaymentMethod(new StoredPaymentMethodDetails().storedPaymentMethodId(recurringDetailReference));
+            paymentRequest.setRecurringProcessingModel(PaymentRequest.RecurringProcessingModelEnum.SUBSCRIPTION);
+            paymentRequest.setPaymentMethod(new CheckoutPaymentMethod(new StoredPaymentMethodDetails().storedPaymentMethodId(recurringDetailReference)));
 
-            response = this.checkout.payments(paymentRequest);
+
+            response = this.paymentsApi.payments(paymentRequest);
             log.info("payment response {}", response);
 
-            if(response.getResultCode().equals(PaymentsResponse.ResultCodeEnum.AUTHORISED)) {
+            if(response.getResultCode().equals(PaymentResponse.ResultCodeEnum.AUTHORISED)) {
                 result = "success";
             } else {
                 result = "error";
