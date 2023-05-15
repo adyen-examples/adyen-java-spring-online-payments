@@ -4,10 +4,10 @@ import com.adyen.Client;
 import com.adyen.checkout.ApplicationProperty;
 import com.adyen.checkout.util.Storage;
 import com.adyen.enums.Environment;
-import com.adyen.model.Amount;
+import com.adyen.model.checkout.Amount;
 import com.adyen.model.checkout.CreateCheckoutSessionRequest;
 import com.adyen.model.checkout.CreateCheckoutSessionResponse;
-import com.adyen.service.Checkout;
+import com.adyen.service.checkout.PaymentsApi;
 import com.adyen.service.exception.ApiException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class SubscriptionResource {
 
     private final ApplicationProperty applicationProperty;
 
-    private final Checkout checkout;
+    private final PaymentsApi paymentsApi;
 
     @Autowired
     public SubscriptionResource(ApplicationProperty applicationProperty) {
@@ -42,7 +42,7 @@ public class SubscriptionResource {
         }
 
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
-        this.checkout = new Checkout(client);
+        this.paymentsApi = new PaymentsApi(client);
     }
 
     @PostMapping("/tokenization/sessions")
@@ -66,7 +66,7 @@ public class SubscriptionResource {
         checkoutSession.setEnableRecurring(true);
 
         log.info("/tokenization/sessions {}", checkoutSession);
-        var response = checkout.sessions(checkoutSession);
+        var response = paymentsApi.sessions(checkoutSession);
         return ResponseEntity.ok().body(response);
     }
 }
