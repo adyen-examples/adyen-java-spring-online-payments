@@ -11,6 +11,7 @@ Get started by navigating to one of the supported demos below.
 |                                          Demos | Description                                              | Details                            |
 |-----------------------------------------------:|:---------------------------------------------------------|:-----------------------------------|
 |         [`Checkout Example`](checkout-example) | E-commerce checkout flow with different payment methods. | [See below](#checkout-example)     | 
+|        [`Gift Card Example`](giftcard-example) | Gift Cards checkout flow using partial orders.           | [See below](#giftcard-example)     | 
 |     [`Pay By Link Example`](paybylink-example) | Create payment links in seconds.                         | [See below](#paybylink-example)    | 
 | [`Subscription Example`](subscription-example) | Subscription flow using Adyen tokenization.              | [See below](#subscription-example) | 
 
@@ -24,6 +25,15 @@ Within this demo app, you'll find a simplified version of an e-commerce website,
 Check out the underlying code to see how you can integrate Adyen to give your shoppers the option to pay with their preferred payment methods, all in a seamless checkout experience.
 
 ![Card Checkout Demo](checkout-example/src/main/resources/static/images/cardcheckout.gif)
+
+## [Gift Card Example](giftcard-example)
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/giftcard-example)
+
+The [gift card example](giftcard-example) repository includes a gift card flow during checkout. Within this demo app, you'll find a simplified version of an e-commerce website. 
+The shopper can choose to use gift cards to complete their purchase or use their preferred payment method to pay the remaining amount.
+
+![Gift Card Demo](giftcard-example/src/main/resources/static/images/cardgiftcard.gif)
 
 ## [PayByLink Example](paybylink-example)
 
