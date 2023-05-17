@@ -15,12 +15,12 @@ _NOTE: To allow the Adyen Drop-In and Components to load, you have to add `https
 
 This repository includes examples of PCI-compliant UI integrations for online payments with Adyen. Within this demo app, you'll find a simplified version of an e-commerce website, complete with commented code to highlight key features and concepts of Adyen's API. Check out the underlying code to see how you can integrate Adyen to give your shoppers the option to pay with their preferred payment methods, all in a seamless checkout experience.
 
-![Card checkout demo](src/main/resources/static/images/cardgiftcard.gif)
+![Gift Card demo](src/main/resources/static/images/cardgiftcard.gif)
 
 ## Supported Integrations
 
 Before testing, please make sure to [add the gift card payment method(s) to your Adyen Account](https://docs.adyen.com/payment-methods#add-payment-methods-to-your-account).
-The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries#java)).
+The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries?tab=java_2#java)).
 
 ## Requirements
 
