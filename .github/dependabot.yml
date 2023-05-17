@@ -5,6 +5,10 @@ updates:
     directory: "/checkout-example" 
     schedule:
       interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/giftcard-example"
+    schedule:
+      interval: "daily"
   - package-ecosystem: "gradle" 
     directory: "/paybylink-example" 
     schedule:
