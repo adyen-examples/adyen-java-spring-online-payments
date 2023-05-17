@@ -1,4 +1,4 @@
-# Adyen [online payment](https://docs.adyen.com/checkout) integration demo - Sessions Flow
+# Adyen [online payment](https://docs.adyen.com/checkout) integration demo - Advanced Flow
 
 ## Run this integration in seconds using [Gitpod](https://gitpod.io/)
 
@@ -7,15 +7,13 @@
 * Set the `ADYEN_API_KEY`, `ADYEN_CLIENT_KEY`, `ADYEN_HMAC_KEY` and `ADYEN_MERCHANT_ACCOUNT` variables.
 * Click the button below!
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/checkout-example)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/checkout-example-advanced)
 
 _NOTE: To allow the Adyen Drop-In and Components to load, you have to add `https://*.gitpod.io` as allowed origin for your chosen set of [API Credentials](https://ca-test.adyen.com/ca/ca/config/api_credentials_new.shtml)_
 
 ## Details
 
-
-**If you want to integrate a more complex flow, see [here](https://docs.adyen.com/online-payments/web-drop-in/additional-use-cases?tab=sessions_flow_advanced_flow_1) for more information and have a look at the `../checkout-example-advanced` folder**
-
+**The difference between this sample and the `../checkout-example` folderz is that this sample uses the advanced flow, which allows you to customize the payment flow. See [here](https://docs.adyen.com/online-payments/web-drop-in/additional-use-cases?tab=sessions_flow_advanced_flow_1) for more information**
 
 This repository includes examples of PCI-compliant UI integrations for online payments with Adyen. Within this demo app, you'll find a simplified version of an e-commerce website, complete with commented code to highlight key features and concepts of Adyen's API. Check out the underlying code to see how you can integrate Adyen to give your shoppers the option to pay with their preferred payment methods, all in a seamless checkout experience.
 
@@ -114,7 +112,7 @@ There are typically 3 options:
 * expose your localhost with tunneling software (i.e. ngrok)
 
 #### Option 1: cloud deployment
-If you deploy on your cloud provider (or your own public server) the webhook URL will be the URL of the server 
+If you deploy on your cloud provider (or your own public server) the webhook URL will be the URL of the server
 ```
   https://{cloud-provider}/api/webhooks/notifications
 ```
@@ -153,45 +151,6 @@ If you use a tunneling service like [ngrok](ngrok) the webhook URL will be the g
 
 That's it! Every time you perform a new payment, your application will receive a notification from the Adyen platform.
 
-## Deploying this example to the cloud
-
-As part of this example, we are providing a [Terraform](https://www.terraform.io/) configuration file that can be used to deploy this demo to the Amazon cloud on a [Beanstalk](https://aws.amazon.com/elasticbeanstalk/) environment.
-
- ⚠️ This part will deploy (AWS) cloud resources and can incur charges ⚠️.
-
-
-### Extra prerequisites
-
-* The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html), with a configured profile (and an AWS account).
-* The [Terraform](https://www.terraform.io/) CLI, with the `terraform` executable in your PATH.
-* Ready to use Adyen API and client keys.
-
-### Usage
-
-* Compile the project: `./gradlew build`
-* Create a `terraform.tfvars` file in the root directory of this repository. Here is a example :
-
-```
-adyen_api_key = "testApiKey"
-adyen_merchant_account = "testMerchantAccount"
-adyen_client_key = "testClientKey"
-adyen_hmac_key = "testHMACKey"
-```
-
-* Run the `terraform init` command to initialize the Terraform configuration, and `terraform apply` to deploy the environment.
-* At the end of the deployment, Terraform will output several URLs :
-
-```
-adyen_url = "https://ca-test.adyen.com/ca/ca/config/showthirdparty.shtml"
-demo_url = "http://adyen-spring-development-cc66dd5f.eu-west-1.elasticbeanstalk.com"
-environment_url = "https://eu-west-1.console.aws.amazon.com/elasticbeanstalk/home?region=eu-west-1#/applications"
-```
-
-* You can access the demo using the `demo_url`.
-* The `adyen_url` can be used to create a [notification webhook](https://docs.adyen.com/development-resources/webhooks) in the Adyen customer area.
-* Use `terraform destroy` to remove the environment and avoid being charged for the resources more than necessary.
-* The `environment_url` can be used to access the AWS Beanstalk environment and possibly update the configuration.
-
 ## Contributing
 
 We commit all our new features directly into our GitHub repository. Feel free to request or suggest new features or code changes yourself as well!
@@ -201,4 +160,3 @@ Find out more in our [Contributing](https://github.com/adyen-examples/.github/bl
 ## License
 
 MIT license. For more information, see the **LICENSE** file in the root directory.
-
