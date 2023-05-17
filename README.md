@@ -11,7 +11,7 @@ Get started by navigating to one of the supported demos below.
 |                                          Demos | Description                                              | Details                            |
 |-----------------------------------------------:|:---------------------------------------------------------|:-----------------------------------|
 |         [`Checkout Example`](checkout-example) | E-commerce checkout flow with different payment methods. | [See below](#checkout-example)     | 
-|        [`Gift Card Example`](giftcard-example) | Gift Cards checkout flow using partial orders.           | [See below](#giftcard-example)     | 
+|        [`Gift Card Example`](giftcard-example) | Gift Cards checkout flow using partial orders.           | [See below](#gift-card-example)    | 
 |     [`Pay By Link Example`](paybylink-example) | Create payment links in seconds.                         | [See below](#paybylink-example)    | 
 | [`Subscription Example`](subscription-example) | Subscription flow using Adyen tokenization.              | [See below](#subscription-example) | 
 
