@@ -1,4 +1,4 @@
-# Adyen [Gift Cards](https://docs.adyen.com/checkout) Integration Demo
+# Adyen [Gift Cards](https://docs.adyen.com/payment-methods/gift-cards) Integration Demo
 
 ## Run this integration in seconds using [Gitpod](https://gitpod.io/)
 
