@@ -1,4 +1,4 @@
-# Adyen [Pay by link](https://www.adyen.com/pay-by-link) integration demo
+# Adyen [Pay By Link](https://docs.adyen.com/unified-commerce/pay-by-link) Integration Demo
 
 If you want to know more about Pay by link, check out our related [blog post](https://www.adyen.com/blog/pay-by-link-for-developers) or the [documentation](https://docs.adyen.com/checkout/pay-by-link).
 
