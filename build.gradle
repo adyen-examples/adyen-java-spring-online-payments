@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '3.0.1'
+	id 'org.springframework.boot' version '3.0.6'
 	id 'io.spring.dependency-management' version '1.1.0'
 	id 'java'
 }
@@ -19,13 +19,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-	implementation 'com.adyen:adyen-java-api-library:19.0.2-SNAPSHOT'
-    implementation 'com.google.code.gson:gson:2.10.1'
+	implementation 'com.adyen:adyen-java-api-library:20.0.0'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 }
+
+ext['gson.version'] = '2.10.1'
 
 test {
 	useJUnitPlatform()
