@@ -6,7 +6,9 @@ import java.util.Collections;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
-import com.adyen.service.Checkout;
+import com.adyen.service.checkout.PaymentsApi;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,12 +31,12 @@ public class CheckoutResource {
     @Value("${ADYEN_MERCHANT_ACCOUNT}")
     private String merchantAccount;
 
-    private final Checkout checkout;
+    private final PaymentsApi payments;
 
 
     public CheckoutResource(@Value("${ADYEN_API_KEY}") String apiKey) {
         var client = new Client(apiKey, Environment.TEST);
-        this.checkout = new Checkout(client);
+        this.payments = new PaymentsApi(client);
     }
 
     /**
@@ -51,7 +53,7 @@ public class CheckoutResource {
         paymentMethodsRequest.setChannel(PaymentMethodsRequest.ChannelEnum.WEB);
 
         log.info("REST request to get Adyen payment methods {}", paymentMethodsRequest);
-        var response = checkout.paymentMethods(paymentMethodsRequest);
+        var response = payments.paymentMethods(paymentMethodsRequest);
         return ResponseEntity.ok()
             .body(response);
     }
@@ -64,7 +66,22 @@ public class CheckoutResource {
      * @throws ApiException from Adyen API.
      */
     @PostMapping("/initiatePayment")
-    public ResponseEntity<PaymentResponse> payments(@RequestBody PaymentRequest body, HttpServletRequest request) throws IOException, ApiException {
+    public ResponseEntity<PaymentResponse> payments(@RequestBody String bodyRequest, HttpServletRequest request) throws IOException, ApiException {
+        Gson gson = new Gson();
+        JsonObject obj = gson.fromJson(bodyRequest, JsonObject.class);
+        com.google.gson.JsonObject method = obj.getAsJsonObject("paymentMethod");
+        CheckoutPaymentMethod paymentMethod = CheckoutPaymentMethod.fromJson(method.toString());
+        String type = method.getAsJsonPrimitive("type").toString();
+
+        BrowserInfo browserInfo;
+        try {
+            JsonObject obj2 = gson.fromJson(bodyRequest, JsonObject.class);
+            com.google.gson.JsonObject browser = obj2.getAsJsonObject("browserInfo");
+            browserInfo = BrowserInfo.fromJson(browser.toString());
+        } catch (Exception exception){
+            browserInfo = new BrowserInfo();
+        }
+
         var paymentRequest = new PaymentRequest();
         paymentRequest.setMerchantAccount(merchantAccount);
         paymentRequest.setChannel(PaymentRequest.ChannelEnum.WEB);
@@ -84,11 +101,11 @@ public class CheckoutResource {
         // required for 3ds2 native flow
         paymentRequest.setOrigin("http://localhost:8080");
         // required for 3ds2
-        paymentRequest.setBrowserInfo(body.getBrowserInfo());
+        paymentRequest.setBrowserInfo(browserInfo);
         // required by some issuers for 3ds2
         paymentRequest.setShopperIP(request.getRemoteAddr());
 
-        paymentRequest.setPaymentMethod(body.getPaymentMethod());
+        paymentRequest.setPaymentMethod(paymentMethod);
 
         var lineItems = new ArrayList<LineItem>();
         lineItems.add(
@@ -100,7 +117,7 @@ public class CheckoutResource {
         paymentRequest.setLineItems(lineItems);
 
         log.info("REST request to make Adyen payment {}", paymentRequest);
-        var response = checkout.payments(paymentRequest);
+        var response = payments.payments(paymentRequest);
         return ResponseEntity.ok()
             .body(response);
     }
@@ -115,7 +132,7 @@ public class CheckoutResource {
     @PostMapping("/submitAdditionalDetails")
     public ResponseEntity<PaymentDetailsResponse> payments(@RequestBody DetailsRequest detailsRequest) throws IOException, ApiException {
         log.info("REST request to make Adyen payment details {}", detailsRequest);
-        var response = checkout.paymentsDetails(detailsRequest);
+        var response = payments.paymentsDetails(detailsRequest);
         return ResponseEntity.ok()
             .body(response);
     }
@@ -144,7 +161,7 @@ public class CheckoutResource {
 
     private RedirectView getRedirectView(final DetailsRequest detailsRequest) throws ApiException, IOException {
         log.info("REST request to handle payment redirect {}", detailsRequest);
-        var response = checkout.paymentsDetails(detailsRequest);
+        var response = payments.paymentsDetails(detailsRequest);
         var redirectURL = "/result/";
         switch (response.getResultCode()) {
             case AUTHORISED:
