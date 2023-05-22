@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
+
+import com.adyen.service.Checkout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import com.adyen.Client;
 import com.adyen.enums.Environment;
-import com.adyen.model.Amount;
 import com.adyen.model.checkout.*;
-import com.adyen.service.Checkout;
 import com.adyen.service.exception.ApiException;
 
 /**
@@ -30,6 +30,7 @@ public class CheckoutResource {
     private String merchantAccount;
 
     private final Checkout checkout;
+
 
     public CheckoutResource(@Value("${ADYEN_API_KEY}") String apiKey) {
         var client = new Client(apiKey, Environment.TEST);
@@ -63,13 +64,13 @@ public class CheckoutResource {
      * @throws ApiException from Adyen API.
      */
     @PostMapping("/initiatePayment")
-    public ResponseEntity<PaymentsResponse> payments(@RequestBody PaymentsRequest body, HttpServletRequest request) throws IOException, ApiException {
-        var paymentRequest = new PaymentsRequest();
-        paymentRequest.setMerchantAccount(merchantAccount); // required
-        paymentRequest.setChannel(PaymentsRequest.ChannelEnum.WEB); // required
+    public ResponseEntity<PaymentResponse> payments(@RequestBody PaymentRequest body, HttpServletRequest request) throws IOException, ApiException {
+        var paymentRequest = new PaymentRequest();
+        paymentRequest.setMerchantAccount(merchantAccount);
+        paymentRequest.setChannel(PaymentRequest.ChannelEnum.WEB);
 
         var amount = new Amount()
-            .currency(findCurrency(body.getPaymentMethod().getType()))
+            .currency("EUR")
             .value(1000L); // value is 10€ in minor units
         paymentRequest.setAmount(amount);
 
@@ -89,24 +90,14 @@ public class CheckoutResource {
 
         paymentRequest.setPaymentMethod(body.getPaymentMethod());
 
-        var type = body.getPaymentMethod().getType();
-        // required for Klarna
-        if (type.contains("klarna")) {
-            paymentRequest.setCountryCode("DE");
-            paymentRequest.setShopperReference("1234");
-            paymentRequest.setShopperEmail("youremail@email.com");
-            paymentRequest.setShopperLocale("en_US");
-            var lineItems = new ArrayList<LineItem>();
-            lineItems.add(
-                new LineItem().quantity(1L).amountExcludingTax(331L).taxPercentage(2100L).description("Sunglasses").id("Item 1").taxAmount(69L).amountIncludingTax(400L)
-            );
-            lineItems.add(
-                new LineItem().quantity(2L).amountExcludingTax(248L).taxPercentage(2100L).description("Headphones").id("Item 2").taxAmount(52L).amountIncludingTax(300L)
-            );
-            paymentRequest.setLineItems(lineItems);
-        } else if (type.contains("paypal")) {
-            paymentRequest.setCountryCode("US");
-        }
+        var lineItems = new ArrayList<LineItem>();
+        lineItems.add(
+            new LineItem().quantity(1L).amountExcludingTax(331L).taxPercentage(2100L).description("Sunglasses").id("Item 1").taxAmount(69L).amountIncludingTax(400L)
+        );
+        lineItems.add(
+            new LineItem().quantity(2L).amountExcludingTax(248L).taxPercentage(2100L).description("Headphones").id("Item 2").taxAmount(52L).amountIncludingTax(300L)
+        );
+        paymentRequest.setLineItems(lineItems);
 
         log.info("REST request to make Adyen payment {}", paymentRequest);
         var response = checkout.payments(paymentRequest);
@@ -122,7 +113,7 @@ public class CheckoutResource {
      * @throws ApiException from Adyen API.
      */
     @PostMapping("/submitAdditionalDetails")
-    public ResponseEntity<PaymentsDetailsResponse> payments(@RequestBody PaymentsDetailsRequest detailsRequest) throws IOException, ApiException {
+    public ResponseEntity<PaymentDetailsResponse> payments(@RequestBody DetailsRequest detailsRequest) throws IOException, ApiException {
         log.info("REST request to make Adyen payment details {}", detailsRequest);
         var response = checkout.paymentsDetails(detailsRequest);
         return ResponseEntity.ok()
@@ -138,17 +129,20 @@ public class CheckoutResource {
      */
     @GetMapping("/handleShopperRedirect")
     public RedirectView redirect(@RequestParam(required = false) String payload, @RequestParam(required = false) String redirectResult, @RequestParam String orderRef) throws IOException, ApiException {
-        var detailsRequest = new PaymentsDetailsRequest();
+        var detailsRequest = new DetailsRequest();
+        PaymentCompletionDetails paymentCompletionDetails = new PaymentCompletionDetails();
         if (redirectResult != null && !redirectResult.isEmpty()) {
-            detailsRequest.setDetails(Collections.singletonMap("redirectResult", redirectResult));
+            paymentCompletionDetails.setRedirectResult(redirectResult);
+            detailsRequest.setDetails(paymentCompletionDetails);
         } else if (payload != null && !payload.isEmpty()) {
-            detailsRequest.setDetails(Collections.singletonMap("payload", payload));
+            paymentCompletionDetails.setPayload(payload);
+            detailsRequest.setDetails(paymentCompletionDetails);
         }
 
         return getRedirectView(detailsRequest);
     }
 
-    private RedirectView getRedirectView(final PaymentsDetailsRequest detailsRequest) throws ApiException, IOException {
+    private RedirectView getRedirectView(final DetailsRequest detailsRequest) throws ApiException, IOException {
         log.info("REST request to handle payment redirect {}", detailsRequest);
         var response = checkout.paymentsDetails(detailsRequest);
         var redirectURL = "/result/";
@@ -169,24 +163,4 @@ public class CheckoutResource {
         }
         return new RedirectView(redirectURL + "?reason=" + response.getResultCode());
     }
-
-    /* ################# UTILS ###################### */
-    private String findCurrency(String type) {
-        switch (type) {
-            case "paypal":
-            case "ach":
-                return "USD";
-            case "wechatpayqr":
-            case "alipay":
-                return "CNY";
-            case "dotpay":
-                return "PLN";
-            case "boletobancario":
-            case "boletobancario_santander":
-                return "BRL";
-            default:
-                return "EUR";
-        }
-    }
-    /* ################# end UTILS ###################### */
 }
