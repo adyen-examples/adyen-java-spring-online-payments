@@ -5,8 +5,8 @@ import com.adyen.checkout.ApplicationProperty;
 import com.adyen.enums.Environment;
 import com.adyen.model.management.*;
 import com.adyen.service.exception.ApiException;
-import com.adyen.service.management.ApiCredentialsMerchantLevel;
-import com.adyen.service.management.WebhooksMerchantLevel;
+import com.adyen.service.management.ApiCredentialsMerchantLevelApi;
+import com.adyen.service.management.WebhooksMerchantLevelApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
@@ -29,8 +29,8 @@ public class ZeroConfig {
     public final static String ZERO_CONFIG_DATA_FILE = "zeroconfig.json";
 
     private final ApplicationProperty applicationProperty;
-    private ApiCredentialsMerchantLevel credentialsMerchantLevel;
-    private WebhooksMerchantLevel webhooksMerchantLevel;
+    private ApiCredentialsMerchantLevelApi apiCredentialsMerchantLevelApi;
+    private WebhooksMerchantLevelApi webhooksMerchantLevelApi;
 
     @Autowired
     public ZeroConfig(ApplicationProperty applicationProperty) {
@@ -44,8 +44,8 @@ public class ZeroConfig {
 
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
 
-        this.credentialsMerchantLevel = new ApiCredentialsMerchantLevel(client);
-        this.webhooksMerchantLevel = new WebhooksMerchantLevel(client);
+        this.apiCredentialsMerchantLevelApi = new ApiCredentialsMerchantLevelApi(client);
+        this.webhooksMerchantLevelApi = new WebhooksMerchantLevelApi(client);
     }
 
     public void init() {
@@ -103,7 +103,7 @@ public class ZeroConfig {
                 .addAllowedOriginsItem("http://" + hostname + ":" + port)
                 .addAllowedOriginsItem("https://" + hostname + ":" + port);
 
-        var resp = this.credentialsMerchantLevel.createApiCredential(applicationProperty.getMerchantAccount(), req);
+        var resp = this.apiCredentialsMerchantLevelApi.createApiCredential(applicationProperty.getMerchantAccount(), req);
 
         log.info("createApiCredential {}", resp);
 
@@ -127,7 +127,7 @@ public class ZeroConfig {
                 .password(this.applicationProperty.getWebhookPassword())
                 .url(this.applicationProperty.getWebhookUrl());
 
-        var resp = this.webhooksMerchantLevel.setUpWebhook(applicationProperty.getMerchantAccount(), req);
+        var resp = this.webhooksMerchantLevelApi.setUpWebhook(applicationProperty.getMerchantAccount(), req);
         log.info("createWebhook {}", resp);
 
         return resp;
@@ -136,7 +136,7 @@ public class ZeroConfig {
 
     public GenerateHmacKeyResponse createHmacKey(String webhookId) throws IOException, ApiException {
 
-        var resp = this.webhooksMerchantLevel.generateHmacKey(applicationProperty.getMerchantAccount(), webhookId);
+        var resp = this.webhooksMerchantLevelApi.generateHmacKey(applicationProperty.getMerchantAccount(), webhookId);
         log.info("createHmacKey {}", resp);
 
         return resp;
