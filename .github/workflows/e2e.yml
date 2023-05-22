@@ -29,12 +29,33 @@ jobs:
         run: docker run --rm -d --name checkout-example -p 8080:8080 -e ADYEN_API_KEY="${{ secrets.ADYEN_API_KEY }}" -e ADYEN_MERCHANT_ACCOUNT=${{ secrets.ADYEN_MERCHANT_ACCOUNT }} -e ADYEN_CLIENT_KEY=${{ secrets.ADYEN_CLIENT_KEY }} -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} checkout-example:latest
       - name: Run testing suite
         run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=checkout --network host ghcr.io/adyen-examples/adyen-testing-suite:main
+  checkout-advanced:
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Grant execute permission for gradlew
+        run: chmod +x checkout-example-advanced/gradlew
+      - name: Build checkout-example-advanced with Gradle
+        run: cd checkout-example-advanced; ./gradlew build
+      - name: Build checkout-example-advanced image
+        run: docker build -t checkout-example-advanced:latest checkout-example-advanced
+      - name: Start checkout-example-advanced container
+        run: docker run --rm -d --name checkout-example-advanced -p 8080:8080 -e ADYEN_API_KEY="${{ secrets.ADYEN_API_KEY }}" -e ADYEN_MERCHANT_ACCOUNT=${{ secrets.ADYEN_MERCHANT_ACCOUNT }} -e ADYEN_CLIENT_KEY=${{ secrets.ADYEN_CLIENT_KEY }} -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} checkout-example-advanced:latest
+      - name: Run testing suite
+        run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=checkout --network host ghcr.io/adyen-examples/adyen-testing-suite:main
 
   subscription:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout project
+      - name: Subscription project
         uses: actions/checkout@v3
       - name: Setup java
         uses: actions/setup-java@v3
