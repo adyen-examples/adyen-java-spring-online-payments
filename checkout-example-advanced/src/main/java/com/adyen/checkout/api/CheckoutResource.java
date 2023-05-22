@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
+import com.adyen.checkout.ApplicationProperty;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -27,13 +27,20 @@ import com.adyen.service.exception.ApiException;
 public class CheckoutResource {
     private final Logger log = LoggerFactory.getLogger(CheckoutResource.class);
 
-    @Value("${ADYEN_MERCHANT_ACCOUNT}")
-    private String merchantAccount;
+    private final ApplicationProperty applicationProperty;
 
     private final Checkout checkout;
 
-    public CheckoutResource(@Value("${ADYEN_API_KEY}") String apiKey) {
-        var client = new Client(apiKey, Environment.TEST);
+    public CheckoutResource(ApplicationProperty applicationProperty) {
+
+        this.applicationProperty = applicationProperty;
+
+        if(applicationProperty.getApiKey() == null) {
+            log.warn("ADYEN_KEY is UNDEFINED");
+            throw new RuntimeException("ADYEN_KEY is UNDEFINED");
+        }
+
+        var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
         this.checkout = new Checkout(client);
     }
 
@@ -47,7 +54,7 @@ public class CheckoutResource {
     @PostMapping("/getPaymentMethods")
     public ResponseEntity<PaymentMethodsResponse> paymentMethods() throws IOException, ApiException {
         var paymentMethodsRequest = new PaymentMethodsRequest();
-        paymentMethodsRequest.setMerchantAccount(merchantAccount);
+        paymentMethodsRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount());
         paymentMethodsRequest.setChannel(PaymentMethodsRequest.ChannelEnum.WEB);
 
         log.info("REST request to get Adyen payment methods {}", paymentMethodsRequest);
@@ -72,7 +79,7 @@ public class CheckoutResource {
             .currency("EUR")
             .value(1000L); // value is 10€ in minor units
 
-        paymentRequest.setMerchantAccount(merchantAccount); // required
+        paymentRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount()); // required
         paymentRequest.setChannel(PaymentsRequest.ChannelEnum.WEB); // required
         paymentRequest.setReference(orderRef); // required
         paymentRequest.setReturnUrl(request.getScheme() + "://" + host + "/api/handleShopperRedirect?orderRef=" + orderRef);

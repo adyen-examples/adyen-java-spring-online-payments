@@ -1,6 +1,9 @@
 package com.adyen.checkout.web;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.adyen.checkout.ApplicationProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +12,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CheckoutController {
-    @Value("${ADYEN_CLIENT_KEY}")
-    private String clientKey;
+
+    @Autowired
+    private ApplicationProperty applicationProperty;
+
+    @Autowired
+    public CheckoutController(ApplicationProperty applicationProperty) {
+        this.applicationProperty = applicationProperty;
+
+        if(this.applicationProperty.getClientKey() == null) {
+            Logger log = LoggerFactory.getLogger(CheckoutController.class);
+            log.warn("ADYEN_CLIENT_KEY is undefined ");
+        }
+    }
 
     @GetMapping("/")
     public String index() {
@@ -26,7 +40,7 @@ public class CheckoutController {
     @GetMapping("/checkout")
     public String checkout(@RequestParam String type, Model model) {
         model.addAttribute("type", type);
-        model.addAttribute("clientKey", clientKey);
+        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
         return "checkout";
     }
 
