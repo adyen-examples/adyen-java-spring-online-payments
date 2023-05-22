@@ -1,26 +1,10 @@
 const clientKey = document.getElementById("clientKey").innerHTML;
-
-// Used to finalize a checkout call in case of redirect
-const urlParams = new URLSearchParams(window.location.search);
-const sessionId = urlParams.get('sessionId'); // Unique identifier for the payment session
-const redirectResult = urlParams.get('redirectResult');
+const type = document.getElementById("type").innerHTML;
 
 async function initCheckout() {
-
   try {
     const paymentMethodsResponse = await callServer("/api/getPaymentMethods");
-    const checkout = await createAdyenCheckout(paymentMethodsResponse);
-    checkout.create(type).mount(document.getElementById("payment"));
-
-  } catch (error) {
-    console.error(error);
-    alert("Error occurred. Look at console for details");
-  }
-}
-
-async function createAdyenCheckout(paymentMethodsResponse){
-  return new AdyenCheckout(
-    {
+    const configuration = {
       paymentMethodsResponse: filterUnimplemented(paymentMethodsResponse),
       clientKey,
       locale: "en_US",
@@ -35,34 +19,59 @@ async function createAdyenCheckout(paymentMethodsResponse){
           holderNameRequired: true,
           name: "Credit or debit card",
           amount: {
-            value: 10000,  // in minor units
+            value: 1000,
             currency: "EUR",
           },
         },
         paypal: {
           amount: {
-            value: 10000, // in minor units
+            value: 1000,
             currency: "USD",
           },
           environment: "test", // Change this to "live" when you're ready to accept live PayPal payments
-          countryCode: "NL", // Only needed for test. This will be automatically retrieved when you are in production.
+          countryCode: "US", // Only needed for test. This will be automatically retrieved when you are in production.
+          onCancel: (data, component) => {
+            component.setStatus('ready');
+          },
         }
       },
-      onSubmit: (result, component) => {
-        if (result.isValid) {
-          handleSubmission(result, component, "/api/initiatePayment");
+      onSubmit: (state, component) => {
+        if (state.isValid) {
+          handleSubmission(state, component, "/api/initiatePayment");
         }
       },
-      onAdditionalDetails: (result, component) => {
-        handleSubmission(result, component, "/api/submitAdditionalDetails");
+      onAdditionalDetails: (state, component) => {
+        handleSubmission(state, component, "/api/submitAdditionalDetails");
       },
-      onError: (error, component) => {
-        console.error("onError");
-        console.error(error.name, error.message, error.stack, component);
-        handleServerResponse(error, component);
-      },
-    }
+    };
+    // `spring.jackson.default-property-inclusion=non_null` needs to set in
+    // src/main/resources/application.properties to avoid NPE here
+    const checkout = new AdyenCheckout(configuration);
+    checkout.create(type).mount(document.getElementById("payment"));
+  } catch (error) {
+    console.error(error);
+    alert("Error occurred. Look at console for details");
+  }
+}
+
+function filterUnimplemented(pm) {
+  pm.paymentMethods = pm.paymentMethods.filter((it) =>
+    [
+      "scheme",
+      "ideal",
+      "dotpay",
+      "giropay",
+      // "sepadirectdebit",
+      "directEbanking",
+      "ach",
+      "alipay",
+      "klarna_paynow",
+      "klarna",
+      "klarna_account",
+      "paypal",
+    ].includes(it.type)
   );
+  return pm;
 }
 
 // Event handlers called when the shopper selects the pay button,
@@ -111,25 +120,6 @@ function handleServerResponse(res, component) {
         break;
     }
   }
-}
-
-function filterUnimplemented(pm) {
-  pm.paymentMethods = pm.paymentMethods.filter((it) =>
-    [
-      "scheme",
-      "ideal",
-      "dotpay",
-      "giropay",
-      "directEbanking",
-      "ach",
-      "alipay",
-      "klarna_paynow",
-      "klarna",
-      "klarna_account",
-      "paypal",
-    ].includes(it.type)
-  );
-  return pm;
 }
 
 initCheckout();
