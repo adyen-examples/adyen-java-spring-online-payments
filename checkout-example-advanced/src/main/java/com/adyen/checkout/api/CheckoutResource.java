@@ -1,10 +1,11 @@
 package com.adyen.checkout.api;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
+
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,21 +64,28 @@ public class CheckoutResource {
      * @throws ApiException from Adyen API.
      */
     @PostMapping("/initiatePayment")
-    public ResponseEntity<PaymentsResponse> payments(@RequestBody PaymentsRequest body, HttpServletRequest request) throws IOException, ApiException {
+    public ResponseEntity<PaymentsResponse> payments(@RequestHeader String host, @RequestBody PaymentsRequest body, HttpServletRequest request) throws IOException, ApiException {
         var paymentRequest = new PaymentsRequest();
-        paymentRequest.setMerchantAccount(merchantAccount); // required
-        paymentRequest.setChannel(PaymentsRequest.ChannelEnum.WEB); // required
-
-        var amount = new Amount()
-            .currency(findCurrency(body.getPaymentMethod().getType()))
-            .value(1000L); // value is 10€ in minor units
-        paymentRequest.setAmount(amount);
 
         var orderRef = UUID.randomUUID().toString();
-        paymentRequest.setReference(orderRef); // required
-        // required for 3ds2 redirect flow
-        paymentRequest.setReturnUrl("http://localhost:8080/api/handleShopperRedirect?orderRef=" + orderRef);
+        var amount = new Amount()
+            .currency("EUR")
+            .value(1000L); // value is 10€ in minor units
 
+        paymentRequest.setMerchantAccount(merchantAccount); // required
+        paymentRequest.setChannel(PaymentsRequest.ChannelEnum.WEB); // required
+        paymentRequest.setReference(orderRef); // required
+        paymentRequest.setReturnUrl(request.getScheme() + "://" + host + "/api/handleShopperRedirect?orderRef=" + orderRef);
+
+        // required for 3ds2 redirect flow
+//        paymentRequest.setReturnUrl("http://localhost:8080/api/handleShopperRedirect?orderRef=" + orderRef);
+
+        paymentRequest.setAmount(amount);
+        // set lineItems required for some payment methods (ie Klarna)
+        paymentRequest.setLineItems(Arrays.asList(
+            new LineItem().quantity(1L).amountIncludingTax(5000L).description("Sunglasses"),
+            new LineItem().quantity(1L).amountIncludingTax(5000L).description("Headphones"))
+        );
         // required for 3ds2 native flow
         paymentRequest.setAdditionalData(Collections.singletonMap("allow3DS2", "true"));
         // required for 3ds2 native flow
@@ -86,27 +94,7 @@ public class CheckoutResource {
         paymentRequest.setBrowserInfo(body.getBrowserInfo());
         // required by some issuers for 3ds2
         paymentRequest.setShopperIP(request.getRemoteAddr());
-
         paymentRequest.setPaymentMethod(body.getPaymentMethod());
-
-        var type = body.getPaymentMethod().getType();
-        // required for Klarna
-        if (type.contains("klarna")) {
-            paymentRequest.setCountryCode("DE");
-            paymentRequest.setShopperReference("1234");
-            paymentRequest.setShopperEmail("youremail@email.com");
-            paymentRequest.setShopperLocale("en_US");
-            var lineItems = new ArrayList<LineItem>();
-            lineItems.add(
-                new LineItem().quantity(1L).amountExcludingTax(331L).taxPercentage(2100L).description("Sunglasses").id("Item 1").taxAmount(69L).amountIncludingTax(400L)
-            );
-            lineItems.add(
-                new LineItem().quantity(2L).amountExcludingTax(248L).taxPercentage(2100L).description("Headphones").id("Item 2").taxAmount(52L).amountIncludingTax(300L)
-            );
-            paymentRequest.setLineItems(lineItems);
-        } else if (type.contains("paypal")) {
-            paymentRequest.setCountryCode("US");
-        }
 
         log.info("REST request to make Adyen payment {}", paymentRequest);
         var response = checkout.payments(paymentRequest);
@@ -169,24 +157,4 @@ public class CheckoutResource {
         }
         return new RedirectView(redirectURL + "?reason=" + response.getResultCode());
     }
-
-    /* ################# UTILS ###################### */
-    private String findCurrency(String type) {
-        switch (type) {
-            case "paypal":
-            case "ach":
-                return "USD";
-            case "wechatpayqr":
-            case "alipay":
-                return "CNY";
-            case "dotpay":
-                return "PLN";
-            case "boletobancario":
-            case "boletobancario_santander":
-                return "BRL";
-            default:
-                return "EUR";
-        }
-    }
-    /* ################# end UTILS ###################### */
 }

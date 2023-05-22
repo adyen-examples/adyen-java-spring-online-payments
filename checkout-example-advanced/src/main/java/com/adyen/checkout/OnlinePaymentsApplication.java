@@ -11,10 +11,13 @@ public class OnlinePaymentsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(OnlinePaymentsApplication.class, args);
-        log.info("\n----------------------------------------------------------\n\t" +
-            "Application is running! Access URLs:\n\t" +
-            "Local: \t\thttp://localhost:8080\n\t" +
-            "\n----------------------------------------------------------");
+        log.info("""
+            ----------------------------------------------------------
+            \tApplication is running! Access URLs:
+            \tLocal: \t\thttp://localhost:8080
+            \t
+            ----------------------------------------------------------
+        """);
     }
 
 }
