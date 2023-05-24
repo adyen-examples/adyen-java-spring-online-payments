@@ -93,7 +93,7 @@ public class CheckoutResource {
         // required for 3ds2 native flow
         paymentRequest.setAdditionalData(Collections.singletonMap("allow3DS2", "true"));
         // required for 3ds2 native flow
-        paymentRequest.setOrigin("request.getScheme() + \"://\" + host ");
+        paymentRequest.setOrigin(request.getScheme() + "://" + host );
         // required for 3ds2
         paymentRequest.setBrowserInfo(body.getBrowserInfo());
         // required by some issuers for 3ds2

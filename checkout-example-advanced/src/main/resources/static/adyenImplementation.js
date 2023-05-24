@@ -19,13 +19,13 @@ async function initCheckout() {
           holderNameRequired: true,
           name: "Credit or debit card",
           amount: {
-            value: 10000,
+            value: 1000,
             currency: "EUR",
           },
         },
         paypal: {
           amount: {
-            value: 10000,
+            value: 1000,
             currency: "USD",
           },
           environment: "test", // Change this to "live" when you're ready to accept live PayPal payments
@@ -44,14 +44,15 @@ async function initCheckout() {
         handleSubmission(state, component, "/api/submitAdditionalDetails");
       },
     };
-    const checkout = new AdyenCheckout(configuration);
+    // `spring.jackson.default-property-inclusion=non_null` needs to set in
+    // src/main/resources/application.properties to avoid NPE here
+    const checkout = await new AdyenCheckout(configuration);
     checkout.create(type).mount(document.getElementById("payment"));
   } catch (error) {
     console.error(error);
     alert("Error occurred. Look at console for details");
   }
 }
-
 
 // Event handlers called when the shopper selects the pay button,
 // or when additional information is required to complete the payment
