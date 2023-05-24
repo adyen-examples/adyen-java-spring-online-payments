@@ -1,4 +1,4 @@
-# Adyen [online payment](https://docs.adyen.com/checkout) integration demo - Sessions Flow
+# Adyen [Gift Cards](https://docs.adyen.com/payment-methods/gift-cards) Integration Demo
 
 ## Run this integration in seconds using [Gitpod](https://gitpod.io/)
 
@@ -7,38 +7,20 @@
 * Set the `ADYEN_API_KEY`, `ADYEN_CLIENT_KEY`, `ADYEN_HMAC_KEY` and `ADYEN_MERCHANT_ACCOUNT` variables.
 * Click the button below!
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/checkout-example)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/giftcard-example)
 
 _NOTE: To allow the Adyen Drop-In and Components to load, you have to add `https://*.gitpod.io` as allowed origin for your chosen set of [API Credentials](https://ca-test.adyen.com/ca/ca/config/api_credentials_new.shtml)_
 
 ## Details
 
-
-**If you want to integrate a more complex flow, see [here](https://docs.adyen.com/online-payments/web-drop-in/additional-use-cases?tab=sessions_flow_advanced_flow_1) for more information and have a look at the `../checkout-example-advanced` folder**
-
-
 This repository includes examples of PCI-compliant UI integrations for online payments with Adyen. Within this demo app, you'll find a simplified version of an e-commerce website, complete with commented code to highlight key features and concepts of Adyen's API. Check out the underlying code to see how you can integrate Adyen to give your shoppers the option to pay with their preferred payment methods, all in a seamless checkout experience.
 
-![Card checkout demo](src/main/resources/static/images/cardcheckout.gif)
+![Gift Card demo](src/main/resources/static/images/cardgiftcard.gif)
 
 ## Supported Integrations
 
-
-[Online payments](https://docs.adyen.com/online-payments) **Java + Spring Boot + Thymeleaf** demos of the following client-side integrations are currently available in this repository:
-
-    - Drop-in
-    - Components
-    -   ACH
-    -   Alipay
-    -   Card (3DS2)
-    -   Dotpay
-    -   giropay
-    -   iDEAL
-    -   Klarna (Pay now, Pay later, Slice it)
-    -   SOFORT
-    -   PayPal
-
-The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries#java)).
+Before testing, please make sure to [add the gift card payment method(s) to your Adyen Account](https://docs.adyen.com/payment-methods#add-payment-methods-to-your-account).
+The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries?tab=java_2#java)).
 
 ## Requirements
 
@@ -92,9 +74,10 @@ ADYEN_HMAC_KEY=yourHmacKey
 ./gradlew bootRun
 ```
 
-3. Visit [http://localhost:8080/](http://localhost:8080/) to select an integration type.
+3. Visit [http://localhost:8080/](http://localhost:8080/) pick the Drop-in or Gift Card component integration, follow the instructions by entering the gift card number, followed by finalizing the payment.
 
-To try out integrations with test card numbers and payment method details, see [Test card numbers](https://docs.adyen.com/development-resources/test-cards/test-card-numbers).
+To try out this application with test card numbers, visit [Gift card numbers](https://docs.adyen.com/development-resources/testing/test-card-numbers#gift-cards) and [Test card numbers](https://docs.adyen.com/development-resources/test-cards/test-card-numbers).
+We recommend saving some test cards in your browser so you can test your integration faster in the future.
 
 ## Testing webhooks
 
@@ -153,45 +136,6 @@ If you use a tunneling service like [ngrok](ngrok) the webhook URL will be the g
 * Make sure the webhook is **Enabled** (therefore it can receive the notifications)
 
 That's it! Every time you perform a new payment, your application will receive a notification from the Adyen platform.
-
-## Deploying this example to the cloud
-
-As part of this example, we are providing a [Terraform](https://www.terraform.io/) configuration file that can be used to deploy this demo to the Amazon cloud on a [Beanstalk](https://aws.amazon.com/elasticbeanstalk/) environment.
-
- ⚠️ This part will deploy (AWS) cloud resources and can incur charges ⚠️.
-
-
-### Extra prerequisites
-
-* The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html), with a configured profile (and an AWS account).
-* The [Terraform](https://www.terraform.io/) CLI, with the `terraform` executable in your PATH.
-* Ready to use Adyen API and client keys.
-
-### Usage
-
-* Compile the project: `./gradlew build`
-* Create a `terraform.tfvars` file in the root directory of this repository. Here is a example :
-
-```
-adyen_api_key = "testApiKey"
-adyen_merchant_account = "testMerchantAccount"
-adyen_client_key = "testClientKey"
-adyen_hmac_key = "testHMACKey"
-```
-
-* Run the `terraform init` command to initialize the Terraform configuration, and `terraform apply` to deploy the environment.
-* At the end of the deployment, Terraform will output several URLs :
-
-```
-adyen_url = "https://ca-test.adyen.com/ca/ca/config/showthirdparty.shtml"
-demo_url = "http://adyen-spring-development-cc66dd5f.eu-west-1.elasticbeanstalk.com"
-environment_url = "https://eu-west-1.console.aws.amazon.com/elasticbeanstalk/home?region=eu-west-1#/applications"
-```
-
-* You can access the demo using the `demo_url`.
-* The `adyen_url` can be used to create a [notification webhook](https://docs.adyen.com/development-resources/webhooks) in the Adyen customer area.
-* Use `terraform destroy` to remove the environment and avoid being charged for the resources more than necessary.
-* The `environment_url` can be used to access the AWS Beanstalk environment and possibly update the configuration.
 
 ## Contributing
 
