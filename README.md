@@ -25,6 +25,17 @@ Check out the underlying code to see how you can integrate Adyen to give your sh
 
 ![Card Checkout Demo](checkout-example/src/main/resources/static/images/cardcheckout.gif)
 
+
+## [Advanced Checkout Example](checkout-example-advanced)
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/checkout-example-advanced)
+
+The [advanced checkout example](checkout-example-advanced) performs the same functionality as the [checkout example](checkout-example) but using the 3 stages of the Checkout API (Initiate, Submit, and Details) instead of the single `/sessions` endpoint.
+See the [advanced integration flow](https://docs.adyen.com/online-payments/web-drop-in/additional-use-cases?tab=sessions_flow_advanced_flow_1) for more information.
+
+![Card Checkout Demo](checkout-example/src/main/resources/static/images/cardcheckout.gif)
+
+
 ## [PayByLink Example](paybylink-example)
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/paybylink-example)

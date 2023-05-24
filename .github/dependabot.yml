@@ -1,15 +1,19 @@
 version: 2
 updates:
 
-  - package-ecosystem: "gradle" 
-    directory: "/checkout-example" 
+  - package-ecosystem: "gradle"
+    directory: "/checkout-example"
     schedule:
       interval: "daily"
-  - package-ecosystem: "gradle" 
-    directory: "/paybylink-example" 
+  - package-ecosystem: "gradle"
+    directory: "/checkout-example-advanced"
     schedule:
       interval: "daily"
-  - package-ecosystem: "gradle" 
-    directory: "/subscription-example" 
+  - package-ecosystem: "gradle"
+    directory: "/paybylink-example"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/subscription-example"
     schedule:
       interval: "daily"
