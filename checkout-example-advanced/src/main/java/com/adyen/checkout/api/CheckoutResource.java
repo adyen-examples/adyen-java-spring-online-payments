@@ -77,15 +77,12 @@ public class CheckoutResource {
         var orderRef = UUID.randomUUID().toString();
         var amount = new Amount()
             .currency("EUR")
-            .value(1000L); // value is 10€ in minor units
+            .value(10000L); // value is 10€ in minor units
 
         paymentRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount()); // required
         paymentRequest.setChannel(PaymentsRequest.ChannelEnum.WEB); // required
         paymentRequest.setReference(orderRef); // required
         paymentRequest.setReturnUrl(request.getScheme() + "://" + host + "/api/handleShopperRedirect?orderRef=" + orderRef);
-
-        // required for 3ds2 redirect flow
-//        paymentRequest.setReturnUrl("http://localhost:8080/api/handleShopperRedirect?orderRef=" + orderRef);
 
         paymentRequest.setAmount(amount);
         // set lineItems required for some payment methods (ie Klarna)
@@ -96,7 +93,7 @@ public class CheckoutResource {
         // required for 3ds2 native flow
         paymentRequest.setAdditionalData(Collections.singletonMap("allow3DS2", "true"));
         // required for 3ds2 native flow
-        paymentRequest.setOrigin("http://localhost:8080");
+        paymentRequest.setOrigin(request.getScheme() + "://" + host );
         // required for 3ds2
         paymentRequest.setBrowserInfo(body.getBrowserInfo());
         // required by some issuers for 3ds2
