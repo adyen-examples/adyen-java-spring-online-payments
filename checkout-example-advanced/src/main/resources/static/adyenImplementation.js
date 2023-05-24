@@ -5,7 +5,7 @@ async function initCheckout() {
   try {
     const paymentMethodsResponse = await callServer("/api/getPaymentMethods");
     const configuration = {
-      paymentMethodsResponse: filterUnimplemented(paymentMethodsResponse),
+      paymentMethodsResponse: paymentMethodsResponse,
       clientKey,
       locale: "en_US",
       environment: "test",
@@ -19,13 +19,13 @@ async function initCheckout() {
           holderNameRequired: true,
           name: "Credit or debit card",
           amount: {
-            value: 1000,
+            value: 10000,
             currency: "EUR",
           },
         },
         paypal: {
           amount: {
-            value: 1000,
+            value: 10000,
             currency: "USD",
           },
           environment: "test", // Change this to "live" when you're ready to accept live PayPal payments
@@ -44,8 +44,6 @@ async function initCheckout() {
         handleSubmission(state, component, "/api/submitAdditionalDetails");
       },
     };
-    // `spring.jackson.default-property-inclusion=non_null` needs to set in
-    // src/main/resources/application.properties to avoid NPE here
     const checkout = new AdyenCheckout(configuration);
     checkout.create(type).mount(document.getElementById("payment"));
   } catch (error) {
@@ -54,25 +52,6 @@ async function initCheckout() {
   }
 }
 
-function filterUnimplemented(pm) {
-  pm.paymentMethods = pm.paymentMethods.filter((it) =>
-    [
-      "scheme",
-      "ideal",
-      "dotpay",
-      "giropay",
-      // "sepadirectdebit",
-      "directEbanking",
-      "ach",
-      "alipay",
-      "klarna_paynow",
-      "klarna",
-      "klarna_account",
-      "paypal",
-    ].includes(it.type)
-  );
-  return pm;
-}
 
 // Event handlers called when the shopper selects the pay button,
 // or when additional information is required to complete the payment
