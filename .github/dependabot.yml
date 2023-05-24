@@ -14,6 +14,14 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "gradle"
+    directory: "/giftcard-example"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/paybylink-example"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
     directory: "/subscription-example"
     schedule:
       interval: "daily"
