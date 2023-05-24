@@ -19,6 +19,10 @@ tasks:
           echo "Build checkout-example application"
           cd checkout-example && ./gradlew bootJar
         ;;
+        "checkout-example-advanced")
+          echo "Build checkout-example-advanced application"
+          cd checkout-example-advanced && ./gradlew bootJar
+        ;;
         "giftcard-example")
           echo "Build giftcard-example application"
           cd giftcard-example && ./gradlew bootJar

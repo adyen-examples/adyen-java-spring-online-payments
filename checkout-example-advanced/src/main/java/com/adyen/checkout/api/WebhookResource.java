@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.security.SignatureException;
 
 /**
@@ -38,17 +37,14 @@ public class WebhookResource {
     }
 
     /**
-     * Process the incoming Webhook event: get NotificationRequestItem, validate HMAC signature,
+     * Process incoming Webhook notification: get NotificationRequestItem, validate HMAC signature,
      * consume the event asynchronously, send response ["accepted"]
      *
-     * @param json Payload of the webhook event
+     * @param notificationRequest
      * @return
      */
     @PostMapping("/webhooks/notifications")
-    public ResponseEntity<String> webhooks(@RequestBody String json) throws IOException {
-
-        // from JSON string to object
-        var notificationRequest = NotificationRequest.fromJson(json);
+    public ResponseEntity<String> webhooks(@RequestBody NotificationRequest notificationRequest) {
 
         // fetch first (and only) NotificationRequestItem
         var notificationRequestItem = notificationRequest.getNotificationItems().stream().findFirst();
@@ -59,11 +55,12 @@ public class WebhookResource {
 
             try {
                 if (getHmacValidator().validateHMAC(item, this.applicationProperty.getHmacKey())) {
-                    log.info("Received webhook with event {} : \n" +
-                                    "Merchant Reference: {}\n" +
-                                    "Alias : {}\n" +
-                                    "PSP reference : {}"
-                            , item.getEventCode(), item.getMerchantReference(), item.getAdditionalData().get("alias"), item.getPspReference());
+                    log.info("""
+                            Received webhook with event {} :\s
+                            Merchant Reference: {}
+                            Alias : {}
+                            PSP reference : {}"""
+                        , item.getEventCode(), item.getMerchantReference(), item.getAdditionalData().get("alias"), item.getPspReference());
 
                     // consume event asynchronously
                     consumeEvent(item);

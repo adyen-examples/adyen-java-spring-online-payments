@@ -1,4 +1,4 @@
-# Adyen [online payment](https://docs.adyen.com/checkout) integration demo - Sessions Flow
+# Adyen [online payment](https://docs.adyen.com/checkout) integration demo - ADVANCED Flow
 
 ## Run this integration in seconds using [Gitpod](https://gitpod.io/)
 
@@ -14,8 +14,7 @@ _NOTE: To allow the Adyen Drop-In and Components to load, you have to add `https
 ## Details
 
 
-**If you want to integrate a more complex flow, see [here](https://docs.adyen.com/online-payments/web-drop-in/additional-use-cases?tab=sessions_flow_advanced_flow_1) for more information and have a look at the `../checkout-example-advanced` folder**
-
+**This sample shows the [advanced integration flow](https://docs.adyen.com/online-payments/web-drop-in/additional-use-cases?tab=sessions_flow_advanced_flow_1), for a simpler flow using session, have a look at the `../checkout-example` folder.**
 
 This repository includes examples of PCI-compliant UI integrations for online payments with Adyen. Within this demo app, you'll find a simplified version of an e-commerce website, complete with commented code to highlight key features and concepts of Adyen's API. Check out the underlying code to see how you can integrate Adyen to give your shoppers the option to pay with their preferred payment methods, all in a seamless checkout experience.
 
@@ -23,11 +22,10 @@ This repository includes examples of PCI-compliant UI integrations for online pa
 
 ## Supported Integrations
 
+**Java + Spring Boot + Thymeleaf** demos of the following client-side integrations are currently available in this repository:
 
-[Online payments](https://docs.adyen.com/online-payments) **Java + Spring Boot + Thymeleaf** demos of the following client-side integrations are currently available in this repository:
-
-    - Drop-in
-    - Components
+-   [Drop-in](https://docs.adyen.com/checkout/drop-in-web)
+-   [Component](https://docs.adyen.com/checkout/components-web)
     -   ACH
     -   Alipay
     -   Card (3DS2)
@@ -153,45 +151,6 @@ If you use a tunneling service like [ngrok](ngrok) the webhook URL will be the g
 * Make sure the webhook is **Enabled** (therefore it can receive the notifications)
 
 That's it! Every time you perform a new payment, your application will receive a notification from the Adyen platform.
-
-## Deploying this example to the cloud
-
-As part of this example, we are providing a [Terraform](https://www.terraform.io/) configuration file that can be used to deploy this demo to the Amazon cloud on a [Beanstalk](https://aws.amazon.com/elasticbeanstalk/) environment.
-
- ⚠️ This part will deploy (AWS) cloud resources and can incur charges ⚠️.
-
-
-### Extra prerequisites
-
-* The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html), with a configured profile (and an AWS account).
-* The [Terraform](https://www.terraform.io/) CLI, with the `terraform` executable in your PATH.
-* Ready to use Adyen API and client keys.
-
-### Usage
-
-* Compile the project: `./gradlew build`
-* Create a `terraform.tfvars` file in the root directory of this repository. Here is a example :
-
-```
-adyen_api_key = "testApiKey"
-adyen_merchant_account = "testMerchantAccount"
-adyen_client_key = "testClientKey"
-adyen_hmac_key = "testHMACKey"
-```
-
-* Run the `terraform init` command to initialize the Terraform configuration, and `terraform apply` to deploy the environment.
-* At the end of the deployment, Terraform will output several URLs :
-
-```
-adyen_url = "https://ca-test.adyen.com/ca/ca/config/showthirdparty.shtml"
-demo_url = "http://adyen-spring-development-cc66dd5f.eu-west-1.elasticbeanstalk.com"
-environment_url = "https://eu-west-1.console.aws.amazon.com/elasticbeanstalk/home?region=eu-west-1#/applications"
-```
-
-* You can access the demo using the `demo_url`.
-* The `adyen_url` can be used to create a [notification webhook](https://docs.adyen.com/development-resources/webhooks) in the Adyen customer area.
-* Use `terraform destroy` to remove the environment and avoid being charged for the resources more than necessary.
-* The `environment_url` can be used to access the AWS Beanstalk environment and possibly update the configuration.
 
 ## Contributing
 
