@@ -1,6 +1,5 @@
 version: 2
 updates:
-
   - package-ecosystem: "gradle"
     directory: "/checkout-example"
     schedule:
@@ -15,10 +14,6 @@ updates:
       interval: "daily"
   - package-ecosystem: "gradle"
     directory: "/giftcard-example"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "gradle"
-    directory: "/paybylink-example"
     schedule:
       interval: "daily"
   - package-ecosystem: "gradle"
