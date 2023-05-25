@@ -1,4 +1,4 @@
-# Adyen [online payment](https://docs.adyen.com/checkout) integration demo - Sessions Flow
+# Adyen [online payment](https://docs.adyen.com/online-payments) integration demo - Sessions Flow
 
 ## Run this integration in seconds using [Gitpod](https://gitpod.io/)
 
