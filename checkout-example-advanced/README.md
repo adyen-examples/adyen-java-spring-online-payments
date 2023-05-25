@@ -1,4 +1,4 @@
-# Adyen [online payment](https://docs.adyen.com/checkout) integration demo - ADVANCED Flow
+# Adyen [online payment](https://docs.adyen.com/online-payments) integration demo - ADVANCED Flow
 
 ## Run this integration in seconds using [Gitpod](https://gitpod.io/)
 
@@ -22,10 +22,10 @@ This repository includes examples of PCI-compliant UI integrations for online pa
 
 ## Supported Integrations
 
-**Java + Spring Boot + Thymeleaf** demos of the following client-side integrations are currently available in this repository:
+[Online payments](https://docs.adyen.com/online-payments) **Java + Spring Boot + Thymeleaf** demos of the following client-side integrations are currently available in this repository:
 
--   [Drop-in](https://docs.adyen.com/checkout/drop-in-web)
--   [Component](https://docs.adyen.com/checkout/components-web)
+-   Drop-in
+-   Component
     -   ACH
     -   Alipay
     -   Card (3DS2)
