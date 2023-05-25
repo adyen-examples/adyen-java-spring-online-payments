@@ -11,7 +11,7 @@ Get started by navigating to one of the supported demos below.
 |                                                    Demos | Description                                                                      | Details                                 |
 |---------------------------------------------------------:|:---------------------------------------------------------------------------------|:----------------------------------------|
 |                   [`Checkout Example`](checkout-example) | E-commerce checkout flow with different payment methods.                         | [See below](#checkout-example)          | 
-| [`Advanced Checkout Example`](checkout-example-advanced) | E-commerce checkout flow with different payment methods, using the 3 steps flow. | [See below](#checkout-example-advanced) | 
+| [`Advanced Checkout Example`](checkout-example-advanced) | E-commerce checkout flow with different payment methods, using the 3 steps flow. | [See below](#advanced-checkout-example) | 
 |                  [`Gift Card Example`](giftcard-example) | Gift Cards checkout flow using partial orders.                                   | [See below](#gift-card-example)         | 
 |               [`Pay By Link Example`](paybylink-example) | Create payment links in seconds.                                                 | [See below](#paybylink-example)         | 
 |           [`Subscription Example`](subscription-example) | Subscription flow using Adyen tokenization.                                      | [See below](#subscription-example)      | 
@@ -45,7 +45,6 @@ The [gift card example](giftcard-example) repository includes a gift card flow d
 The shopper can choose to use gift cards to complete their purchase or use their preferred payment method to pay the remaining amount.
 
 ![Gift Card Demo](giftcard-example/src/main/resources/static/images/cardgiftcard.gif)
-
 
 ## [PayByLink Example](paybylink-example)
 
