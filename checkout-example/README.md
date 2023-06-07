@@ -26,8 +26,8 @@ This repository includes examples of PCI-compliant UI integrations for online pa
 
 [Online payments](https://docs.adyen.com/online-payments) **Java + Spring Boot + Thymeleaf** demos of the following client-side integrations are currently available in this repository:
 
-    - Drop-in
-    - Components
+- Drop-in
+- Components
     -   ACH
     -   Alipay
     -   Card (3DS2)
