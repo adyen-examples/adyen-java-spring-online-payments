@@ -51,6 +51,28 @@ jobs:
         run: docker run --rm -d --name giftcard-example -p 8080:8080 -e ADYEN_API_KEY="${{ secrets.ADYEN_API_KEY }}" -e ADYEN_MERCHANT_ACCOUNT=${{ secrets.ADYEN_MERCHANT_ACCOUNT }} -e ADYEN_CLIENT_KEY=${{ secrets.ADYEN_CLIENT_KEY }} -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} giftcard-example:latest
       - name: Run testing suite
         run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=giftcard --network host ghcr.io/adyen-examples/adyen-testing-suite:main
+    
+  paybylink:
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Paybylink project
+        uses: actions/checkout@v3
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Grant execute permission for gradlew
+        run: chmod +x paybylink-example/gradlew
+      - name: Build paybylink-example with Gradle
+        run: cd paybylink-example; ./gradlew build
+      - name: Build paybylink-example image
+        run: docker build -t paybylink-example:latest paybylink-example
+      - name: Start paybylink-example container
+        run: docker run --rm -d --name paybylink-example -p 8080:8080 -e ADYEN_API_KEY="${{ secrets.ADYEN_API_KEY }}" -e ADYEN_MERCHANT_ACCOUNT=${{ secrets.ADYEN_MERCHANT_ACCOUNT }} -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} paybylink-example:latest
+      - name: Run testing suite
+        run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=paybylink --network host ghcr.io/adyen-examples/adyen-testing-suite:main
 
   subscription:
 
