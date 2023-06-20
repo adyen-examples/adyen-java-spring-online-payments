@@ -40,7 +40,9 @@ This demo provides a simple webhook integration at `/api/webhooks/notifications`
     - Define username and password (Basic Authentication) to [protect your endpoint](https://docs.adyen.com/development-resources/webhooks/best-practices#security) - Basic authentication only guarantees that the notification was sent by Adyen, not that it wasn't modified during transmission
     - Generate the [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures) and set the `ADYEN_HMAC_KEY` in your [Gitpod Environment Variables](https://gitpod.io/variables) with a scope of `*/*` -  This key is used to [verify](https://docs.adyen.com/development-resources/webhooks/best-practices#security) whether the HMAC signature that is included in the notification, was sent by Adyen and not modified during transmission
     - For the URL, enter `https://gitpod.io` for now, we will need to update this webhook URL in step 7
-    - Make sure the webhook is **Enabled** to send notifications
+    - Make sure that the `Recurring contract` setting is **enabled** on `Merchant` account-level - In the `Customer Area`, under `Developers` -> `Webhooks` -> `Settings` -> Enable `Recurring contract` on `Merchant`-level and hit "Save".
+    - Make sure that your webhook sends the `RECURRING_CONTRACT` event when you've created the webhook
+    - Make sure the webhook is **enabled** to send notifications
 
 
 5. In the Customer Area, go to `Developers` → `Additional Settings` → Under `Payment` enable `Recurring Details` for subscriptions.
@@ -103,7 +105,9 @@ If you use a tunneling service like ngrok, the webhook URL will be the generated
     - Generate the [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures) - This key is used to [verify](https://docs.adyen.com/development-resources/webhooks/best-practices#security) whether the HMAC signature that is included in the notification, was sent by Adyen and not modified during transmission
     - See script below that allows you to easily set your environmental variables
     - For the URL, enter `https://ngrok.io` for now - We will need to update this webhook URL in step 10
-    - Make sure the webhook is **Enabled** to send notifications
+    - Make sure that the `Recurring contract` setting is **enabled** on `Merchant` account-level - In the `Customer Area`, under `Developers` -> `Webhooks` -> `Settings` -> Enable `Recurring contract` on `Merchant`-level and hit "Save".
+    - Make sure that your webhook sends the `RECURRING_CONTRACT` event when you've created the webhook
+    - Make sure the webhook is **enabled** to send notifications
 
 
 7. Set the following environment variables in your terminal environment: `ADYEN_API_KEY`, `ADYEN_CLIENT_KEY`, `ADYEN_MERCHANT_ACCOUNT` and `ADYEN_HMAC_KEY`. Note that some IDEs will have to be restarted for environmental variables to be injected properly.

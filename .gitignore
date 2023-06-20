@@ -41,3 +41,6 @@ env.tmp
 .terraform*
 terraform.tfstate*
 terraform.tfvars
+
+### Visual Studio ###
+.vs
