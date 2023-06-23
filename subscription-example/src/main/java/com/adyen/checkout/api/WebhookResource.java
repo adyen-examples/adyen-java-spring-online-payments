@@ -66,14 +66,7 @@ public class WebhookResource {
 
                 // consume payload
                 if(item.isSuccess()) {
-
-                    // Per default, Adyen will send a webhook with the eventCode: "AUTHORISATION".
-                    // We recommend changing this behavior in the Customer Area to receive the "RECURRING_CONTRACT" eventCode. 
-                    // You'll need to do two things:
-                    // (1) Enable the "RECURRING_CONTRACT" eventCode in your Customer Area, under "Developers" -> "Webhooks" -> "Settings". Enable "Recurring contract" on `Merchant`-level and hit "Save".
-                    // This will send the event code "RECURRING_CONTRACT" when a recurring contract has been created.
-                    // (2) Make sure that your webhook also sends the event "RECURRING_CONTRACT" ("Developers" -> "Webhooks" -> Click on your webhook -> "General").
-                    // Read more here: https://docs.adyen.com/online-payments/tokenization/create-and-use-tokens?tab=subscriptions_2#pending-and-refusal-result-codes-1
+                    // read about eventcode "RECURRING_CONTRACT" here: https://docs.adyen.com/online-payments/tokenization/create-and-use-tokens?tab=subscriptions_2#pending-and-refusal-result-codes-1
                     if (item.getEventCode().equals("RECURRING_CONTRACT") && item.getAdditionalData() != null && item.getAdditionalData().get("recurring.shopperReference") != null) {
                         // webhook with recurring token
                         log.info("Recurring authorized - recurringDetailReference {}", item.getAdditionalData().get("recurring.recurringDetailReference"));
