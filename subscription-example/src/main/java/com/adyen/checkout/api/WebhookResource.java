@@ -66,8 +66,8 @@ public class WebhookResource {
 
                 // consume payload
                 if(item.isSuccess()) {
-
-                    if (item.getEventCode().equals("AUTHORISATION") && item.getAdditionalData() != null && item.getAdditionalData().get("recurring.shopperReference") != null) {
+                    // read about eventcode "RECURRING_CONTRACT" here: https://docs.adyen.com/online-payments/tokenization/create-and-use-tokens?tab=subscriptions_2#pending-and-refusal-result-codes-1
+                    if (item.getEventCode().equals("RECURRING_CONTRACT") && item.getAdditionalData() != null && item.getAdditionalData().get("recurring.shopperReference") != null) {
                         // webhook with recurring token
                         log.info("Recurring authorized - recurringDetailReference {}", item.getAdditionalData().get("recurring.recurringDetailReference"));
 
