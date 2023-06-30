@@ -23,6 +23,7 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+    implementation(files("../temp-lib/adyen-java-api-library-20.1.1.jar"))
 }
 
 test {
