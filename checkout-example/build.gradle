@@ -18,8 +18,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-	implementation 'com.adyen:adyen-java-api-library:20.1.0'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+//	implementation 'com.adyen:adyen-java-api-library:20.1.0'
+    implementation(files("../temp-lib/adyen-java-api-library-20.1.1.jar"))
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
