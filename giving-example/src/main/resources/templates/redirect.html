@@ -1,0 +1,15 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title th:text="Redirection"></title>
+</head>
+<body>
+<div layout:fragment="content" id="temp-redirect">
+  <div id="clientKey" class="hidden" th:text="${clientKey}"></div>
+
+  <!-- Adyen Component client code to terminate the session-->
+  <script type="text/javascript" src="/adyenImplementation.js"></script>
+</div>
+</body>
