@@ -79,7 +79,7 @@ public class CheckoutResource {
             .value(10000L); // value is 10€ in minor units
 
         paymentRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount()); // required
-        paymentRequest.setChannel(PaymentRequest.ChannelEnum.WEB); // required
+        paymentRequest.setChannel(PaymentRequest.ChannelEnum.WEB);
         paymentRequest.setReference(orderRef); // required
         paymentRequest.setReturnUrl(request.getScheme() + "://" + host + "/api/handleShopperRedirect?orderRef=" + orderRef);
 
