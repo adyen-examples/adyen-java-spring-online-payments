@@ -3,7 +3,7 @@ package com.adyen.paybylink.service;
 import com.adyen.Client;
 import com.adyen.enums.Environment;
 import com.adyen.model.checkout.Amount;
-import com.adyen.model.checkout.CreatePaymentLinkRequest;
+import com.adyen.model.checkout.PaymentLinkRequest;
 import com.adyen.model.checkout.PaymentLinkResponse;
 import com.adyen.paybylink.ApplicationProperty;
 import com.adyen.paybylink.model.NewLinkRequest;
@@ -92,7 +92,7 @@ public class PaymentLinkService {
             reference = UUID.randomUUID().toString();
         }
 
-        CreatePaymentLinkRequest createPaymentLinkRequest = new CreatePaymentLinkRequest();
+        PaymentLinkRequest createPaymentLinkRequest = new PaymentLinkRequest();
         createPaymentLinkRequest.merchantAccount(applicationProperty.getMerchantAccount());
         createPaymentLinkRequest.setReturnUrl(returnUrl);
         createPaymentLinkRequest.amount(amount);
