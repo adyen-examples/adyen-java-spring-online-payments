@@ -12,6 +12,26 @@ async function callServer(url, data) {
   return await res.json();
 }
 
+async function handleDonation(donationToken, pspReference, amount, component) {
+  try {
+    const res = await callServer(`/api/donations?donationToken=${encodeURIComponent(donationToken)}&pspReference=${pspReference}`, amount);
+
+    switch (res.status) {
+      case "completed":
+        window.location.href = "/result/donated";
+        break;
+      default:
+        window.location.href = "/result/error";
+        break;
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Error occurred. Look at console for details");
+  }
+
+
+}
+
 async function startGiving() {
 
   const paymentMethodsResponse = await callServer("/api/getPaymentMethods");
@@ -67,21 +87,19 @@ async function startGiving() {
           console.log("No token or pspReference found, can't donate");
         }
         else{
-          // TODO : Send the full state.data once I found the proper type for it
-          callServer(`/api/donations?donationToken=${donationToken}&pspReference=${pspReference}`, state.data.amount);
+          handleDonation(donationToken, pspReference, state.data.amount, component);
         }
-
       }
 
-      // state.isValid // True or false. Specifies if the shopper has selected a donation amount.
-      // state.data // Provides the data that you need to pass in the `/donations` call.
-      // component // Provides the active Component instance that called this event.
     },
-    onCancel: (result, component) => {console.log("Donation cancelled");}
+    onCancel: (result, component) => {
+      console.log("Donation cancelled");
+      component.setStatus('ready');
+
+    }
   };
 
   const donation = checkout.create('donation', donationConfig).mount('#donation-container');
-  console.log("Adyen Giving loaded");
 }
 
 startGiving();

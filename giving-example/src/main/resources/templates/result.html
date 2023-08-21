@@ -11,9 +11,10 @@
     <div id="clientKey" class="hidden" th:text="${clientKey}"></div>
 
     <img th:src="${'/images/' + type + '.svg'}" class="status-image" alt="">
-    <img th:if="${type == 'success' || type == 'pending'}" src="/images/thank-you.svg" class="status-image" alt="">
+    <img th:if="${type == 'success' || type == 'pending' || type == 'donated'}" src="/images/thank-you.svg" class="status-image" alt="">
 
     <p class="status-message">
+      <span th:if="${type == 'donated' }">Thank you for your donation!</span>
       <span th:if="${type == 'success' }">Your order has been successfully placed.</span>
       <span th:if="${type == 'pending' }">Your order has been received! Payment completion pending.</span>
       <span th:if="${type == 'failed' }">The payment was refused. Please try a different payment method or card.</span>
@@ -23,7 +24,7 @@
       </span>
     </p>
     <a class="button" href="/">Return Home</a>
-    <div th:if="${type == 'success' }" id='donation-container'>
+    <div th:if="${type == 'success' || type == 'pending' }" id='donation-container'>
       <div id="donation" class="donation"></div>
     </div>
   </div>
