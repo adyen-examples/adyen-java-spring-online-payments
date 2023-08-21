@@ -12,7 +12,7 @@ async function callServer(url, data) {
   return await res.json();
 }
 
-async function handleDonation(donationToken, pspReference, amount, component) {
+async function handleDonation(donationToken, pspReference, amount) {
   try {
     const res = await callServer(`/api/donations?donationToken=${encodeURIComponent(donationToken)}&pspReference=${pspReference}`, amount);
 
@@ -87,19 +87,18 @@ async function startGiving() {
           console.log("No token or pspReference found, can't donate");
         }
         else{
-          handleDonation(donationToken, pspReference, state.data.amount, component);
+          handleDonation(donationToken, pspReference, state.data.amount);
         }
       }
 
     },
     onCancel: (result, component) => {
       console.log("Donation cancelled");
-      component.setStatus('ready');
-
+      document.getElementById( 'donation-container' ).style.display = 'none';
     }
   };
 
-  const donation = checkout.create('donation', donationConfig).mount('#donation-container');
+  checkout.create('donation', donationConfig).mount('#donation-container');
 }
 
 startGiving();
