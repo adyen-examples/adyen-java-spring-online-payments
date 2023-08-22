@@ -38,13 +38,7 @@ public class GivingWebhookResource {
         this.getHmacValidator = getHmacValidator;
     }
 
-    /**
-     * Process incoming Webhook notification: get NotificationRequestItem, validate HMAC signature,
-     * consume the event asynchronously, send response ["accepted"]
-     *
-     * @param notificationRequest
-     * @return
-     */
+
     @PostMapping("/webhooks/giving")
     public ResponseEntity<String> webhooks(@RequestBody NotificationRequest notificationRequest) {
 
@@ -59,9 +53,9 @@ public class GivingWebhookResource {
                 if (new HMACValidator().validateHMAC(item, this.applicationProperty.getHmacKey())) {
                     log.info("""
                             Received webhook with event {} :\s
-                            Merchant Reference: {}
+                            Merchant Account Code: {}
                             PSP reference : {}"""
-                        , item.getEventCode(), item.getMerchantReference(),  item.getPspReference());
+                        , item.getEventCode(), item.getMerchantAccountCode(),  item.getPspReference());
 
                     // consume event asynchronously
                     consumeEvent(item);
