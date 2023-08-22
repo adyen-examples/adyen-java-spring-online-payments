@@ -54,8 +54,10 @@ public class GivingWebhookResource {
                     log.info("""
                             Received webhook with event {} :\s
                             Merchant Account Code: {}
-                            PSP reference : {}"""
-                        , item.getEventCode(), item.getMerchantAccountCode(),  item.getPspReference());
+                            PSP reference : {}
+                            Donation successful : {}
+                            """
+                        , item.getEventCode(), item.getMerchantAccountCode(),  item.getPspReference(), item.isSuccess());
 
                     // consume event asynchronously
                     consumeEvent(item);
