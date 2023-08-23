@@ -15,6 +15,7 @@ Get started by navigating to one of the supported demos below.
 |                  [`Gift Card Example`](giftcard-example) | Gift Cards checkout flow using partial orders.                                   | [See below](#gift-card-example)         | 
 |               [`Pay By Link Example`](paybylink-example) | Create payment links in seconds.                                                 | [See below](#paybylink-example)         | 
 |           [`Subscription Example`](subscription-example) | Subscription flow using Adyen tokenization.                                      | [See below](#subscription-example)      | 
+|                 [`Giving Example`](subscription-example) | Donation flow using Adyen Giving.                                                | [See below](#giving-example)            | 
 
 
 ## [Checkout Example](checkout-example)
@@ -72,6 +73,16 @@ The shopper can purchase a subscription and administrators can manage the saved 
 The panel allows admins to make payments on behalf of the shopper using this token.
 
 ![Subscription Demo](subscription-example/src/main/resources/static/images/cardsubscription.gif)
+
+## [Giving Example](subscription-example)
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/giving-example)  
+[First time with Gitpod?](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
+
+The [giving example](giving-example) repository includes a sample designed to demonstrate the Adyen Giving donations workflow.
+First make a test payment using one of our test card numbers, so you can see the donation screen appear.
+
+![Giving Demo](giving-example/src/main/resources/static/images/donations.gif)
 
 ## Contributing
 
