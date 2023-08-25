@@ -50,7 +50,7 @@ public class GivingWebhookResource {
             var item = notificationRequestItem.get();
 
             try {
-                if (new HMACValidator().validateHMAC(item, this.applicationProperty.getHmacKey())) {
+                if (getGivingHmacValidator().validateHMAC(item, this.applicationProperty.getHmacKey())) {
                     log.info("""
                             Received webhook with event {} :\s
                             Merchant Account Code: {}
@@ -92,4 +92,8 @@ public class GivingWebhookResource {
         // producer.close();
     }
 
+    @Bean
+    public HMACValidator getGivingHmacValidator() {
+        return new HMACValidator();
+    }
 }

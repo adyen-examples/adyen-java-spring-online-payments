@@ -51,7 +51,7 @@ async function startGiving() {
           holderNameRequired: true,
           name: "Credit or debit card",
           amount: {
-            value: 10000,  // in minor units
+            value: 10000,
             currency: "EUR",
           },
         },
@@ -73,7 +73,7 @@ async function startGiving() {
     disclaimerMessage: {
       message: "By donating you agree to the %#terms%#",
       linkText: "terms and conditions",
-      link: "https://www.adyen.com/terms-and-conditions"
+      link: "https://www.adyen.com/legal/terms-and-conditions" // Replace with yours
 
 
     },

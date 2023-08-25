@@ -45,6 +45,14 @@ public class CheckoutResource {
         this.paymentsApi = new PaymentsApi(client);
     }
 
+
+    /**
+     * {@code POST  /donations} : Perform a donation
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (Ok)} and with body the donationPaymentResponse response.
+     * @throws IOException  from Adyen API.
+     * @throws ApiException from Adyen API.
+     */
     @PostMapping("/donations")
     public ResponseEntity<DonationPaymentResponse> donations(@RequestParam String donationToken, @RequestParam String pspReference, @RequestBody Amount body, @RequestHeader String host, HttpServletRequest request) throws IOException, ApiException {
         var decodedDonationToken = URLDecoder.decode(donationToken.replace("+", "%2B"), StandardCharsets.UTF_8).replace("%2B", "+");
@@ -100,7 +108,7 @@ public class CheckoutResource {
         var orderRef = UUID.randomUUID().toString();
         var amount = new Amount()
             .currency("EUR")
-            .value(10000L); // value is 10€ in minor units
+            .value(10000L); // value is 100€ in minor units
 
         paymentRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount()); // required
         paymentRequest.setChannel(PaymentRequest.ChannelEnum.WEB);
