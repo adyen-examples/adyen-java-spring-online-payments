@@ -385,7 +385,7 @@ a:hover {
 /* Status page */
 
 .status-container {
-  height: 100vh;
+  height: 120vh;
   display: flex;
   align-items: center;
   justify-content: center;
