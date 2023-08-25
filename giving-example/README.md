@@ -84,7 +84,7 @@ We recommend saving some test cards in your browser so you can test your integra
 
 Webhooks deliver asynchronous notifications and it is important to test them during the setup of your integration. You can find more information about webhooks in [this detailed blog post](https://www.adyen.com/blog/Integrating-webhooks-notifications-with-Adyen-Checkout).
 
-This sample application provides a simple webhook integration exposed at `/api/webhooks/notifications`. For it to work, you need to:
+This sample application provides two webhook integrations exposed at `/api/webhooks/notifications` and `/api/webhooks/giving`, respectively to receive payment notifications and donation notifications. For it to work, you need to:
 
 1. Provide a way for the Adyen platform to reach your running application
 2. Add a Standard webhook in your Customer Area
@@ -99,15 +99,17 @@ There are typically 3 options:
 * expose your localhost with tunneling software (i.e. ngrok)
 
 #### Option 1: cloud deployment
-If you deploy on your cloud provider (or your own public server) the webhook URL will be the URL of the server 
+If you deploy on your cloud provider (or your own public server) the webhook URLs will be the URL of the server 
 ```
   https://{cloud-provider}/api/webhooks/notifications
+  https://{cloud-provider}/api/webhooks/giving
 ```
 
 #### Option 2: Gitpod
 If you use Gitpod the webhook URL will be the host assigned by Gitpod
 ```
   https://myorg-myrepo-y8ad7pso0w5.ws-eu75.gitpod.io/api/webhooks/notifications
+  https://myorg-myrepo-y8ad7pso0w5.ws-eu75.gitpod.io/api/webhooks/giving
 ```
 **Note:** when starting a new Gitpod workspace the host changes, make sure to **update the Webhook URL** in the Customer Area
 
