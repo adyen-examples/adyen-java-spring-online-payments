@@ -1,0 +1,41 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title>Select type</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <div class='main-container'>
+    <div class="info">
+      <h1>Adyen Giving - Donations demo</h1>
+      <p>
+        This is a sample designed to demonstrate the <a href="https://docs.adyen.com/online-payments/donations/web-component">Adyen Giving</a> donations workflow.
+      </p>
+      <p>
+        First make a test payment using one of our test card numbers, so you can see the donation screen appear.
+        You can find more test card numbers <a href="https://docs.adyen.com/development-resources/test-cards/test-card-numbers">here</a>.
+      </p>
+      <p>To learn more about client-side integration solutions, check out <a href="https://docs.adyen.com/checkout">Online
+        payments.</a></p>
+    </div>
+    <ul class="integration-list">
+      <li class="integration-list-item">
+        <a href="/preview?type=card" class="integration-list-item-link">
+          <div class="title-container">
+            <p class="integration-list-item-title">Card</p>
+          </div>
+        </a>
+      </li>
+<!--      <li class="integration-list-item">-->
+<!--        <a href="/preview?type=ideal" class="integration-list-item-link">-->
+<!--          <div class="title-container">-->
+<!--            <p class="integration-list-item-title">iDEAL</p>-->
+<!--          </div>-->
+<!--        </a>-->
+<!--      </li>-->
+    </ul>
+  </div>
+</div>
+</body>
+</html>

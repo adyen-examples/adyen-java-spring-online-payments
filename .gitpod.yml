@@ -31,6 +31,10 @@ tasks:
           echo "Build subscription-example application"
           cd subscription-example && ./gradlew bootJar
         ;;
+        "giving-example")
+          echo "Build giving-example application"
+          cd giving-example && ./gradlew bootJar
+        ;;
         "paybylink-example")
           echo "Build paybylink-example application"
           cd paybylink-example && ./gradlew bootJar

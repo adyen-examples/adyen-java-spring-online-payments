@@ -20,3 +20,7 @@ updates:
     directory: "/subscription-example"
     schedule:
       interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/giving-example"
+    schedule:
+      interval: "daily"
