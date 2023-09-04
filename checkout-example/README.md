@@ -5,13 +5,14 @@
 
 ## Details
 
-
-**If you want to integrate a more complex flow, see [here](https://docs.adyen.com/online-payments/web-drop-in/additional-use-cases?tab=sessions_flow_advanced_flow_1) for more information and have a look at the `../checkout-example-advanced` folder**
-
-
-This repository showcases PCI-compliant UI integrations for Adyen online payments. Explore the simplified e-commerce demo with annotated Adyen API code to enable various payment options in your checkout experience.  
+This repository showcases PCI-compliant integrations of the **Session Flow**, the default integration that we recommend for merchants. Explore the simplified e-commerce demo with annotated Adyen API code to enable various payment options in your checkout experience.  
 
 It includes a **Java + Spring Boot + Thymeleaf** application that supports Adyen Drop-in and Components (ACH, Alipay, Cards, Dotpay, iDEAL, Klarna, PayPal, etc..)
+
+> **Note**
+For more [advanced use cases](https://docs.adyen.com/online-payments/build-your-integration/additional-use-cases/) check out the **Advanced Flow** demo in the `../checkout-example-advanced` folder.
+>
+
 
 ![Card checkout demo](src/main/resources/static/images/cardcheckout.gif)
 
