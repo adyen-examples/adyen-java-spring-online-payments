@@ -1,15 +1,7 @@
 # Adyen [online payment](https://docs.adyen.com/online-payments) integration demo - Sessions Flow
 
-## Run this integration in seconds using [Gitpod](https://gitpod.io/)
-
-* Open your [Adyen Test Account](https://ca-test.adyen.com/ca/ca/overview/default.shtml) and create a set of [API keys](https://docs.adyen.com/user-management/how-to-get-the-api-key).
-* Go to [gitpod account variables](https://gitpod.io/variables).
-* Set the `ADYEN_API_KEY`, `ADYEN_CLIENT_KEY`, `ADYEN_HMAC_KEY` and `ADYEN_MERCHANT_ACCOUNT` variables.
-* Click the button below!
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/checkout-example)
-
-_NOTE: To allow the Adyen Drop-In and Components to load, you have to add `https://*.gitpod.io` as allowed origin for your chosen set of [API Credentials](https://ca-test.adyen.com/ca/ca/config/api_credentials_new.shtml)_
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/checkout-example)  
+[First time with Gitpod?](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
 
 ## Details
 
@@ -17,28 +9,13 @@ _NOTE: To allow the Adyen Drop-In and Components to load, you have to add `https
 **If you want to integrate a more complex flow, see [here](https://docs.adyen.com/online-payments/web-drop-in/additional-use-cases?tab=sessions_flow_advanced_flow_1) for more information and have a look at the `../checkout-example-advanced` folder**
 
 
-This repository includes examples of PCI-compliant UI integrations for online payments with Adyen. Within this demo app, you'll find a simplified version of an e-commerce website, complete with commented code to highlight key features and concepts of Adyen's API. Check out the underlying code to see how you can integrate Adyen to give your shoppers the option to pay with their preferred payment methods, all in a seamless checkout experience.
+This repository showcases PCI-compliant UI integrations for Adyen online payments. Explore the simplified e-commerce demo with annotated Adyen API code to enable various payment options in your checkout experience.  
+
+It includes a **Java + Spring Boot + Thymeleaf** application that supports Adyen Drop-in and Components (ACH, Alipay, Cards, Dotpay, iDEAL, Klarna, PayPal, etc..)
 
 ![Card checkout demo](src/main/resources/static/images/cardcheckout.gif)
 
-## Supported Integrations
-
-
-[Online payments](https://docs.adyen.com/online-payments) **Java + Spring Boot + Thymeleaf** demos of the following client-side integrations are currently available in this repository:
-
-- Drop-in
-- Components
-    -   ACH
-    -   Alipay
-    -   Card (3DS2)
-    -   Dotpay
-    -   giropay
-    -   iDEAL
-    -   Klarna (Pay now, Pay later, Slice it)
-    -   SOFORT
-    -   PayPal
-
-The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries#java)).
+The Demo leverages the Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries#java)).
 
 ## Requirements
 
