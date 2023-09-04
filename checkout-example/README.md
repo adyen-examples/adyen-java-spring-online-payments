@@ -7,7 +7,7 @@
 
 This repository showcases PCI-compliant integrations of the **Session Flow**, the default integration that we recommend for merchants. Explore the simplified e-commerce demo with annotated Adyen API code to enable various payment options in your checkout experience.  
 
-It includes a **Java + Spring Boot + Thymeleaf** application that supports Adyen Drop-in and Components (ACH, Alipay, Cards, Dotpay, iDEAL, Klarna, PayPal, etc..)
+It includes a **Java + Spring Boot + Thymeleaf** application that supports Adyen Drop-in and Components (ACH, Alipay, Cards, Dotpay, iDEAL, Klarna, PayPal, etc..).
 
 > **Note**
 For more [advanced use cases](https://docs.adyen.com/online-payments/build-your-integration/additional-use-cases/) check out the **Advanced Flow** demo in the `../checkout-example-advanced` folder.
@@ -70,9 +70,9 @@ ADYEN_HMAC_KEY=yourHmacKey
 ./gradlew bootRun
 ```
 
-3. Visit [http://localhost:8080/](http://localhost:8080/) to select an integration type.
+3. Visit [http://localhost:8080/](http://localhost:8080/) to choose an integration type.
 
-To try out integrations with test card numbers and payment method details, see [Test card numbers](https://docs.adyen.com/development-resources/test-cards/test-card-numbers).
+To try out the different payment methods with our Test Card numbers and other payment method details, see [Test card numbers](https://docs.adyen.com/development-resources/test-cards/test-card-numbers).
 
 ## Testing webhooks
 
