@@ -1,15 +1,17 @@
 # Adyen [online payment](https://docs.adyen.com/online-payments) integration demo - Sessions Flow
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/checkout-example)  
-[First time with Gitpod?](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
+&nbsp;[First time with Gitpod?](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
 
 ## Details
 
 This repository showcases a PCI-compliant integration of the **Session Flow**, the default integration that we recommend for merchants. Explore this simplified e-commerce demo to discover the code, libraries and configuration you need to enable various payment options in your checkout experience.  
 
 It includes a **Java + Spring Boot + Thymeleaf** application that supports [Adyen Drop-in and Components](https://docs.adyen.com/online-payments/build-your-integration) 
-(ACH, Alipay, Cards, Dotpay, iDEAL, Klarna, PayPal, etc..) using the Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library)).
+(ACH, Alipay, Cards, Dotpay, iDEAL, Klarna, PayPal, etc..) using the Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library)).   
 
+<br/>
+      
 > **Note**
 For more [advanced use cases](https://docs.adyen.com/online-payments/build-your-integration/additional-use-cases/) check out the **Advanced Flow** demo in the `../checkout-example-advanced` folder.
 >
@@ -34,13 +36,13 @@ git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.gi
 
 ### Set the environment variables
 Set environment variables for the required configuration
-    - [API key](https://docs.adyen.com/user-management/how-to-get-the-api-key)
-    - [Client Key](https://docs.adyen.com/user-management/client-side-authentication)
-    - [Merchant Account](https://docs.adyen.com/account/account-structure)
-    - [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures)
+* [API key](https://docs.adyen.com/user-management/how-to-get-the-api-key)
+* [Client Key](https://docs.adyen.com/user-management/client-side-authentication)
+* [Merchant Account](https://docs.adyen.com/account/account-structure)
+* [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures)
 
 
-On Linux/Mac export env variables
+On Linux/Mac export the env variables
 ```shell
 export ADYEN_API_KEY=yourAdyenApiKey
 export ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
@@ -48,7 +50,7 @@ export ADYEN_CLIENT_KEY=yourAdyenClientKey
 export ADYEN_HMAC_KEY=yourHmacKey
 ```
 
-On Windows CMD you can use below commands instead
+On Windows CMD you can set the env variables
 ```shell
 set ADYEN_API_KEY=yourAdyenApiKey
 set ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
@@ -66,7 +68,7 @@ ADYEN_HMAC_KEY=yourHmacKey
 
 ### Configure allowed origins (CORS)
 
-It is necessary to specify the domains or URLs that will make requests to Adyen.
+It is required to specify the domain or URL of the web applications that will make requests to Adyen.
 
 In the Customer Area add `http://localhost:8080` in the list of Allowed Origins associated to the Client Key (API credential).
 
@@ -82,7 +84,7 @@ Start the server:
 
 Visit [http://localhost:8080/](http://localhost:8080/) to choose an integration type.
 
-To try out the different payment methods with our [Test card numbers](https://docs.adyen.com/development-resources/test-cards/test-card-numbers) and other payment method details.
+Try out the different payment methods with our [Test card numbers](https://docs.adyen.com/development-resources/test-cards/test-card-numbers) and other payment method details.
 
 ## Webhooks
 
@@ -98,7 +100,7 @@ Read below how to setup, consume and test the webhook(s).
 
 In the Customer Area in the "Developers" section [create](https://docs.adyen.com/development-resources/webhooks/#set-up-webhooks-in-your-customer-area) a new Standard webhook
 
-Copy the generated HMAC Key and set it as the environment variable (as explained above).
+Copy the generated HMAC Key and set it as an environment variable (as explained above).
 
 Make sure the webhook is **enabled** (therefore it can receive the notifications).
 
