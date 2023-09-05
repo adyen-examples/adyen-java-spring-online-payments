@@ -5,18 +5,17 @@
 
 ## Details
 
-This repository showcases PCI-compliant integrations of the **Session Flow**, the default integration that we recommend for merchants. Explore the simplified e-commerce demo with annotated Adyen API code to enable various payment options in your checkout experience.  
+This repository showcases a PCI-compliant integration of the **Session Flow**, the default integration that we recommend for merchants. Explore this simplified e-commerce demo to discover the code, libraries and configuration you need to enable various payment options in your checkout experience.  
 
-It includes a **Java + Spring Boot + Thymeleaf** application that supports Adyen Drop-in and Components (ACH, Alipay, Cards, Dotpay, iDEAL, Klarna, PayPal, etc..).
+It includes a **Java + Spring Boot + Thymeleaf** application that supports [Adyen Drop-in and Components](https://docs.adyen.com/online-payments/build-your-integration) 
+(ACH, Alipay, Cards, Dotpay, iDEAL, Klarna, PayPal, etc..) using the Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library)).
 
 > **Note**
 For more [advanced use cases](https://docs.adyen.com/online-payments/build-your-integration/additional-use-cases/) check out the **Advanced Flow** demo in the `../checkout-example-advanced` folder.
 >
 
-
 ![Card checkout demo](src/main/resources/static/images/cardcheckout.gif)
 
-The Demo leverages the Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries#java)).
 
 ## Requirements
 
@@ -33,13 +32,13 @@ git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.gi
 
 ## Usage
 
-1. Set environment variables for the required configuration
+### Set the environment variables
+Set environment variables for the required configuration
     - [API key](https://docs.adyen.com/user-management/how-to-get-the-api-key)
     - [Client Key](https://docs.adyen.com/user-management/client-side-authentication)
     - [Merchant Account](https://docs.adyen.com/account/account-structure)
     - [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures)
 
-Remember to include `http://localhost:8080` in the list of Allowed Origins
 
 On Linux/Mac export env variables
 ```shell
@@ -64,120 +63,54 @@ ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
 ADYEN_CLIENT_KEY=yourAdyenClientKey
 ADYEN_HMAC_KEY=yourHmacKey
 ```
-2. Start the server:
+
+### Configure allowed origins (CORS)
+
+It is necessary to specify the domains or URLs that will make requests to Adyen.
+
+In the Customer Area add `http://localhost:8080` in the list of Allowed Origins associated to the Client Key (API credential).
+
+### Run the demo
+
+Start the server:
 
 ```
+ cd checkout-example
+    
 ./gradlew bootRun
 ```
 
-3. Visit [http://localhost:8080/](http://localhost:8080/) to choose an integration type.
+Visit [http://localhost:8080/](http://localhost:8080/) to choose an integration type.
 
-To try out the different payment methods with our Test Card numbers and other payment method details, see [Test card numbers](https://docs.adyen.com/development-resources/test-cards/test-card-numbers).
+To try out the different payment methods with our [Test card numbers](https://docs.adyen.com/development-resources/test-cards/test-card-numbers) and other payment method details.
 
-## Testing webhooks
+## Webhooks
 
-Webhooks deliver asynchronous notifications and it is important to test them during the setup of your integration. You can find more information about webhooks in [this detailed blog post](https://www.adyen.com/blog/Integrating-webhooks-notifications-with-Adyen-Checkout).
+Webhooks deliver asynchronous notifications obout payment status (like authorisation) and other events that are important
+to receive and process. You can find more information about webhooks in [this blog post](https://www.adyen.com/knowledge-hub/consuming-webhooks).
 
-This sample application provides a simple webhook integration exposed at `/api/webhooks/notifications`. For it to work, you need to:
+This sample application requires the following webhook(s):
+* **Standard webhook** to receive the final payment authorisation
 
-1. Provide a way for the Adyen platform to reach your running application
-2. Add a Standard webhook in your Customer Area
+Read below how to setup, consume and test the webhook(s).
 
-### Making your server reachable
+### Setup a webhook
 
-Your endpoint that will consume the incoming webhook must be publicly accessible.
+In the Customer Area in the "Developers" section [create](https://docs.adyen.com/development-resources/webhooks/#set-up-webhooks-in-your-customer-area) a new Standard webhook
 
-There are typically 3 options:
-* deploy on your own cloud provider
-* deploy on Gitpod
-* expose your localhost with tunneling software (i.e. ngrok)
+Copy the generated HMAC Key and set it as the environment variable (as explained above).
 
-#### Option 1: cloud deployment
-If you deploy on your cloud provider (or your own public server) the webhook URL will be the URL of the server 
-```
-  https://{cloud-provider}/api/webhooks/notifications
-```
+Make sure the webhook is **enabled** (therefore it can receive the notifications).
 
-#### Option 2: Gitpod
-If you use Gitpod the webhook URL will be the host assigned by Gitpod
-```
-  https://myorg-myrepo-y8ad7pso0w5.ws-eu75.gitpod.io/api/webhooks/notifications
-```
-**Note:** when starting a new Gitpod workspace the host changes, make sure to **update the Webhook URL** in the Customer Area
+### Expose an endpoint
 
-#### Option 3: localhost via tunneling software
-If you use a tunneling service like [ngrok](ngrok) the webhook URL will be the generated URL (ie `https://c991-80-113-16-28.ngrok.io`)
+The demo provides a simple webhook implementation exposed at `/api/webhooks/notifications` that will show you how to
+receive, validate and consume the webhook payload.
 
-```bash
-  $ ngrok http 8080
-  
-  Session Status                online                                                                                           
-  Account                       ############                                                                      
-  Version                       #########                                                                                          
-  Region                        United States (us)                                                                                 
-  Forwarding                    http://c991-80-113-16-28.ngrok.io -> http://localhost:8080                                       
-  Forwarding                    https://c991-80-113-16-28.ngrok.io -> http://localhost:8080           
-```
+### Test your webhook
 
-**Note:** when restarting ngrok a new URL is generated, make sure to **update the Webhook URL** in the Customer Area
+Testing webhooks is not trivial: the application runs on your `localhost` or on a different server/cloud, and the Adyen
+platform must be able to reach it. 
 
-### Set up a webhook
-
-* In the Customer Area go to Developers -> Webhooks and create a new 'Standard notification' webhook.
-* Enter the URL of your application/endpoint (see options [above](#making-your-server-reachable))
-* Define username and password for Basic Authentication
-* Generate the HMAC Key
-* Optionally, in Additional Settings, add the data you want to receive. A good example is 'Payment Account Reference'.
-* Make sure the webhook is **Enabled** (therefore it can receive the notifications)
-
-That's it! Every time you perform a new payment, your application will receive a notification from the Adyen platform.
-
-## Deploying this example to the cloud
-
-As part of this example, we are providing a [Terraform](https://www.terraform.io/) configuration file that can be used to deploy this demo to the Amazon cloud on a [Beanstalk](https://aws.amazon.com/elasticbeanstalk/) environment.
-
- ⚠️ This part will deploy (AWS) cloud resources and can incur charges ⚠️.
-
-
-### Extra prerequisites
-
-* The [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html), with a configured profile (and an AWS account).
-* The [Terraform](https://www.terraform.io/) CLI, with the `terraform` executable in your PATH.
-* Ready to use Adyen API and client keys.
-
-### Usage
-
-* Compile the project: `./gradlew build`
-* Create a `terraform.tfvars` file in the root directory of this repository. Here is a example :
-
-```
-adyen_api_key = "testApiKey"
-adyen_merchant_account = "testMerchantAccount"
-adyen_client_key = "testClientKey"
-adyen_hmac_key = "testHMACKey"
-```
-
-* Run the `terraform init` command to initialize the Terraform configuration, and `terraform apply` to deploy the environment.
-* At the end of the deployment, Terraform will output several URLs :
-
-```
-adyen_url = "https://ca-test.adyen.com/ca/ca/config/showthirdparty.shtml"
-demo_url = "http://adyen-spring-development-cc66dd5f.eu-west-1.elasticbeanstalk.com"
-environment_url = "https://eu-west-1.console.aws.amazon.com/elasticbeanstalk/home?region=eu-west-1#/applications"
-```
-
-* You can access the demo using the `demo_url`.
-* The `adyen_url` can be used to create a [notification webhook](https://docs.adyen.com/development-resources/webhooks) in the Adyen customer area.
-* Use `terraform destroy` to remove the environment and avoid being charged for the resources more than necessary.
-* The `environment_url` can be used to access the AWS Beanstalk environment and possibly update the configuration.
-
-## Contributing
-
-We commit all our new features directly into our GitHub repository. Feel free to request or suggest new features or code changes yourself as well!
-
-Find out more in our [Contributing](https://github.com/adyen-examples/.github/blob/main/CONTRIBUTING.md) guidelines.
-
-## License
-
-MIT license. For more information, see the **LICENSE** file in the root directory.
+Check out our [Webhooks Testing guide](https://github.com/adyen-examples/.github/blob/main/pages/webhooks-testing.md).
 
