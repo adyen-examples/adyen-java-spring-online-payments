@@ -38,24 +38,7 @@ async function startGiving() {
   const checkout= await AdyenCheckout(
     {
       clientKey,
-      locale: "en_US",
       environment: "test",
-      showPayButton: true,
-      paymentMethodsResponse: paymentMethodsResponse,
-      paymentMethodsConfiguration: {
-        ideal: {
-          showImage: true,
-        },
-        card: {
-          hasHolderName: true,
-          holderNameRequired: true,
-          name: "Credit or debit card",
-          amount: {
-            value: 10000,
-            currency: "EUR",
-          },
-        },
-      },
     }
   );
 
