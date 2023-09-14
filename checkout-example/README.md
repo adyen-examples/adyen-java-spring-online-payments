@@ -1,32 +1,33 @@
-# Adyen [online payment](https://docs.adyen.com/online-payments) integration demo - Sessions Flow
+# Adyen [Online Payments](https://docs.adyen.com/online-payments) Integration Demo - Sessions Flow
+
+## Run demo in one-click
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/checkout-example)  
-&nbsp;[First time with Gitpod?](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
+&nbsp;[**Click here if it's your first time with Gitpod**](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
 
-## Details
+## Description
 
-This repository showcases a PCI-compliant integration of the **Session Flow**, the default integration that we recommend for merchants. Explore this simplified e-commerce demo to discover the code, libraries and configuration you need to enable various payment options in your checkout experience.  
+This repository showcases a PCI-compliant integration of the **Sessions Flow**, the default integration that we recommend for merchants. Explore this simplified e-commerce demo to discover the code, libraries and configuration you need to enable various payment options in your checkout experience.  
 
 It includes a **Java + Spring Boot + Thymeleaf** application that supports [Adyen Drop-in and Components](https://docs.adyen.com/online-payments/build-your-integration) 
 (ACH, Alipay, Cards, Dotpay, iDEAL, Klarna, PayPal, etc..) using the Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library)).   
 
-<br/>
       
-> **Note**
-For more [advanced use cases](https://docs.adyen.com/online-payments/build-your-integration/additional-use-cases/) check out the **Advanced Flow** demo in the `../checkout-example-advanced` folder.
->
+> **Note:**
+For three-step [advanced use case](https://docs.adyen.com/online-payments/build-your-integration/additional-use-cases/) check out the **Advanced Flow** demo in the [`checkout-example-advanced`](../checkout-example-advanced) folder.
 
 ![Card checkout demo](src/main/resources/static/images/cardcheckout.gif)
 
 
 ## Requirements
 
--   Java 17
--   Network access to maven central
+- [Adyen API Credentials](https://docs.adyen.com/development-resources/api-credentials/)
+- Java 17
+- Network access to maven central
 
 ## Installation
 
-1. Clone this repo:
+1. Clone this repository:
 
 ```
 git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.git
@@ -35,14 +36,14 @@ git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.gi
 ## Usage
 
 ### Set the environment variables
-Set environment variables for the required configuration
+Set environment variables for the required configuration.
 * [API key](https://docs.adyen.com/user-management/how-to-get-the-api-key)
 * [Client Key](https://docs.adyen.com/user-management/client-side-authentication)
 * [Merchant Account](https://docs.adyen.com/account/account-structure)
 * [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures)
 
 
-On Linux/Mac export the env variables
+On Linux/Mac export the environmental variables.
 ```shell
 export ADYEN_API_KEY=yourAdyenApiKey
 export ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
@@ -50,7 +51,7 @@ export ADYEN_CLIENT_KEY=yourAdyenClientKey
 export ADYEN_HMAC_KEY=yourHmacKey
 ```
 
-On Windows CMD you can set the env variables
+On Windows CMD you can set the environmental variables.
 ```shell
 set ADYEN_API_KEY=yourAdyenApiKey
 set ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
@@ -58,7 +59,7 @@ set ADYEN_CLIENT_KEY=yourAdyenClientKey
 set ADYEN_HMAC_KEY=yourHmacKey
 ```
 
-Alternatively it is possible to define the settings in the `application.properties`
+Alternatively it is possible to define the settings in the `application.properties`.
 ```# application.properties
 ADYEN_API_KEY=yourAdyenApiKey
 ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
@@ -70,9 +71,9 @@ ADYEN_HMAC_KEY=yourHmacKey
 
 It is required to specify the domain or URL of the web applications that will make requests to Adyen.
 
-In the Customer Area add `http://localhost:8080` in the list of Allowed Origins associated to the Client Key (API credential).
+In the Customer Area add `http://localhost:8080` in the list of Allowed Origins associated with the [Client Key](https://docs.adyen.com/user-management/client-side-authentication).
 
-### Run the demo
+### Run the application
 
 Start the server:
 
@@ -88,31 +89,30 @@ Try out the different payment methods with our [Test card numbers](https://docs.
 
 ## Webhooks
 
-Webhooks deliver asynchronous notifications obout payment status (like authorisation) and other events that are important
-to receive and process. You can find more information about webhooks in [this blog post](https://www.adyen.com/knowledge-hub/consuming-webhooks).
+Webhooks deliver asynchronous notifications obout the payment status and other events that are important to receive and process. 
+You can find more information about webhooks in [this blog post](https://www.adyen.com/knowledge-hub/consuming-webhooks).
 
-This sample application requires the following webhook(s):
-* **Standard webhook** to receive the final payment authorisation
+### Webhook setup
 
-Read below how to setup, consume and test the webhook(s).
+In the Customer Area under the `Developers → Webhooks` section, [create](https://docs.adyen.com/development-resources/webhooks/#set-up-webhooks-in-your-customer-area) a new `Standard webhook`.
 
-### Setup a webhook
+A good practice is to set up basic authentication, copy the generated HMAC Key and set it as an environment variable. The application will use this to verify the [HMAC signatures](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures/).
 
-In the Customer Area in the "Developers" section [create](https://docs.adyen.com/development-resources/webhooks/#set-up-webhooks-in-your-customer-area) a new Standard webhook
-
-Copy the generated HMAC Key and set it as an environment variable (as explained above).
-
-Make sure the webhook is **enabled** (therefore it can receive the notifications).
+Make sure the webhook is **enabled**, so it can receive notifications.
 
 ### Expose an endpoint
 
-The demo provides a simple webhook implementation exposed at `/api/webhooks/notifications` that will show you how to
-receive, validate and consume the webhook payload.
+This demo provides a simple webhook implementation exposed at `/api/webhooks/notifications` that shows you how to receive, validate and consume the webhook payload.
 
 ### Test your webhook
 
-Testing webhooks is not trivial: the application runs on your `localhost` or on a different server/cloud, and the Adyen
-platform must be able to reach it. 
+The following webhooks `events` should be enabled:
+* **AUTHORISATION**
 
-Check out our [Webhooks Testing guide](https://github.com/adyen-examples/.github/blob/main/pages/webhooks-testing.md).
 
+To make sure that the Adyen platform can reach your application, we have written a [Webhooks Testing Guide](https://github.com/adyen-examples/.github/blob/main/pages/webhooks-testing.md)
+that explores several options on how you can easily achieve this (e.g. running on localhost or cloud).
+
+## Contributing
+Are we missing features? Did you find a bug? Let us know!
+Find out more in our [contributing guidelines](https://github.com/adyen-examples/.github/blob/main/CONTRIBUTING.md).
