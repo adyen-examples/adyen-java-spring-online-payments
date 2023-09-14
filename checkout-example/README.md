@@ -5,7 +5,7 @@
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/checkout-example)  
 &nbsp;[**Click here if it's your first time with Gitpod**](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
 
-## Description
+# Description
 
 This repository showcases a PCI-compliant integration of the **Sessions Flow**, the default integration that we recommend for merchants. Explore this simplified e-commerce demo to discover the code, libraries and configuration you need to enable various payment options in your checkout experience.  
 
@@ -25,25 +25,19 @@ For a three-step [advanced use case](https://docs.adyen.com/online-payments/buil
 - Java 17
 - Network access to maven central
 
-## Installation
-
-1. Clone this repository:
+## 1. Installation
 
 ```
 git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.git
 ```
 
-## Usage
-
-### Set the environment variables
-Set environment variables for the required configuration.
+## 2. Set the environment variables
 * [API key](https://docs.adyen.com/user-management/how-to-get-the-api-key)
 * [Client Key](https://docs.adyen.com/user-management/client-side-authentication)
 * [Merchant Account](https://docs.adyen.com/account/account-structure)
 * [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures)
 
-
-On Linux/Mac export the environmental variables.
+On Linux/Mac/Windows export/set the environmental variables. 
 ```shell
 export ADYEN_API_KEY=yourAdyenApiKey
 export ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
@@ -51,43 +45,33 @@ export ADYEN_CLIENT_KEY=yourAdyenClientKey
 export ADYEN_HMAC_KEY=yourHmacKey
 ```
 
-On Windows CMD you can set the environmental variables.
-```shell
-set ADYEN_API_KEY=yourAdyenApiKey
-set ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
-set ADYEN_CLIENT_KEY=yourAdyenClientKey
-set ADYEN_HMAC_KEY=yourHmacKey
-```
-
-Alternatively it is possible to define the settings in the `application.properties`.
-```# application.properties
+Alternatively, it's possible to define the variables in the `application.properties`.
+```txt
 ADYEN_API_KEY=yourAdyenApiKey
 ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
 ADYEN_CLIENT_KEY=yourAdyenClientKey
 ADYEN_HMAC_KEY=yourHmacKey
 ```
 
-### Configure allowed origins (CORS)
+## 3. Configure allowed origins (CORS)
 
 It is required to specify the domain or URL of the web applications that will make requests to Adyen.
 
 In the Customer Area add `http://localhost:8080` in the list of Allowed Origins associated with the [Client Key](https://docs.adyen.com/user-management/client-side-authentication).
 
-### Run the application
-
-Start the server:
+## 4. Run the application
 
 ```
- cd checkout-example
+cd checkout-example
     
 ./gradlew bootRun
 ```
 
 Visit [http://localhost:8080/](http://localhost:8080/) to choose an integration type.
 
-Try out the different payment methods with our [Test card numbers](https://docs.adyen.com/development-resources/test-cards/test-card-numbers) and other payment method details.
+Try out the different payment methods with our [test card numbers](https://docs.adyen.com/development-resources/test-cards/test-card-numbers) and other payment method details.
 
-## Webhooks
+# Webhooks
 
 Webhooks deliver asynchronous notifications obout the payment status and other events that are important to receive and process. 
 You can find more information about webhooks in [this blog post](https://www.adyen.com/knowledge-hub/consuming-webhooks).

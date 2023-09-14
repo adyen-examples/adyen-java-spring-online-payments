@@ -6,32 +6,16 @@
 &nbsp;[**Click here if it's your first time with Gitpod**](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
 
 ## Description
-
+This repository includes examples of PCI-compliant UI integrations for online payments with Adyen.
+Within this demo app, you'll find a simplified version of an e-commerce website, complete with commented code to highlight key features and concepts of Adyen's API.
+Check out the underlying code to see how you can integrate Adyen to give your shoppers the option to pay with their preferred payment methods, all in a seamless checkout experience.
 
 > **Note:**
 For a simpler flow using `/sessions`, check out the demo in the [`checkout-example`](../checkout-example) folder.
 
-This repository includes examples of PCI-compliant UI integrations for online payments with Adyen. Within this demo app, you'll find a simplified version of an e-commerce website, complete with commented code to highlight key features and concepts of Adyen's API. Check out the underlying code to see how you can integrate Adyen to give your shoppers the option to pay with their preferred payment methods, all in a seamless checkout experience.
 
 ![Card checkout demo](src/main/resources/static/images/cardcheckout.gif)
 
-## Supported Integrations
-
-[Online payments](https://docs.adyen.com/online-payments) **Java + Spring Boot + Thymeleaf** demos of the following client-side integrations are currently available in this repository:
-
--   Drop-in
--   Component
-    -   ACH
-    -   Alipay
-    -   Card (3DS2)
-    -   Dotpay
-    -   giropay
-    -   iDEAL
-    -   Klarna (Pay now, Pay later, Slice it)
-    -   SOFORT
-    -   PayPal
-
-The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries#java)).
 
 ## Requirements
 
@@ -39,25 +23,19 @@ The Demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Ady
 - Java 17
 - Network access to maven central
 
-## Installation
-
-1. Clone this repository:
+## 1. Installation
 
 ```
 git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.git
 ```
 
-## Usage
-
-### Set the environment variables
-Set environment variables for the required configuration.
+## 2. Set the environment variables
 * [API key](https://docs.adyen.com/user-management/how-to-get-the-api-key)
 * [Client Key](https://docs.adyen.com/user-management/client-side-authentication)
 * [Merchant Account](https://docs.adyen.com/account/account-structure)
 * [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures)
 
-
-On Linux/Mac export the environmental variables.
+On Linux/Mac/Windows export/set the environmental variables.
 ```shell
 export ADYEN_API_KEY=yourAdyenApiKey
 export ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
@@ -65,43 +43,33 @@ export ADYEN_CLIENT_KEY=yourAdyenClientKey
 export ADYEN_HMAC_KEY=yourHmacKey
 ```
 
-On Windows CMD you can set the environmental variables.
-```shell
-set ADYEN_API_KEY=yourAdyenApiKey
-set ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
-set ADYEN_CLIENT_KEY=yourAdyenClientKey
-set ADYEN_HMAC_KEY=yourHmacKey
-```
-
-Alternatively it is possible to define the settings in the `application.properties`.
-```# application.properties
+Alternatively, it's possible to define the variables in the `application.properties`.
+```txt
 ADYEN_API_KEY=yourAdyenApiKey
 ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
 ADYEN_CLIENT_KEY=yourAdyenClientKey
 ADYEN_HMAC_KEY=yourHmacKey
 ```
 
-### Configure allowed origins (CORS)
+## 3. Configure allowed origins (CORS)
 
 It is required to specify the domain or URL of the web applications that will make requests to Adyen.
 
 In the Customer Area add `http://localhost:8080` in the list of Allowed Origins associated with the [Client Key](https://docs.adyen.com/user-management/client-side-authentication).
 
-### Run the application
-
-Start the server:
+## 4. Run the application
 
 ```
- cd checkout-example
+cd checkout-example
     
 ./gradlew bootRun
 ```
 
 Visit [http://localhost:8080/](http://localhost:8080/) to choose an integration type.
 
-Try out the different payment methods with our [Test card numbers](https://docs.adyen.com/development-resources/test-cards/test-card-numbers) and other payment method details.
+Try out the different payment methods with our [test card numbers](https://docs.adyen.com/development-resources/test-cards/test-card-numbers) and other payment method details.
 
-## Webhooks
+# Webhooks
 
 Webhooks deliver asynchronous notifications obout the payment status and other events that are important to receive and process.
 You can find more information about webhooks in [this blog post](https://www.adyen.com/knowledge-hub/consuming-webhooks).
@@ -130,4 +98,3 @@ that explores several options on how you can easily achieve this (e.g. running o
 ## Contributing
 Are we missing features? Did you find a bug? Let us know!
 Find out more in our [contributing guidelines](https://github.com/adyen-examples/.github/blob/main/CONTRIBUTING.md).
-
