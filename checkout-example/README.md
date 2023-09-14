@@ -14,7 +14,7 @@ It includes a **Java + Spring Boot + Thymeleaf** application that supports [Adye
 
       
 > **Note:**
-For three-step [advanced use case](https://docs.adyen.com/online-payments/build-your-integration/additional-use-cases/) check out the **Advanced Flow** demo in the [`checkout-example-advanced`](../checkout-example-advanced) folder.
+For a three-step [advanced use case](https://docs.adyen.com/online-payments/build-your-integration/additional-use-cases/) check out the **Advanced Flow** demo in the [`checkout-example-advanced`](../checkout-example-advanced) folder.
 
 ![Card checkout demo](src/main/resources/static/images/cardcheckout.gif)
 
