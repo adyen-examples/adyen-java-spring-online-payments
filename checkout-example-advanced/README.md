@@ -6,7 +6,7 @@
 &nbsp;[First time with Gitpod?](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
 
 ## Description
-This repository showcases a PCI-compliant integration of the Advanced Flow. Explore this simplified e-commerce demo to discover the code, libraries and configuration you need to enable various payment options in your checkout experience.
+This repository showcases a PCI-compliant integration of the **Advanced Flow**. Explore this simplified e-commerce demo to discover the code, libraries and configuration you need to enable various payment options in your checkout experience.
 
 It includes a **Java + Spring Boot + Thymeleaf** application that supports [Adyen Drop-in and Components](https://docs.adyen.com/online-payments/build-your-integration) 
 (ACH, Alipay, Cards, Dotpay, iDEAL, Klarna, PayPal, etc..) using the Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library)).   
