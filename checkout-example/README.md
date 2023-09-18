@@ -14,7 +14,7 @@ It includes a **Java + Spring Boot + Thymeleaf** application that supports [Adye
 
       
 > **Note:**
-For a three-step [advanced use case](https://docs.adyen.com/online-payments/build-your-integration/additional-use-cases/) check out the **Advanced Flow** demo in the [`checkout-example-advanced`](../checkout-example-advanced) folder.
+For a three-steps [advanced use case](https://docs.adyen.com/online-payments/build-your-integration/additional-use-cases/) check out the **Advanced Flow** demo in the [`checkout-example-advanced`](../checkout-example-advanced) folder.
 
 ![Card checkout demo](src/main/resources/static/images/cardcheckout.gif)
 
@@ -23,7 +23,7 @@ For a three-step [advanced use case](https://docs.adyen.com/online-payments/buil
 
 - [Adyen API Credentials](https://docs.adyen.com/development-resources/api-credentials/)
 - Java 17
-- Network access to maven central
+- Network access to Maven central
 
 ## 1. Installation
 
@@ -37,7 +37,7 @@ git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.gi
 * [Merchant Account](https://docs.adyen.com/account/account-structure)
 * [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures)
 
-On Linux/Mac/Windows export/set the environmental variables. 
+On Linux/Mac/Windows export/set the environment variables. 
 ```shell
 export ADYEN_API_KEY=yourAdyenApiKey
 export ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
@@ -57,7 +57,7 @@ ADYEN_HMAC_KEY=yourHmacKey
 
 It is required to specify the domain or URL of the web applications that will make requests to Adyen.
 
-In the Customer Area add `http://localhost:8080` in the list of Allowed Origins associated with the [Client Key](https://docs.adyen.com/user-management/client-side-authentication).
+In the Customer Area add `http://localhost:8080` in the list of Allowed Origins associated with the Client Key.
 
 ## 4. Run the application
 
@@ -73,7 +73,7 @@ Try out the different payment methods with our [test card numbers](https://docs.
 
 # Webhooks
 
-Webhooks deliver asynchronous notifications obout the payment status and other events that are important to receive and process. 
+Webhooks deliver asynchronous notifications about the payment status and other events that are important to receive and process. 
 You can find more information about webhooks in [this blog post](https://www.adyen.com/knowledge-hub/consuming-webhooks).
 
 ### Webhook setup
