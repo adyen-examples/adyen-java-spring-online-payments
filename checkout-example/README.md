@@ -97,6 +97,3 @@ The following webhooks `events` should be enabled:
 To make sure that the Adyen platform can reach your application, we have written a [Webhooks Testing Guide](https://github.com/adyen-examples/.github/blob/main/pages/webhooks-testing.md)
 that explores several options on how you can easily achieve this (e.g. running on localhost or cloud).
 
-## Contributing
-Are we missing features? Did you find a bug? Let us know!
-Find out more in our [contributing guidelines](https://github.com/adyen-examples/.github/blob/main/CONTRIBUTING.md).
