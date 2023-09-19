@@ -84,7 +84,6 @@ a:hover {
 
 .main-container {
   margin: auto;
-  max-width: 1048px;
   padding: 0 16px;
   display: flex;
   flex-direction: column;
@@ -93,7 +92,6 @@ a:hover {
 .integration-list {
   display: flex;
   margin-top: 6%;
-  max-width: 1048px;
   flex-wrap: wrap;
   justify-content: space-between;
   list-style: none;
@@ -118,22 +116,21 @@ a:hover {
 }
 
 .integration-list-item {
-  background: #f7f8f9;
-  border-radius: 6px;
-  flex: 1 1 0;
-  margin: 4px;
-  min-width: 40%;
+  background: #fcfcfc;
+  border-radius: 8px;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #f7f8f9;
+  border: 3px solid black;
+  margin: 32px 0px 16px 0px;
+  width: 100%;
 }
 
 .integration-list-item:hover {
   box-shadow: 0 16px 24px 0 #e5eaef;
   text-decoration: none;
-  border: 1px solid #06f;
+  border: 3px solid #0abf53;
 }
 
 @media (min-width: 768px) {
@@ -154,8 +151,10 @@ a:hover {
   justify-content: center;
 }
 
+
 @media (min-width: 768px) {
   .integration-list-item-link {
+    max-width:100%;
     padding-left: 28px;
     padding-bottom: 28px;
     padding-right: 28px;
@@ -163,13 +162,14 @@ a:hover {
   }
 }
 
+
+
 .integration-list-item-title {
   margin: 0;
   text-align: center;
   color: #00112c;
   font-size: 1em;
   font-weight: 700;
-  margin: 10px 0 0;
 }
 
 @media (min-width: 768px) {
@@ -207,6 +207,12 @@ a:hover {
   margin-top: 10%;
   color: #00112c;
 }
+
+.giving-view-container {
+  background-color: #f1f1f1;
+  padding: 16px;
+}
+
 
 /* end Index page */
 
