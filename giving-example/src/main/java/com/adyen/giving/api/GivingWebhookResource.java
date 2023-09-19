@@ -47,30 +47,18 @@ public class GivingWebhookResource {
 
             if (notificationRequestItem.isPresent()) {
 
-            var item = notificationRequestItem.get();
+                var item = notificationRequestItem.get();
 
-            try {
-                if (getGivingHmacValidator().validateHMAC(item, this.applicationProperty.getHmacKey())) {
-                    log.info("""
-                            Received webhook with event {} :\s
-                            Merchant Account Code: {}
-                            PSP reference : {}
-                            Donation successful : {}
-                            """
-                        , item.getEventCode(), item.getMerchantAccountCode(),  item.getPspReference(), item.isSuccess());
+                log.info("""
+                        Received webhook with event {} :\s
+                        Merchant Account Code: {}
+                        PSP reference : {}
+                        Donation successful : {}
+                        """
+                    , item.getEventCode(), item.getMerchantAccountCode(), item.getPspReference(), item.isSuccess());
 
-                    // consume event asynchronously
-                    consumeEvent(item);
-
-                } else {
-                    // invalid HMAC signature: do not send [accepted] response
-                    log.warn("Could not validate HMAC signature for incoming webhook message: {}", item);
-                    throw new RuntimeException("Invalid HMAC signature");
-                }
-            } catch (SignatureException e) {
-                // Unexpected error during HMAC validation: do not send [accepted] response
-                log.error("Error while validating HMAC Key", e);
-            }
+                // consume event asynchronously
+                consumeEvent(item);
 
         } else {
             // Unexpected event with no payload: do not send [accepted] response
