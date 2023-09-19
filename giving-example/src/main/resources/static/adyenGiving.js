@@ -34,7 +34,6 @@ async function handleDonation(donationToken, pspReference, amount) {
 
 async function startGiving() {
 
-  const paymentMethodsResponse = await callServer("/api/getPaymentMethods");
   const checkout= await AdyenCheckout(
     {
       clientKey,
@@ -57,8 +56,6 @@ async function startGiving() {
       message: "By donating you agree to the %#terms%#",
       linkText: "terms and conditions",
       link: "https://www.adyen.com/legal/terms-and-conditions" // Replace with yours
-
-
     },
     onDonate: (state, component) => {
       if(state.isValid) {
