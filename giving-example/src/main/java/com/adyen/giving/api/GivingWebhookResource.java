@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.security.SignatureException;
 
 /**
@@ -40,7 +41,11 @@ public class GivingWebhookResource {
 
 
     @PostMapping("/webhooks/giving")
-    public ResponseEntity<String> webhooks(@RequestBody NotificationRequest notificationRequest) {
+    public ResponseEntity<String> webhooks(@RequestBody String json) throws IOException {
+
+
+        // from JSON string to object
+        var notificationRequest = NotificationRequest.fromJson(json);
 
         // fetch first (and only) NotificationRequestItem
         var notificationRequestItem = notificationRequest.getNotificationItems().stream().findFirst();
