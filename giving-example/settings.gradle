@@ -1,2 +1,9 @@
 rootProject.name = 'giving-example'
 
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
+}
