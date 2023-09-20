@@ -1,0 +1,15 @@
+[versions]
+adyen="21.0.0"
+
+[libraries]
+adyen-java = { module = "com.adyen:adyen-java-api-library", version.ref = "adyen" }
+
+spring-boot-starter-thymeleaf = { module = "org.springframework.boot:spring-boot-starter-thymeleaf" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+thymeleaf-layout-dialect = { module = "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect" }
+spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+
+[bundles]
+spring = ["spring-boot-starter-web", "spring-boot-starter-thymeleaf", "spring-boot-devtools", "thymeleaf-layout-dialect"]
+spring-test = ["spring-boot-starter-test"]
