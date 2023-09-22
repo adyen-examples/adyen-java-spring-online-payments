@@ -25,12 +25,12 @@ tasks.named('test') {
 }
 
 
-tasks.register('myNpmRun', Exec) {
+tasks.register('myNpmInstall', Exec) {
     workingDir 'src/main/js'
     commandLine 'npm', 'install'
 }
 
-tasks.register('myNpmInstall', Exec) {
+tasks.register('myNpmRun', Exec) {
     workingDir 'src/main/js'
     commandLine 'npm', 'run', 'dist'
 }
