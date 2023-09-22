@@ -1,8 +1,10 @@
 [versions]
-adyen="21.0.0"
+adyenVersion="21.0.0"
+springVersion="3.1.0"
+springDependendyManagementVersion="1.1.0"
 
 [libraries]
-adyen-java = { module = "com.adyen:adyen-java-api-library", version.ref = "adyen" }
+adyen-java = { module = "com.adyen:adyen-java-api-library", version.ref = "adyenVersion" }
 
 spring-boot-starter-thymeleaf = { module = "org.springframework.boot:spring-boot-starter-thymeleaf" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
@@ -13,3 +15,7 @@ spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-star
 [bundles]
 spring = ["spring-boot-starter-web", "spring-boot-starter-thymeleaf", "spring-boot-devtools", "thymeleaf-layout-dialect"]
 spring-test = ["spring-boot-starter-test"]
+
+[plugins]
+spring-framework = { id = "org.springframework.boot", version.ref = "springVersion" }
+spring-dependency = { id = "io.spring.dependency-management", version.ref = "springDependendyManagementVersion" }
