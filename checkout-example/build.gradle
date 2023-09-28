@@ -1,6 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '3.1.0'
-	id 'io.spring.dependency-management' version '1.1.0'
+    alias(libs.plugins.spring.framework)
+    alias(libs.plugins.spring.dependency)
+
 	id 'java'
 }
 
@@ -15,14 +16,13 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-	implementation 'com.adyen:adyen-java-api-library:21.0.0'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
+    implementation libs.adyen.java
+    implementation libs.bundles.spring
+
+    testImplementation(libs.bundles.spring.test){
+        exclude (group: 'org.junit.vintage', module: 'junit-vintage-engine')
+    }
+
 }
 
 test {
