@@ -22,17 +22,6 @@ async function initCheckout() {
             value: 10000,
             currency: "EUR",
           },
-        },
-        paypal: {
-          amount: {
-            value: 10000,
-            currency: "USD",
-          },
-          environment: "test", // Change this to "live" when you're ready to accept live PayPal payments
-          countryCode: "US", // Only needed for test. This will be automatically retrieved when you are in production.
-          onCancel: (data, component) => {
-            component.setStatus('ready');
-          },
         }
       },
       onSubmit: (state, component) => {
@@ -58,12 +47,6 @@ async function initCheckout() {
 async function handleSubmission(state, component, url) {
   try {
     const res = await callServer(url, state.data);
-    if(res.donationToken){
-      // Depending on how you are handling the donation, you may want to store the token and pspReference, reuse the checkout instance, or store the data in the backend session.
-      console.log("Caching donationToken and pspReference");
-      sessionStorage.setItem("donationToken", res.donationToken);
-      sessionStorage.setItem("pspReference", res.pspReference);
-    }
     handleServerResponse(res, component);
   } catch (error) {
     console.error(error);
