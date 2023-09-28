@@ -8,14 +8,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OnlinePaymentsApplication {
-    private static final Logger log = LoggerFactory.getLogger(OnlinePaymentsApplication.class);
+public class GivingApplication {
+    private static final Logger log = LoggerFactory.getLogger(GivingApplication.class);
 
     @Autowired
     private ApplicationProperty applicationProperty;
 
     public static void main(String[] args) {
-        SpringApplication.run(OnlinePaymentsApplication.class, args);
+        SpringApplication.run(GivingApplication.class, args);
     }
 
     @PostConstruct

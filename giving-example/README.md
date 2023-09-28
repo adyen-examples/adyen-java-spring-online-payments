@@ -18,6 +18,8 @@ First make a test payment using one of our test card numbers, so you can see the
 
 ![Giving demo](src/main/resources/static/images/donations.gif)
 
+> **Note**: You need to have donations [enabled in your Customer Area](https://docs.adyen.com/online-payments/donations/testing/#step-1-enable-the-donation-token-in-your-api-response) in order to receive the `DonationToken`.
+
 ## Supported Integrations
 
 The amount of payment methods supported for donations is limited. In this demo, you will find a use case centered around the use of cards. 

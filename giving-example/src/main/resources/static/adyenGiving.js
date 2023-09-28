@@ -12,9 +12,10 @@ async function callServer(url, data) {
   return await res.json();
 }
 
-async function handleDonation(donationToken, pspReference, amount) {
+async function handleDonation(amount) {
   try {
-    const res = await callServer(`/api/donations?donationToken=${encodeURIComponent(donationToken)}&pspReference=${pspReference}`, amount);
+    console.log(amount);
+    const res = await callServer(`/api/donations`, amount);
 
     switch (res.status) {
       case "completed":
@@ -28,18 +29,13 @@ async function handleDonation(donationToken, pspReference, amount) {
     console.error(error);
     alert("Error occurred. Look at console for details");
   }
-
-
 }
 
 async function startGiving() {
-
-  const checkout= await AdyenCheckout(
-    {
-      clientKey,
-      environment: "test",
-    }
-  );
+  const checkout= await AdyenCheckout({
+    clientKey,
+    environment: "test",
+  });
 
   const donationConfig = {
     amounts: {
@@ -60,25 +56,21 @@ async function startGiving() {
     onDonate: (state, component) => {
       if(state.isValid) {
         console.log("Initiating donation");
-        let donationToken = sessionStorage.getItem("donationToken");
-        let pspReference = sessionStorage.getItem("pspReference");
-
-        if(!donationToken || !pspReference) {
-          console.log("No token or pspReference found, can't donate");
-        }
-        else{
-          handleDonation(donationToken, pspReference, state.data.amount);
-        }
+        handleDonation(state.data.amount);
       }
-
     },
     onCancel: (result, component) => {
       console.log("Donation cancelled");
-      document.getElementById( 'donation-container' ).style.display = 'none';
+      console.log(result);
+      document.getElementById('donation-container').style.display = 'none';
     }
   };
 
-  checkout.create('donation', donationConfig).mount('#donation-container');
+  try {
+    checkout.create('donation', donationConfig).mount('#donation-container');
+  } catch (ex) {
+    console.warn(ex);
+  }
 }
 
 startGiving();
