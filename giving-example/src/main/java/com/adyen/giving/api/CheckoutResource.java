@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
@@ -33,9 +31,9 @@ public class CheckoutResource {
 
     private final PaymentsApi paymentsApi;
 
-    private final String donationToken = "DonationToken";
+    private static final String DONATION_TOKEN = "DonationToken";
 
-    private final String paymentOriginalPspReference = "PaymentOriginalPspReference";
+    private static final String PAYMENT_ORIGINAL_PSPREFERENCE = "PaymentOriginalPspReference";
 
     public CheckoutResource(ApplicationProperty applicationProperty) {
 
@@ -62,15 +60,15 @@ public class CheckoutResource {
     public ResponseEntity<DonationPaymentResponse> donations(@RequestBody Amount body, @RequestHeader String host, HttpServletRequest request) throws IOException, ApiException {
         DonationPaymentRequest donationRequest = new DonationPaymentRequest();
         HttpSession session = request.getSession();
-        String pspReference = session.getAttribute(paymentOriginalPspReference).toString();
-        String token = session.getAttribute(donationToken).toString();
+        var pspReference = session.getAttribute(PAYMENT_ORIGINAL_PSPREFERENCE);
+        var donationToken = session.getAttribute(DONATION_TOKEN);
 
         if (pspReference == null) {
             log.info("Could not find the PspReference in the stored session.");
             return ResponseEntity.badRequest().build();
         }
 
-        if (token == null) {
+        if (donationToken == null) {
             log.info("Could not find the DonationToken in the stored session.");
             return ResponseEntity.badRequest().build();
         }
@@ -78,8 +76,8 @@ public class CheckoutResource {
         donationRequest.amount(body);
         donationRequest.reference(UUID.randomUUID().toString());
         donationRequest.setPaymentMethod(new CheckoutPaymentMethod(new CardDetails()));
-        donationRequest.setDonationToken(token);
-        donationRequest.donationOriginalPspReference(pspReference);
+        donationRequest.setDonationToken(donationToken.toString());
+        donationRequest.donationOriginalPspReference(pspReference.toString());
         donationRequest.setDonationAccount(this.applicationProperty.getDonationMerchantAccount());
         donationRequest.returnUrl(request.getScheme() + "://" + host);
         donationRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount());
@@ -151,13 +149,12 @@ public class CheckoutResource {
         var response = paymentsApi.payments(paymentRequest);
 
         var session = request.getSession();
-        session.setAttribute(paymentOriginalPspReference, response.getPspReference());
-
         if (response.getDonationToken() == null) {
             log.error("The payments endpoint did not return a donationToken, please enable this in your Customer Area. See README.");
         }
         else {
-            session.setAttribute(donationToken, response.getDonationToken());
+            session.setAttribute(PAYMENT_ORIGINAL_PSPREFERENCE, response.getPspReference());
+            session.setAttribute(DONATION_TOKEN, response.getDonationToken());
         }
         return ResponseEntity.ok()
             .body(response);
