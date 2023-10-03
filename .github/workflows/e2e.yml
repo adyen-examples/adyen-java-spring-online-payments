@@ -11,6 +11,9 @@ jobs:
   checkout:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17', '21' ]
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
@@ -18,7 +21,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: ${{ matrix.java }}
       - name: Grant execute permission for gradlew
         run: chmod +x checkout-example/gradlew
       - name: Build checkout-example with Gradle
@@ -33,6 +36,9 @@ jobs:
   giftcard:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17', '21' ]    
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
@@ -40,7 +46,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: ${{ matrix.java }}
       - name: Grant execute permission for gradlew
         run: chmod +x giftcard-example/gradlew
       - name: Build giftcard-example with Gradle
@@ -55,6 +61,9 @@ jobs:
   subscription:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17', '21' ]    
     steps:
       - name: Subscription project
         uses: actions/checkout@v3
@@ -62,7 +71,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: ${{ matrix.java }}
       - name: Grant execute permission for gradlew
         run: chmod +x subscription-example/gradlew
       - name: Build subscription-example with Gradle
@@ -77,6 +86,9 @@ jobs:
   giving:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17', '21' ]    
     steps:
       - name: Giving project
         uses: actions/checkout@v3
@@ -84,7 +96,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: ${{ matrix.java }}
       - name: Grant execute permission for gradlew
         run: chmod +x giving-example/gradlew
       - name: Build giving-example with Gradle
