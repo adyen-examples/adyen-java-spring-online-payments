@@ -2,6 +2,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class TableService {
     private List<TableModel> tables;
 

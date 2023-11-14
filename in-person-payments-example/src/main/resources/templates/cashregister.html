@@ -1,0 +1,80 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title>Adyen Cash Register View</title>
+</head>
+<body>
+<div class="main-container">
+  <div class="info">
+    <h2>In-Person Payments Demo</h2>
+    <div id="loading-grid" class="loading-grid disabled">
+      <!-- Loading animation start -->
+      <div class="loading-animation"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+      <!-- Loading animation end -->
+      <div class="loading-description">Waiting for terminal response ...</div>
+      <input type="button" id="cancel-operation-button" class="cancel-operation-button" value="Cancel"/>
+    </div>
+    <div id="tables-section" class="tables-section">
+      <div class="tables-grid">
+        <ul class="tables-grid-list">
+          <li th:each="table : ${list}" th:class="|tables-grid-item ${table.paymentStatus == 'PaymentStatus.PaymentInProgress' ? 'disabled' : ''}|">
+            <p class="tables-grid-item-title" th:text="${table.tableName}"></p>
+            <div class="tables-grid-item-currency-amount">
+              <p class="tables-grid-item-currency" th:text="${table.currency}"></p>
+              <p class="tables-grid-item-amount" th:text="${table.amount}"></p>
+            </div>
+            <p class="tables-grid-item-other" th:if="${table.paymentStatusDetails?.saleTransactionId != null}">
+              <b>Sale Transaction ID: </b><br/> <span th:text="${table.paymentStatusDetails.saleTransactionId}"></span>
+            </p>
+            <p class="tables-grid-item-other" th:if="${table.paymentStatusDetails?.saleTransactionTimeStamp != null}">
+              <b>Sale Transaction Timestamp: </b><br/> <span th:text="${table.paymentStatusDetails.saleTransactionTimeStamp}"></span>
+            </p>
+            <p class="tables-grid-item-other" th:if="${table.paymentStatusDetails?.poiTransactionId != null}">
+              <b>POI Transaction ID: </b><br/> <span th:text="${table.paymentStatusDetails.poiTransactionId}"></span>
+            </p>
+            <p class="tables-grid-item-other" th:if="${table.paymentStatusDetails?.poiTransactionTimeStamp != null}">
+              <b>POI Transaction Timestamp: </b><br/> <span th:text="${table.paymentStatusDetails.poiTransactionTimeStamp}"></span>
+            </p>
+            <p class="tables-grid-item-status" th:class="'tables-grid-item-status ' + ${table.paymentStatus}"></p>
+          </li>
+        </ul>
+      </div>
+      <div class="info-grid">
+        <h2>Cash Register</h2>
+        <ul class="info-grid-list">
+          <li class="info-grid-item">
+            <p class="info-grid-item-title">
+              SALE ID:
+              <b class="info-grid-item-description" th:text="${saleId}"></b>
+            </p>
+          </li>
+          <li class="info-grid-item">
+            <p class="info-grid-item-title">
+              POI ID:
+              <b class="info-grid-item-description" th:text="${poiId}"></b>
+            </p>
+          </li>
+        </ul>
+        <form id="payment-request-form" method="post">
+          <input type="text" id="tableName" name="tableName" hidden>
+          <input type="text" id="amount" name="amount" hidden>
+          <input type="text" id="currency" name="currency" hidden>
+          <button type="submit" id="payment-request-button" class="payment-request-button disabled">Pay</button>
+        </form>
+
+        <form id="reversal-request-form" method="post">
+          <input type="text" id="reversalTableName" name="reversalTableName" hidden>
+          <button type="submit" id="reversal-request-button" class="reversal-request-button disabled">Reversal</button>
+        </form>
+
+        <input type="button" id="transaction-status-button" class="transaction-status-button disabled" value="Transaction Status"/>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Binds all buttons for table selection and the `api/send-payment-request`/`api/send-payment-reversal-request` endpoints -->
+<script src="/js/cashregister-bindings.js"></script>
+</body>
+</html>

@@ -9,18 +9,16 @@
 <div layout:fragment="content" class="status-container">
   <div class="status">
     <img th:src="${'/images/' + type + '.svg'}" class="status-image" alt="">
-    <img th:if="${type == 'success' || type == 'pending'}" src="/images/thank-you.svg" class="status-image" alt="">
+    <img th:if="${type == 'success'}" src="/images/thank-you.svg" class="status-image" alt="">
 
     <p class="status-message">
-      <span th:if="${type == 'success' }">Your order has been successfully placed.</span>
-      <span th:if="${type == 'pending' }">Your order has been received! Payment completion pending.</span>
-      <span th:if="${type == 'failed' }">The payment was refused. Please try a different payment method or card.</span>
-      <span th:if="${type == 'error' }">
-        Error! Please review response in console and refer to
-        <a href="https://docs.adyen.com/development-resources/response-handling">Response handling.</a>
+      <span th:if="${type == 'success' }">Thank you!</span>
+      <span th:if="${type == 'failure' }">
+        Learn how to resolve Terminal API errors and handle declined payments in
+        <a href="https://docs.adyen.com/point-of-sale/error-scenarios/">our documentation.</a>
       </span>
     </p>
-    <a class="button" href="/">Return to Shopper View</a>
+    <a class="button" href="/cashregister">Return</a>
   </div>
 </div>
 </body>
