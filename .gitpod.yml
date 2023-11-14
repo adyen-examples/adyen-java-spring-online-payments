@@ -27,6 +27,10 @@ tasks:
           echo "Build giftcard-example application"
           cd giftcard-example && ./gradlew bootJar
         ;;
+        "in-person-payments-example")
+          echo "Build in-person-payments-example application"
+          cd in-person-payments-example && ./gradlew bootJar
+        ;;
         "subscription-example")
           echo "Build subscription-example application"
           cd subscription-example && ./gradlew bootJar

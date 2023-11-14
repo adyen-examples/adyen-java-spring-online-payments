@@ -1,0 +1,25 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title th:text="${result}"></title>
+</head>
+<body>
+<div layout:fragment="content" class="status-container">
+  <div class="status">
+    <img th:if="${result == 'success'}" src="/images/thank-you.svg" class="status-image" alt="">
+    <img th:if="${result == 'error'}" src="/images/error.svg" class="status-image" alt="">
+
+    <p class="status-message">
+      <span th:if="${result == 'success' }">
+        Disabled RecurringDetailReference <span th:text="${recurringDetailReference}">recurringDetailReference here</span>.
+      </span>
+      <span th:if="${result == 'error' }">
+        Could not disable RecurringDetailReference <span th:text="${recurringDetailReference}">recurringDetailReference here</span>. See logs for more information about the response.
+      </span>
+    </p>
+    <a class="button" href="/admin">Return</a>
+  </div>
+</div>
+</body>

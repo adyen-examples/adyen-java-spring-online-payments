@@ -11,7 +11,8 @@ Get started by navigating to one of the supported demos below.
 |                                                    Demos | Description                                                                      | Details                                 |
 |---------------------------------------------------------:|:---------------------------------------------------------------------------------|:----------------------------------------|
 |                   [`Checkout Example`](checkout-example) | E-commerce checkout flow with different payment methods.                         | [See below](#checkout-example)          | 
-| [`Advanced Checkout Example`](checkout-example-advanced) | E-commerce checkout flow with different payment methods, using the 3 steps flow. | [See below](#advanced-checkout-example) | 
+| [`Advanced Checkout Example`](checkout-example-advanced) | E-commerce checkout flow with different payment methods, using the 3 steps flow. | [See below](#advanced-checkout-example) |
+| [`In-person Payments Example`](in-person-payments-example) | In-person payments using a POS terminal and the terminal-api/sync endpoint.    | [See below](#in-person-payments-example) |
 |                  [`Gift Card Example`](giftcard-example) | Gift Cards checkout flow using partial orders.                                   | [See below](#gift-card-example)         | 
 |               [`Pay By Link Example`](paybylink-example) | Create payment links in seconds.                                                 | [See below](#paybylink-example)         | 
 |           [`Subscription Example`](subscription-example) | Subscription flow using Adyen tokenization.                                      | [See below](#subscription-example)      | 
@@ -39,6 +40,15 @@ The [advanced checkout example](checkout-example-advanced) performs the same fun
 See the [advanced integration flow](https://docs.adyen.com/online-payments/web-drop-in/additional-use-cases?tab=sessions_flow_advanced_flow_1) for more information.
 
 ![Card Checkout Demo](checkout-example/src/main/resources/static/images/cardcheckout.gif)
+
+## [In-person Payments Example](in-person-payments-example)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-dotnet-online-payments/tree/main/in-person-payments-example)
+
+[First time with Gitpod?](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
+
+The [in-person payments example](in-person-payments-example) features an in-person payment [cloud terminal API](https://docs.adyen.com/point-of-sale/design-your-integration/choose-your-architecture/cloud/) integration. Within this demo app, you can make in-person payments using a terminal, initiate reversals (refunds) and check transaction statuses.
+
+![Card In-person Payments Demo](in-person-payments-example/wwwroot/images/cardinpersonpayments.gif)
 
 ## [Gift Card Example](giftcard-example)
 
