@@ -1,3 +1,5 @@
+package com.adyen.ipp.responses;
+
 public class CreatePaymentResponse {
     private String result;
     private String refusalReason;

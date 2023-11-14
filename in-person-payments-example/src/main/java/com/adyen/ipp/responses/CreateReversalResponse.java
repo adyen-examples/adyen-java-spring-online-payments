@@ -1,3 +1,4 @@
+package com.adyen.ipp.responses;
 public class CreateReversalResponse {
     private String result;
     private String refusalReason;

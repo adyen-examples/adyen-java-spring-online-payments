@@ -1,6 +1,6 @@
-package com.adyen.checkout.web;
+package com.adyen.ipp.web;
 
-import com.adyen.checkout.ApplicationProperty;
+import com.adyen.ipp.ApplicationProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

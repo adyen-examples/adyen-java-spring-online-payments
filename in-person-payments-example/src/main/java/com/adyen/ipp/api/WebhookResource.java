@@ -1,4 +1,4 @@
-package com.adyen.checkout.api;
+package com.adyen.ipp.api;
 
 import com.adyen.checkout.ApplicationProperty;
 import com.adyen.checkout.util.Storage;

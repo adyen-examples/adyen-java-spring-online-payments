@@ -1,4 +1,4 @@
-package com.adyen.checkout;
+package com.adyen.ipp;
 
 import org.springframework.context.annotation.Bean;
 

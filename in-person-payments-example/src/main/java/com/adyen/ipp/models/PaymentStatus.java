@@ -1,3 +1,4 @@
+package com.adyen.ipp.models;
 public enum PaymentStatus {
     /**
      * Indicates that the customer has not paid yet.

@@ -1,3 +1,5 @@
+package com.adyen.ipp.util;
+
 import java.security.SecureRandom;
 
 public class IdUtility {

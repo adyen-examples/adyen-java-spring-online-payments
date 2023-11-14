@@ -1,4 +1,4 @@
-package com.adyen.checkout.api;
+package com.adyen.ipp.api;
 
 import com.adyen.Client;
 import com.adyen.checkout.ApplicationProperty;
@@ -29,8 +29,6 @@ public class SubscriptionResource {
 
     private final ApplicationProperty applicationProperty;
 
-    private final PaymentsApi paymentsApi;
-
     @Autowired
     public SubscriptionResource(ApplicationProperty applicationProperty) {
 
@@ -42,31 +40,11 @@ public class SubscriptionResource {
         }
 
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
-        this.paymentsApi = new PaymentsApi(client);
     }
 
-    @PostMapping("/tokenization/sessions")
+    @PostMapping("/ipp")
     public ResponseEntity<CreateCheckoutSessionResponse> sessions(@RequestHeader String host, HttpServletRequest request) throws IOException, ApiException {
-        var orderRef = UUID.randomUUID().toString();
-        var amount = new Amount()
-            .currency("EUR")
-            .value(0L); // zero-auth transaction
-
-        var checkoutSession = new CreateCheckoutSessionRequest();
-        checkoutSession.setAmount(amount);
-        checkoutSession.countryCode("NL");
-        checkoutSession.merchantAccount(this.applicationProperty.getMerchantAccount());
-        checkoutSession.setReference(orderRef); // required
-        checkoutSession.setShopperReference(Storage.SHOPPER_REFERENCE); // required
-        checkoutSession.setChannel(CreateCheckoutSessionRequest.ChannelEnum.WEB);
-        checkoutSession.setReturnUrl(request.getScheme() + "://" + host + "/redirect?orderRef=" + orderRef);
-        // recurring payment settings
-        checkoutSession.setShopperInteraction(CreateCheckoutSessionRequest.ShopperInteractionEnum.ECOMMERCE);
-        checkoutSession.setRecurringProcessingModel(CreateCheckoutSessionRequest.RecurringProcessingModelEnum.SUBSCRIPTION);
-        checkoutSession.setEnableRecurring(true);
-
-        log.info("/tokenization/sessions {}", checkoutSession);
-        var response = paymentsApi.sessions(checkoutSession);
+        var response = "";
         return ResponseEntity.ok().body(response);
     }
 }

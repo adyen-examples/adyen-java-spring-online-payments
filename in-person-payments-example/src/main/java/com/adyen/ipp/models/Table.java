@@ -1,4 +1,5 @@
-public class TableModel {
+package com.adyen.ipp.models;
+public class Table {
     /**
      * Currency used for the Amount (e.g. "EUR", "USD").
      */

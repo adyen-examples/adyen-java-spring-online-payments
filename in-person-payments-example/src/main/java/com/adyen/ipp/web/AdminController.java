@@ -1,4 +1,4 @@
-package com.adyen.checkout.web;
+package com.adyen.ipp.web;
 
 import com.adyen.Client;
 import com.adyen.checkout.ApplicationProperty;

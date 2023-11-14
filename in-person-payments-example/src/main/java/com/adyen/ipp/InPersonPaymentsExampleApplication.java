@@ -1,4 +1,4 @@
-package com.adyen.checkout;
+package com.adyen.ipp;
 
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;

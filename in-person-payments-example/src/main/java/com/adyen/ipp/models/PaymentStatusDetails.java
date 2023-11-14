@@ -1,3 +1,5 @@
+package com.adyen.ipp.models;
+
 import java.time.LocalDateTime;
 
 public class PaymentStatusDetails {

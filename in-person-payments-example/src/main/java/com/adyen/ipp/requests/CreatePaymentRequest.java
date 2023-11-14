@@ -1,3 +1,4 @@
+package com.adyen.ipp.requests;
 public class CreatePaymentRequest {
     private String tableName;
     private BigDecimal amount;

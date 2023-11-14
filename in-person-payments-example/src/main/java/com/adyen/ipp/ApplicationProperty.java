@@ -1,4 +1,4 @@
-package com.adyen.checkout;
+package com.adyen.ipp;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
