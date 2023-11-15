@@ -1,4 +1,4 @@
-package com.adyen.ipp.models;
+package com.adyen.ipp.model;
 
 import java.time.LocalDateTime;
 

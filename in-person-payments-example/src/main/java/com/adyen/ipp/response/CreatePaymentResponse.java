@@ -1,4 +1,4 @@
-package com.adyen.ipp.responses;
+package com.adyen.ipp.response;
 
 public class CreatePaymentResponse {
     private String result;

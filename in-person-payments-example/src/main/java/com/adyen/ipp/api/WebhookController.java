@@ -1,7 +1,6 @@
 package com.adyen.ipp.api;
 
-import com.adyen.checkout.ApplicationProperty;
-import com.adyen.checkout.util.Storage;
+import com.adyen.ipp.ApplicationProperty;
 import com.adyen.model.notification.NotificationRequest;
 import com.adyen.util.HMACValidator;
 import org.slf4j.Logger;
@@ -20,13 +19,13 @@ import java.security.SignatureException;
 @CrossOrigin
 @RestController
 @RequestMapping("/api")
-public class WebhookResource {
-    private final Logger log = LoggerFactory.getLogger(WebhookResource.class);
+public class WebhookController {
+    private final Logger log = LoggerFactory.getLogger(WebhookController.class);
 
     private ApplicationProperty applicationProperty;
 
     @Autowired
-    public WebhookResource(ApplicationProperty applicationProperty) {
+    public WebhookController(ApplicationProperty applicationProperty) {
         this.applicationProperty = applicationProperty;
 
         if (this.applicationProperty.getHmacKey() == null) {

@@ -9,15 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class InPersonPaymentsExampleApplication {
+public class InPersonPaymentsApplication {
 
-    private static final Logger log = LoggerFactory.getLogger(InPersonPaymentsExampleApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(InPersonPaymentsApplication.class);
 
     @Autowired
     private ApplicationProperty applicationProperty;
 
     public static void main(String[] args) {
-        SpringApplication.run(InPersonPaymentsExampleApplication.class, args);
+        SpringApplication.run(InPersonPaymentsApplication.class, args);
     }
 
     @PostConstruct

@@ -1,4 +1,4 @@
-rootProject.name = 'adyen-java-spring-online-payments-subscription'
+rootProject.name = 'adyen-java-spring-in-person-payments'
 
 dependencyResolutionManagement {
     versionCatalogs {

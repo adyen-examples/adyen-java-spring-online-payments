@@ -18,6 +18,9 @@ public class ApplicationProperty {
     @Value("${ADYEN_POS_POI_ID:#{null}}")
     private String poiId;
 
+    @Value("${saleId}")
+    private String saleId;
+
     public int getServerPort() {
         return serverPort;
     }
@@ -44,5 +47,9 @@ public class ApplicationProperty {
 
     public String getPoiId() {  return poiId; }
 
-    public void setPoiId(String poiId) {  this.poiId = poiId;   }
+    public void setPoiId(String poiId) {  this.poiId = poiId; }
+
+    public String getSaleId() {  return saleId; }
+
+    public void setSaleId(String saleId) {  this.saleId = saleId ; }
 }

@@ -1,4 +1,4 @@
-package com.adyen.ipp.requests;
+package com.adyen.ipp.request;
 public class CreateReversalRequest {
     private String tableName;
 

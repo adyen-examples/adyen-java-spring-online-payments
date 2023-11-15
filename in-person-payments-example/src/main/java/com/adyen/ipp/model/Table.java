@@ -1,4 +1,7 @@
-package com.adyen.ipp.models;
+package com.adyen.ipp.model;
+
+import java.math.BigDecimal;
+
 public class Table {
     /**
      * Currency used for the Amount (e.g. "EUR", "USD").
@@ -33,9 +36,7 @@ public class Table {
         this.currency = currency;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
+    public BigDecimal getAmount() { return amount; }
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
