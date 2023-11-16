@@ -24,14 +24,16 @@
     <div th:if="${not #lists.isEmpty(tokens)}">
 
       <div th:each="token: ${tokens}">
-        <b>ShopperReference:  <span th:text=${token.shopperReference}>shopperReference here</span></b><br/><br/>
+        <b>ShopperReference: <span th:text=${token.shopperReference}>shopperReference here</span></b><br/><br/>
         <ul class="adminList">
           <li>
-            PaymentMethod: <span th:text=${token.paymentMethod}>payment method here</span>
-            RecurringDetailReference: <span th:text=${token.recurringReference}>token here</span>
-            <a th:href="@{'/admin/makepayment/' + ${token.recurringReference}}">Make Payment</a> |
-            <a th:href="@{'/admin/disable/' + ${token.recurringReference}}">Disable</a>
+            PaymentMethod: <th:block th:text=${token.paymentMethod}>payment method here</th:block>
           </li>
+          <li>
+            RecurringDetailReference: <th:block th:text=${token.recurringReference}>token here</th:block>
+          </li>
+          <a th:href="@{'/admin/makepayment/' + ${token.recurringReference}}">Make Payment</a> |
+          <a th:href="@{'/admin/disable/' + ${token.recurringReference}}">Disable</a>
         </ul>
         </div>
       </div>

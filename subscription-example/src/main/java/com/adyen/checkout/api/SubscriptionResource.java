@@ -40,7 +40,7 @@ public class SubscriptionResource {
             log.warn("ADYEN_KEY is UNDEFINED");
             throw new RuntimeException("ADYEN_KEY is UNDEFINED");
         }
-
+        
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
         this.paymentsApi = new PaymentsApi(client);
     }
