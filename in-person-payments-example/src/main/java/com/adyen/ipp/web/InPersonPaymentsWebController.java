@@ -91,4 +91,10 @@ public class InPersonPaymentsWebController {
         model.addAttribute("refusalReason", refusalReason);
         return "result";
     }
+
+    @GetMapping("/result/{type}")
+    public String result(@PathVariable String type, Model model) {
+        model.addAttribute("type", type);
+        return "result";
+    }
 }
