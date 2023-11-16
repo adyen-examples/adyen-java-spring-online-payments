@@ -24,7 +24,7 @@
     <div th:if="${not #lists.isEmpty(tokens)}">
 
       <div th:each="token: ${tokens}">
-        <b>ShopperReference: <span th:text=${token.shopperReference}>shopperReference here</span></b><br/><br/>
+        <b>ShopperReference: <th:block th:text=${token.shopperReference}>shopperReference here</th:block></b><br/><br/>
         <ul class="adminList">
           <li>
             PaymentMethod: <th:block th:text=${token.paymentMethod}>payment method here</th:block>
