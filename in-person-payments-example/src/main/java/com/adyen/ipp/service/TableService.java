@@ -1,8 +1,6 @@
 package com.adyen.ipp.service;
 
-import com.adyen.ipp.model.PaymentStatus;
-import com.adyen.ipp.model.PaymentStatusDetails;
-import com.adyen.ipp.model.Table;
+import com.adyen.ipp.model.*;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

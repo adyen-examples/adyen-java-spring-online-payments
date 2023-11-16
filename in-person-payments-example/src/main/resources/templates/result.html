@@ -13,6 +13,7 @@
 
     <p class="status-message">
       <span th:if="${type == 'success' }">Thank you!</span>
+      <span th:if="${type == 'failure' }" th:text="${refusalReason}"></span>
       <span th:if="${type == 'failure' }">
         Learn how to resolve Terminal API errors and handle declined payments in
         <a href="https://docs.adyen.com/point-of-sale/error-scenarios/">our documentation.</a>

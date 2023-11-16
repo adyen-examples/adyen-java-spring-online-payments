@@ -1,6 +1,6 @@
 package com.adyen.ipp.model;
 
-import java.time.LocalDateTime;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 public class PaymentStatusDetails {
     /**
@@ -23,7 +23,7 @@ public class PaymentStatusDetails {
     /**
      * Date of the POI transaction.
      */
-    private LocalDateTime poiTransactionTimeStamp;
+    private XMLGregorianCalendar poiTransactionTimeStamp;
 
     /**
      * The SaleTransactionId (SaleReferenceId), populated when a TableStatus is set to PaymentStatus.Paid.
@@ -34,7 +34,7 @@ public class PaymentStatusDetails {
     /**
      * Date of the Sale transaction.
      */
-    private LocalDateTime saleTransactionTimeStamp;
+    private XMLGregorianCalendar saleTransactionTimeStamp;
 
     /**
      * The unique ID of a message pair, which processes the transaction. The value is assigned when you initiate a payment transaction to the terminal, and used to cancel/abort the request.
@@ -66,11 +66,11 @@ public class PaymentStatusDetails {
         this.poiTransactionId = poiTransactionId;
     }
 
-    public LocalDateTime getPoiTransactionTimeStamp() {
+    public XMLGregorianCalendar getPoiTransactionTimeStamp() {
         return poiTransactionTimeStamp;
     }
 
-    public void setPoiTransactionTimeStamp(LocalDateTime poiTransactionTimeStamp) {
+    public void setPoiTransactionTimeStamp(XMLGregorianCalendar poiTransactionTimeStamp) {
         this.poiTransactionTimeStamp = poiTransactionTimeStamp;
     }
 
@@ -82,11 +82,11 @@ public class PaymentStatusDetails {
         this.saleTransactionId = saleTransactionId;
     }
 
-    public LocalDateTime getSaleTransactionTimeStamp() {
+    public XMLGregorianCalendar getSaleTransactionTimeStamp() {
         return saleTransactionTimeStamp;
     }
 
-    public void setSaleTransactionTimeStamp(LocalDateTime saleTransactionTimeStamp) {
+    public void setSaleTransactionTimeStamp(XMLGregorianCalendar saleTransactionTimeStamp) {
         this.saleTransactionTimeStamp = saleTransactionTimeStamp;
     }
 

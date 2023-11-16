@@ -19,4 +19,13 @@ public class CreatePaymentResponse {
     public void setRefusalReason(String refusalReason) {
         this.refusalReason = refusalReason;
     }
+
+    public CreatePaymentResponse refusalReason(String refusalReason){
+        this.refusalReason = refusalReason;
+        return this;
+    }
+    public CreatePaymentResponse result(String result){
+        this.result = result;
+        return this;
+    }
 }

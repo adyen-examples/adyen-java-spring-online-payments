@@ -62,7 +62,5 @@ public class Table {
         return paymentStatusDetails;
     }
 
-    public void setPaymentStatusDetails(PaymentStatusDetails paymentStatusDetails) {
-        this.paymentStatusDetails = paymentStatusDetails;
-    }
+    public void setPaymentStatusDetails(PaymentStatusDetails paymentStatusDetails) { this.paymentStatusDetails = paymentStatusDetails; }
 }

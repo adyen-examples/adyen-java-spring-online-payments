@@ -18,11 +18,11 @@
         <b>Payment Response Result: </b>[[${paymentResponse.response.result}]]
       </p>
       <p>
-        <b>POI Transaction ID: </b>[[${paymentResponse.poiData?.poiTransactionID?.transactionID}]] <br/>
-        <b>POI Transaction TimeStamp: </b>[[${paymentResponse.poiData?.poiTransactionID?.timeStamp}]] <br/>
-        <b>Sale Transaction ID: </b>[[${paymentResponse.saleData?.saleTransactionID?.transactionID}]] <br/>
-        <b>Sale Transaction TimeStamp: </b>[[${paymentResponse.saleData?.saleTransactionID?.timeStamp}]] <br/>
-        <b>Authorized amount: </b>[[${paymentResponse.paymentResult?.amountsResp?.currency}]] [[${paymentResponse.paymentResult?.amountsResp?.authorizedAmount}]] <br/>
+        <b>POI Transaction ID: </b>[[${paymentResponse.getPOIData().getPOITransactionID().getTransactionID()}]] <br/>
+        <b>POI Transaction TimeStamp: </b>[[${paymentResponse.getPOIData().getPOITransactionID().getTimeStamp()}]] <br/>
+        <b>Sale Transaction ID: </b>[[${paymentResponse.getSaleData().getSaleTransactionID().getTransactionID()}]] <br/>
+        <b>Sale Transaction TimeStamp: </b>[[${paymentResponse.getSaleData().getSaleTransactionID().getTimeStamp()}]] <br/>
+        <b>Authorized amount: </b>[[${paymentResponse.getPaymentResult().getAmountsResp().getCurrency()}]] [[${paymentResponse.getPaymentResult().getAmountsResp().getAuthorizedAmount()}]] <br/>
       </p>
     </div>
     <p th:unless="${errorMessage == null or errorMessage == ''}">
