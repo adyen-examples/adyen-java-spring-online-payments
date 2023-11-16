@@ -25,7 +25,7 @@ public class PosPaymentService {
         dataTypeFactory = DatatypeFactory.newInstance();
     }
 
-    public TerminalAPIResponse sendPaymentRequestAsync(String serviceId, String poiId, String saleId, String currency, BigDecimal amount) throws IOException, ApiException {
+    public TerminalAPIResponse sendPaymentRequest(String serviceId, String poiId, String saleId, String currency, BigDecimal amount) throws IOException, ApiException {
         TerminalAPIRequest request = getPaymentRequest(serviceId, poiId, saleId, currency, amount);
         return terminalCloudAPIService.getTerminalCloudApi().sync(request);
     }

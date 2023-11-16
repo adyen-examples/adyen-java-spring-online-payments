@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 
@@ -60,7 +59,7 @@ public class InPersonPaymentsWebController {
             return "transactionstatus";
         }
 
-        var response = posTransactionStatusService.sendTransactionStatusRequestAsync(table.getPaymentStatusDetails().getServiceId(), applicationProperty.getPoiId(), applicationProperty.getSaleId());
+        var response = posTransactionStatusService.sendTransactionStatusRequest(table.getPaymentStatusDetails().getServiceId(), applicationProperty.getPoiId(), applicationProperty.getSaleId());
 
         if (response == null ||
                 response.getSaleToPOIResponse() == null ||

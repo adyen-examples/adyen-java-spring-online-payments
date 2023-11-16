@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.GregorianCalendar;
-import java.util.UUID;
 
 @Service
 public class PosReversalService {
@@ -26,7 +24,7 @@ public class PosReversalService {
         dataTypeFactory = DatatypeFactory.newInstance();
     }
 
-    public TerminalAPIResponse sendReversalRequestAsync(ReversalReasonType reversalReasonType, String saleTransactionId, String poiTransactionId, String poiId, String saleId) throws IOException, ApiException {
+    public TerminalAPIResponse sendReversalRequest(ReversalReasonType reversalReasonType, String saleTransactionId, String poiTransactionId, String poiId, String saleId) throws IOException, ApiException {
         TerminalAPIRequest request = getReversalRequest(reversalReasonType, saleTransactionId, poiTransactionId, poiId, saleId);
         return terminalCloudAPIService.getTerminalCloudApi().sync(request);
     }

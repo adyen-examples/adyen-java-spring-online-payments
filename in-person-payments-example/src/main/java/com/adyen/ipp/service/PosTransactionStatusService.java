@@ -8,19 +8,14 @@ import com.adyen.service.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.GregorianCalendar;
-import java.util.UUID;
 
 @Service
 public class PosTransactionStatusService {
     @Autowired
     private TerminalCloudApiService terminalCloudAPIService;
 
-    public TerminalAPIResponse sendTransactionStatusRequestAsync(String serviceId, String poiId, String saleId) throws IOException, ApiException {
+    public TerminalAPIResponse sendTransactionStatusRequest(String serviceId, String poiId, String saleId) throws IOException, ApiException {
         TerminalAPIRequest request = getTransactionStatusRequest(serviceId, poiId, saleId);
         return terminalCloudAPIService.getTerminalCloudApi().sync(request);
     }

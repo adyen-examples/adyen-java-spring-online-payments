@@ -14,7 +14,7 @@ public class PosAbortService {
     @Autowired
     private TerminalCloudApiService terminalCloudAPIService;
 
-    public TerminalAPIResponse sendAbortRequestAsync(String serviceId, String poiId, String saleId) throws IOException, ApiException {
+    public TerminalAPIResponse sendAbortRequest(String serviceId, String poiId, String saleId) throws IOException, ApiException {
         TerminalAPIRequest request = getAbortRequest(serviceId, poiId, saleId);
         return terminalCloudAPIService.getTerminalCloudApi().sync(request);
     }

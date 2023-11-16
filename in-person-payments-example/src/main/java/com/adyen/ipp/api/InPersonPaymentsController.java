@@ -74,7 +74,7 @@ public class InPersonPaymentsController {
         table.setPaymentStatus(PaymentStatus.PaymentInProgress);
 
         try {
-            var response = posPaymentService.sendPaymentRequestAsync(serviceId, poiId, saleId, request.getCurrency(), request.getAmount());
+            var response = posPaymentService.sendPaymentRequest(serviceId, poiId, saleId, request.getCurrency(), request.getAmount());
 
             if (response == null || response.getSaleToPOIResponse() == null || response.getSaleToPOIResponse().getPaymentResponse() == null) {
                 table.setPaymentStatus(PaymentStatus.NotPaid);
@@ -145,7 +145,7 @@ public class InPersonPaymentsController {
         }
 
         try {
-            var response = posReversalService.sendReversalRequestAsync(ReversalReasonType.MERCHANT_CANCEL, table.getPaymentStatusDetails().getSaleTransactionId(), table.getPaymentStatusDetails().getPoiTransactionId(), poiId, saleId);
+            var response = posReversalService.sendReversalRequest(ReversalReasonType.MERCHANT_CANCEL, table.getPaymentStatusDetails().getSaleTransactionId(), table.getPaymentStatusDetails().getPoiTransactionId(), poiId, saleId);
 
             if (response == null || response.getSaleToPOIResponse() == null || response.getSaleToPOIResponse().getReversalResponse() == null) {
                 return ResponseEntity
@@ -196,7 +196,7 @@ public class InPersonPaymentsController {
                 return ResponseEntity.notFound().build();
             }
 
-            var abortResponse = posAbortService.sendAbortRequestAsync(table.getPaymentStatusDetails().getServiceId(), poiId, saleId);
+            var abortResponse = posAbortService.sendAbortRequest(table.getPaymentStatusDetails().getServiceId(), poiId, saleId);
 
             return ResponseEntity.ok().body(abortResponse);
         } catch (IOException | ApiException e) {
