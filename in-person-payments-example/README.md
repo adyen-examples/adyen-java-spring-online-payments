@@ -4,26 +4,30 @@
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/in-person-payments-example)
 &nbsp;[First time with Gitpod?](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
 
-# Description
+## Description
+This demo shows developers how to use the Adyen [Cloud Terminal API](https://docs.adyen.com/point-of-sale/design-your-integration/choose-your-architecture/cloud/) `/terminal-api/sync` to make requests to your connected terminal.
 
-This repository features an in-person payments [cloud terminal API integration](https://docs.adyen.com/point-of-sale/design-your-integration/choose-your-architecture/cloud/) example for making
+The following implementations are included:
 - [Payment requests](https://docs.adyen.com/point-of-sale/basic-tapi-integration/make-a-payment/)
 - [Referenced refund requests](https://docs.adyen.com/point-of-sale/basic-tapi-integration/refund-payment/referenced/)
 - [Cancel/abort requests](https://docs.adyen.com/point-of-sale/basic-tapi-integration/cancel-a-transaction/)
 - [Transaction status requests](https://docs.adyen.com/point-of-sale/basic-tapi-integration/verify-transaction-status/)
 
-To decide what type of integration is best, use the following [page](https://docs.adyen.com/point-of-sale/design-your-integration/choose-your-architecture/#choosing-between-cloud-and-local).
+There are typically two ways to integrate in-person payments: local or cloud communications.
+To find out which solution (or hybrid) suits your needs, visit the following [documentation page](https://docs.adyen.com/point-of-sale/design-your-integration/choose-your-architecture/#choosing-between-cloud-and-local).
 
-This demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries/?tab=java_1)).
+You can find the [Terminal API documentation](https://docs.adyen.com/point-of-sale/design-your-integration/terminal-api/terminal-api-reference/) here.
+
+This demo integrates the Adyen API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries/?tab=java_1)).
 You can find the [Terminal API documentation](https://docs.adyen.com/point-of-sale/design-your-integration/terminal-api/terminal-api-reference/) here.
 
 ![In-person Payments Demo](wwwroot/images/cardinpersonpayments.gif)
 
 
 ## Requirements
-- Java 17
 - A [terminal device](https://docs.adyen.com/point-of-sale/user-manuals/) and a [test card](https://docs.adyen.com/point-of-sale/testing-pos-payments/) from Adyen
-- An Adyen account, learn how an Adyen account is structured in [our documentation](https://docs.adyen.com/point-of-sale/design-your-integration/determine-account-structure/)
+- [Adyen API Credentials](https://docs.adyen.com/development-resources/api-credentials/)
+- Java 17
 
 
 ## 1. Installation
@@ -32,9 +36,11 @@ git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.gi
 ```
 
 ## 2. Set the environment variables
-* Set [ADYEN_API_KEY](https://docs.adyen.com/user-management/how-to-get-the-api-key).
-* Set [ADYEN_HMAC_KEY](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures).
-* Set the [`ADYEN_POS_POI_ID`] as variable, which is the unique ID of your payment terminal for the NEXO Sale to POI protocol. **Format:** `[device model]-[serial number]`.
+* [API key](https://docs.adyen.com/user-management/how-to-get-the-api-key)
+* [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures)
+* `ADYEN_POS_POI_ID`: the unique ID of your payment terminal for the NEXO Sale to POI protocol.
+  - **Format:** `[device model]-[serial number]` **Example:** `V400m-123456789`
+
 
 On Linux/Mac/Windows export/set the environment variables.
 ```shell
