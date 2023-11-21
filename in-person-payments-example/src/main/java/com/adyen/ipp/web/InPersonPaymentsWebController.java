@@ -17,8 +17,9 @@ import java.io.IOException;
 
 @Controller
 public class InPersonPaymentsWebController {
-
     private final Logger log = LoggerFactory.getLogger(InPersonPaymentsWebController.class);
+
+    private final ApplicationProperty applicationProperty;
 
     @Autowired
     private TableService tableService;
@@ -30,9 +31,6 @@ public class InPersonPaymentsWebController {
     public InPersonPaymentsWebController(ApplicationProperty applicationProperty) {
         this.applicationProperty = applicationProperty;
     }
-
-    @Autowired
-    private ApplicationProperty applicationProperty;
 
     @GetMapping("/")
     public String index() {

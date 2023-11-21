@@ -1,147 +1,97 @@
 # Adyen [In-person Payment Demo](https://docs.adyen.com/point-of-sale/) Integration Demo
 
+## Run demo in one-click
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/in-person-payments-example)
+&nbsp;[First time with Gitpod?](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
+
+# Description
+
 This repository features an in-person payments [cloud terminal API integration](https://docs.adyen.com/point-of-sale/design-your-integration/choose-your-architecture/cloud/) example for making
 - [Payment requests](https://docs.adyen.com/point-of-sale/basic-tapi-integration/make-a-payment/)
-- [Unreferenced refund requests](https://docs.adyen.com/point-of-sale/basic-tapi-integration/refund-payment/referenced/)
+- [Referenced refund requests](https://docs.adyen.com/point-of-sale/basic-tapi-integration/refund-payment/referenced/)
 - [Cancel/abort requests](https://docs.adyen.com/point-of-sale/basic-tapi-integration/cancel-a-transaction/)
 - [Transaction status requests](https://docs.adyen.com/point-of-sale/basic-tapi-integration/verify-transaction-status/)
 
 To decide what type of integration is best, use the following [page](https://docs.adyen.com/point-of-sale/design-your-integration/choose-your-architecture/#choosing-between-cloud-and-local).
 
-Make sure to [enable the payment method](https://docs.adyen.com/point-of-sale/what-we-support/payment-methods/#add-payment-methods-to-your-account) in your Customer Area environment.
+This demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries/?tab=java_1)).
+You can find the [Terminal API documentation](https://docs.adyen.com/point-of-sale/design-your-integration/terminal-api/terminal-api-reference/) here.
 
-https://docs.adyen.com/point-of-sale/design-your-integration/terminal-api/terminal-api-reference/
+![In-person Payments Demo](wwwroot/images/cardinpersonpayments.gif)
 
-## Prerequisites
+
+## Requirements
+- Java 17
 - A [terminal device](https://docs.adyen.com/point-of-sale/user-manuals/) and a [test card](https://docs.adyen.com/point-of-sale/testing-pos-payments/) from Adyen
 - An Adyen account, learn how an Adyen account is structured in [our documentation](https://docs.adyen.com/point-of-sale/design-your-integration/determine-account-structure/)
 
 
-![In-person Payments Demo](wwwroot/images/cardinpersonpayments.gif)
-
-This demo leverages Adyen's API Library for .NET ([GitHub](https://github.com/Adyen/adyen-dotnet-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries?tab=c__5#csharp)).
-You can find the [Terminal API documentation](https://docs.adyen.com/point-of-sale/design-your-integration/terminal-api/terminal-api-reference/) here.
-
-## Run integration on [Gitpod](https://gitpod.io/)
-1. Open your [Adyen Test Account](https://ca-test.adyen.com/ca/ca/overview/default.shtml) and create a set of [API keys](https://docs.adyen.com/user-management/how-to-get-the-api-key).
-    - [`ADYEN_API_KEY`](https://docs.adyen.com/user-management/how-to-get-the-api-key)
-
-
-2. Go to [Gitpod environment variables](https://gitpod.io/variables) and set the following variables with a scope of `*/*`:
-   - [`ADYEN_API_KEY`](https://docs.adyen.com/user-management/how-to-get-the-api-key) - Your Adyen API Key.
-   - `ADYEN_POS_POI_ID` - This is the **case-sensitive** unique ID (e.g. `V400m-123456789`) of your payment terminal for the NEXO Sale to POI protocol.
-
-> **Note**: If you'd like to check the connection of your terminal, you can do so in the Customer Area → `In-person payments` → `Terminals`.
-This demo provides a simple webhook integration for receiving refund/reversal updates at `/api/webhooks/notifications`. For it to work, you need to provide a way for Adyen's servers to reach your running application on Gitpod and add a standard webhook in the Customer Area.
-
-4. To receive notifications asynchronously, add a webhook:
-    - In the Customer Area go to `Developers` → `Webhooks` and add a new `Standard notification webhook`
-    - Define username and password (Basic Authentication) to [protect your endpoint](https://docs.adyen.com/development-resources/webhooks/best-practices#security) - Basic authentication only guarantees that the notification was sent by Adyen, not that it wasn't modified during transmission
-    - Generate the [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures) and set the `ADYEN_HMAC_KEY` in your [Gitpod Environment Variables](https://gitpod.io/variables) with a scope of `*/*` -  This key is used to [verify](https://docs.adyen.com/development-resources/webhooks/best-practices#security) whether the HMAC signature that is included in the notification, was sent by Adyen and not modified during transmission
-    - For the URL, enter `https://gitpod.io` for now, we will need to update this webhook URL in step 6
-    - Make sure the webhook is **Enabled** to send notifications
-
-
-5. Click the button below to launch the application in Gitpod.
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/in-person-payments-example)
-
-
-6. Update your webhook in the Customer Area with the public url that is generated by Gitpod
-   - In the Customer Area, go to `Developers` → `Webhooks` → Select your `Webhook` that is created in step 4 → `Server Configuration`
-   - Update the URL of your application/endpoint (e.g. `https://8080-myorg-myrepo-y8ad7pso0w5.ws-eu75.gitpod.io/api/webhooks/notifications/`
-   - Hit `Apply` → `Save changes` and Gitpod should be able to receive notifications
-
-> **Note** When exiting Gitpod a new URL is generated, make sure to **update the Webhook URL** in the Customer Area as described in the final step.
-> You can find more information about webhooks in [this detailed blog post](https://www.adyen.com/blog/Integrating-webhooks-notifications-with-Adyen-Checkout).
-
-## Run integration on localhost using a proxy
-You will need .NET Core SDK 6.x. to run this application locally.
-
-1. Clone this repository.
-
+## 1. Installation
 ```
 git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.git
 ```
 
-2. Open your [Adyen Test Account](https://ca-test.adyen.com/ca/ca/overview/default.shtml) and create a set of [API keys](https://docs.adyen.com/user-management/how-to-get-the-api-key).
-    - [`ADYEN_API_KEY`](https://docs.adyen.com/user-management/how-to-get-the-api-key)
+## 2. Set the environment variables
+* Set [ADYEN_API_KEY](https://docs.adyen.com/user-management/how-to-get-the-api-key).
+* Set [ADYEN_HMAC_KEY](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures).
+* Set the [`ADYEN_POS_POI_ID`] as variable, which is the unique ID of your payment terminal for the NEXO Sale to POI protocol. **Format:** `[device model]-[serial number]`.
 
-
-3. Set the [`ADYEN_POS_POI_ID`] as variable, which is the unique ID of your payment terminal for the NEXO Sale to POI protocol. **Format:** `[device model]-[serial number]`.
-
-
-This demo provides a simple webhook integration for receiving refund/reversal updates at `/api/webhooks/notifications`. For it to work, you need to provide a way for Adyen's servers to reach your running application and add a standard webhook in the Customer Area.
-To expose this endpoint locally, we have highlighted two options in step 4 or 5. Choose one or consider alternative tunneling software.
-
-4. Expose your localhost with Visual Studio using dev tunnels.
-     - Add `https://*.devtunnels.ms` to your allowed origins
-     - Create your public (temporary/persistent) dev tunnel by following the guide [here](https://learn.microsoft.com/en-us/aspnet/core/test/dev-tunnels?view=aspnetcore-7.0)
-
-If you use Visual Studio 17.4 or higher, the webhook URL will be the generated URL (i.e. `https://xd1r2txt-5001.euw.devtunnels.ms`).
-
-5. Expose your localhost with tunneling software (i.e. ngrok).
-    - Add `https://*.ngrok.io` to your allowed origins
-
-If you use a tunneling service like ngrok, the webhook URL will be the generated URL (i.e. `https://c991-80-113-16-28.ngrok.io/api/webhooks/notifications/`).
-
-```bash
-  $ ngrok http 8080
-
-  Session Status                online
-  Account                       ############
-  Version                       #########
-  Region                        United States (us)
-  Forwarding                    http://c991-80-113-16-28.ngrok.io -> http://localhost:8080
-  Forwarding                    https://c991-80-113-16-28.ngrok.io -> http://localhost:8080
-```
-
-6. To receive notifications asynchronously, add a webhook:
-    - In the Customer Area go to `Developers` → `Webhooks` and add a new `Standard notification webhook`
-    - Define username and password (Basic Authentication) to [protect your endpoint](https://docs.adyen.com/development-resources/webhooks/best-practices#security) - Basic authentication only guarantees that the notification was sent by Adyen, not that it wasn't modified during transmission
-    - Generate the [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures) - This key is used to [verify](https://docs.adyen.com/development-resources/webhooks/best-practices#security) whether the HMAC signature that is included in the notification, was sent by Adyen and not modified during transmission
-    - See script below that allows you to easily set your environment variables
-    - For the URL, enter `https://ngrok.io` for now - We will need to update this webhook URL in step 10
-    - Make sure the webhook is **enabled** to send notifications
-
-
-7. Set the following environment variables in your terminal environment: `ADYEN_API_KEY` and `ADYEN_HMAC_KEY`. Note that some IDEs will have to be restarted for environment variables to be injected properly.
-
+On Linux/Mac/Windows export/set the environment variables.
 ```shell
 export ADYEN_API_KEY=yourAdyenApiKey
-export ADYEN_HMAC_KEY=yourAdyenHmacKey
+export ADYEN_HMAC_KEY=yourHmacKey
 export ADYEN_POS_POI_ID=v400m-123456789
 ```
 
-On Windows CMD you can use this command instead.
-
-```shell
-set ADYEN_API_KEY=yourAdyenApiKey
-set ADYEN_HMAC_KEY=yourAdyenHmacKey
-set ADYEN_POS_POI_ID=v400m-123456789
+Alternatively, it's possible to define the variables in the `application.properties`.
+```txt
+ADYEN_API_KEY=yourAdyenApiKey
+ADYEN_HMAC_KEY=yourHmacKey
+ADYEN_POS_POI_ID=v400m-123456789
 ```
 
-8. Start the application and visit localhost.
+## 4. Run the application
 
-```shell
+```
 cd in-person-payments-example
 
 ./gradlew bootRun
 ```
 
-10. Update your webhook in your Customer Area with the public url that is generated.
-    - In the Customer Area go to `Developers` → `Webhooks` → Select your `Webhook` that is created in step 6 → `Server Configuration`
-    - Update the URL of your application/endpoint (e.g. `https://c991-80-113-16-28.ngrok.io/api/webhooks/notifications/` or `https://xd1r2txt-5001.euw.devtunnels.ms`)
-    - Hit `Apply` → `Save changes` and Gitpod should be able to receive notifications
+# Webhooks
 
-> **Note** When exiting ngrok or Visual Studio a new URL is generated, make sure to **update the Webhook URL** in the Customer Area as described in the final step.
-> You can find more information about webhooks in [this detailed blog post](https://www.adyen.com/blog/Integrating-webhooks-notifications-with-Adyen-Checkout).
+Webhooks deliver asynchronous notifications about the payment status and other events that are important to receive and process.
+You can find more information about webhooks in [this blog post](https://www.adyen.com/knowledge-hub/consuming-webhooks).
+
+### Webhook setup
+
+In the Customer Area under the `Developers → Webhooks` section, [create](https://docs.adyen.com/development-resources/webhooks/#set-up-webhooks-in-your-customer-area) a new `Standard webhook`.
+
+A good practice is to set up basic authentication, copy the generated HMAC Key and set it as an environment variable. The application will use this to verify the [HMAC signatures](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures/).
+
+Make sure the webhook is **enabled**, so it can receive notifications.
+
+### Expose an endpoint
+
+This demo provides a simple webhook implementation exposed at `/api/webhooks/notifications` that shows you how to receive, validate and consume the webhook payload.
+
+### Test your webhook
+
+The following webhooks `events` should be enabled:
+* **AUTHORISATION**
+* **CANCEL_OR_REFUND**
+* **REFUND_FAILED**
+* **REFUNDED_REVERSE**
+
+
+To make sure that the Adyen platform can reach your application, we have written a [Webhooks Testing Guide](https://github.com/adyen-examples/.github/blob/main/pages/webhooks-testing.md)
+that explores several options on how you can easily achieve this (e.g. running on localhost or cloud).
 
 
 ## Usage
-1. Select the cloud terminal api integration
-2. Select a table
-3. Select pay to perform a payment
-4. Complete the instructions on your terminal
-5. Select reversal to refund the payment
-6. If webhooks are set up, listen for the notifications to update the payment status
+1. Select the cloud terminal api integration.
+2. Select a table.
+3. Select pay to perform a payment.
+4. Complete the instructions on your terminal.
+5. Select reversal to refund the payment.
+6. If webhooks are set up, listen for the notifications to update the payment status (reversals/refunds happen asynchronously and may take some time to receive).

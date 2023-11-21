@@ -18,7 +18,7 @@ public class ApplicationProperty {
     @Value("${ADYEN_POS_POI_ID:#{null}}")
     private String poiId;
 
-    @Value("${saleId}")
+    @Value("${saleId:POS_SALE_ID_42}")
     private String saleId;
 
     public int getServerPort() {

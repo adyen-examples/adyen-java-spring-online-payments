@@ -16,7 +16,6 @@ import java.security.SignatureException;
 /**
  * REST controller for receiving Adyen webhook notifications
  */
-@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class WebhookController {

@@ -41,16 +41,10 @@ public class InPersonPaymentsController {
     @Autowired
     private TableService tableService;
 
-    private String saleId;
-
-    private String poiId;
-
     @Autowired
     public InPersonPaymentsController(ApplicationProperty applicationProperty) {
 
         this.applicationProperty = applicationProperty;
-        saleId = applicationProperty.getSaleId();
-        poiId = applicationProperty.getPoiId();
     }
 
     @PostMapping("/create-payment")
@@ -68,13 +62,12 @@ public class InPersonPaymentsController {
                             .refusalReason("Table " + request.getTableName() + " not found"));
         }
 
-        String serviceId = IdUtility.getRandomAlphanumericId(10);
-
-        table.getPaymentStatusDetails().setServiceId(serviceId);
-        table.setPaymentStatus(PaymentStatus.PaymentInProgress);
-
         try {
-            var response = posPaymentService.sendPaymentRequest(serviceId, poiId, saleId, request.getCurrency(), request.getAmount());
+            String serviceId = IdUtility.getRandomAlphanumericId(10);
+            table.getPaymentStatusDetails().setServiceId(serviceId);
+            table.setPaymentStatus(PaymentStatus.PaymentInProgress);
+
+            var response = posPaymentService.sendPaymentRequest(serviceId, applicationProperty.getPoiId(), applicationProperty.getSaleId(), request.getCurrency(), request.getAmount());
 
             if (response == null || response.getSaleToPOIResponse() == null || response.getSaleToPOIResponse().getPaymentResponse() == null) {
                 table.setPaymentStatus(PaymentStatus.NotPaid);
@@ -119,7 +112,7 @@ public class InPersonPaymentsController {
                             .badRequest()
                             .body(new CreatePaymentResponse()
                                     .result("failure")
-                                    .refusalReason("Could not reach payment terminal with POI ID " + poiId));
+                                    .refusalReason("Could not reach payment terminal with POI ID " + applicationProperty.getPoiId()));
             }
 
         } catch (IOException | ApiException e) {
@@ -131,21 +124,21 @@ public class InPersonPaymentsController {
 
     @PostMapping("/create-reversal")
     public ResponseEntity<CreateReversalResponse> createReversal(@RequestBody CreateReversalRequest request) throws IOException, ApiException {
-        Table table = tableService.getTables().stream()
-                .filter(t -> t.getTableName().equals(request.getTableName()))
-                .findFirst()
-                .orElse(null);
-
-        if (table == null) {
-            return ResponseEntity
-                    .status(404)
-                    .body(new CreateReversalResponse()
-                            .result("failure")
-                            .refusalReason("Table " + request.getTableName() + " not found"));
-        }
-
         try {
-            var response = posReversalService.sendReversalRequest(ReversalReasonType.MERCHANT_CANCEL, table.getPaymentStatusDetails().getSaleTransactionId(), table.getPaymentStatusDetails().getPoiTransactionId(), poiId, saleId);
+            Table table = tableService.getTables().stream()
+                    .filter(t -> t.getTableName().equals(request.getTableName()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (table == null) {
+                return ResponseEntity
+                        .status(404)
+                        .body(new CreateReversalResponse()
+                                .result("failure")
+                                .refusalReason("Table " + request.getTableName() + " not found"));
+            }
+
+            var response = posReversalService.sendReversalRequest(ReversalReasonType.MERCHANT_CANCEL, table.getPaymentStatusDetails().getSaleTransactionId(), table.getPaymentStatusDetails().getPoiTransactionId(), applicationProperty.getPoiId(), applicationProperty.getSaleId());
 
             if (response == null || response.getSaleToPOIResponse() == null || response.getSaleToPOIResponse().getReversalResponse() == null) {
                 return ResponseEntity
@@ -176,7 +169,7 @@ public class InPersonPaymentsController {
                             .badRequest()
                             .body(new CreateReversalResponse()
                                     .result("failure")
-                                    .refusalReason("Could not reach payment terminal with POI ID " + poiId));
+                                    .refusalReason("Could not reach payment terminal with POI ID " + applicationProperty.getPoiId()));
             }
         } catch (IOException | ApiException e) {
             log.error(e.toString());
@@ -195,8 +188,7 @@ public class InPersonPaymentsController {
             if (table == null || table.getPaymentStatusDetails() == null || table.getPaymentStatusDetails().getServiceId() == null) {
                 return ResponseEntity.notFound().build();
             }
-
-            var abortResponse = posAbortService.sendAbortRequest(table.getPaymentStatusDetails().getServiceId(), poiId, saleId);
+            var abortResponse = posAbortService.sendAbortRequest(table.getPaymentStatusDetails().getServiceId(), applicationProperty.getPoiId(), applicationProperty.getSaleId());
 
             return ResponseEntity.ok().body(abortResponse);
         } catch (IOException | ApiException e) {
