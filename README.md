@@ -48,7 +48,7 @@ See the [advanced integration flow](https://docs.adyen.com/online-payments/web-d
 
 The [in-person payments example](in-person-payments-example) features an in-person payment [cloud terminal API](https://docs.adyen.com/point-of-sale/design-your-integration/choose-your-architecture/cloud/) integration. Within this demo app, you can make in-person payments using a terminal, initiate reversals (refunds) and check transaction statuses.
 
-![Card In-person Payments Demo](in-person-payments-example/wwwroot/images/cardinpersonpayments.gif)
+![Card In-person Payments Demo](in-person-payments-example/src/main/resources/static/images/cardinpersonpayments.gif)
 
 ## [Gift Card Example](giftcard-example)
 
