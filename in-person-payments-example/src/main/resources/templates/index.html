@@ -1,0 +1,65 @@
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title>Adyen In-person Payment Demo</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+  <div class='main-container'>
+    <div class="info">
+      <h1>Adyen In-person Payment Demo</h1>
+      <p>
+        This demo shows developers how to use the Adyen Terminal API <b>/terminal-api/sync</b> to make requests to your connected terminal.
+      </p>
+      <p>
+        There are typically two ways to integrate in-person payments: local or cloud communications. This demo focuses on a cloud communication integration <b>/terminal-api/sync/</b> endpoint.
+        To find out which solution (or hybrid) suits your needs, go to <a href="https://docs.adyen.com/point-of-sale/design-your-integration/choose-your-architecture/#choosing-between-cloud-and-local">this documentation page</a>.
+      </p>
+      <p>
+        This demo showcases four main functionalities:
+      <ul>
+        <li>
+          <a href="https://docs.adyen.com/point-of-sale/design-your-integration/terminal-api/terminal-api-reference/#comadyennexopaymentrequest">
+            Payment requests
+          </a>
+        </li>
+        <li>
+          <a href="https://docs.adyen.com/point-of-sale/design-your-integration/terminal-api/terminal-api-reference/#comadyennexoreversalrequest">
+            Payment reversals requests
+          </a>
+        </li>
+        <li>
+          <a href="https://docs.adyen.com/point-of-sale/design-your-integration/terminal-api/terminal-api-reference/#comadyennexotransactionstatusrequest">
+            Transaction status requests
+          </a>
+        </li>
+        <li>
+          <a href="https://docs.adyen.com/point-of-sale/design-your-integration/terminal-api/terminal-api-reference/#comadyennexoabortrequest">
+            Abort requests
+          </a>
+        </li>
+      </ul>
+      </p>
+      <p>
+        Make sure to <a href="https://docs.adyen.com/payment-methods#add-payment-methods-to-your-account">add the payment method</a> of your TEST card to your Customer Area.
+      </p>
+      <p>
+        To learn more about our <a href="https://docs.adyen.com/point-of-sale/">in-person payment</a> integrations, check out our <a href="https://docs.adyen.com/point-of-sale/get-started/tapi-checklist/">Terminal API integration checklist.</a>
+      </p>
+    </div>
+
+    <ul class="integration-list">
+      <li class="integration-list-item">
+        <a href="/cashregister" class="integration-list-item-link">
+          <div class="title-container">
+            <p class="integration-list-item-title">Click here to settle the bill for a restaurant</p>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

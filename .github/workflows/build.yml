@@ -3,8 +3,20 @@ name: Java CI with Gradle
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - '**/README.md'
+      - README.md
+      - .gitignore
+      - .gitpod.yml
+      - LICENSE
   pull_request:
     branches: [ main ]
+    paths-ignore:
+      - '**/README.md'
+      - README.md
+      - .gitignore
+      - .gitpod.yml
+      - LICENSE
 
 jobs:
   build-checkout:

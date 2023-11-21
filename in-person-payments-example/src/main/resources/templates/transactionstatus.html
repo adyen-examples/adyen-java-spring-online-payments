@@ -1,0 +1,34 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title th:text="${type}"></title>
+</head>
+<body>
+<div layout:fragment="content" class="status-container">
+  <div class="status">
+    <h2>Transaction Status for [[${tableName}]]</h2>
+    <p th:if="${errorMessage == null or errorMessage == ''}">
+      <b>ServiceId: </b>[[${serviceId}]]
+    </p>
+
+    <div th:if="${paymentResponse != null}">
+      <p>
+        <b>Payment Response Result: </b>[[${paymentResponse.response.result}]]
+      </p>
+      <p>
+        <b>POI Transaction ID: </b>[[${paymentResponse.getPOIData().getPOITransactionID().getTransactionID()}]] <br/>
+        <b>POI Transaction TimeStamp: </b>[[${paymentResponse.getPOIData().getPOITransactionID().getTimeStamp()}]] <br/>
+        <b>Sale Transaction ID: </b>[[${paymentResponse.getSaleData().getSaleTransactionID().getTransactionID()}]] <br/>
+        <b>Sale Transaction TimeStamp: </b>[[${paymentResponse.getSaleData().getSaleTransactionID().getTimeStamp()}]] <br/>
+        <b>Authorized amount: </b>[[${paymentResponse.getPaymentResult().getAmountsResp().getCurrency()}]] [[${paymentResponse.getPaymentResult().getAmountsResp().getAuthorizedAmount()}]] <br/>
+      </p>
+    </div>
+    <p th:unless="${errorMessage == null or errorMessage == ''}">
+      [[${errorMessage}]]
+    </p>
+    <a class="button" href="/cashregister" th:href="@{/cashregister}">Return</a>
+  </div>
+</div>
+</body>

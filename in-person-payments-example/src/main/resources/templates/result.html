@@ -1,0 +1,25 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title th:text="${type}"></title>
+</head>
+<body>
+<div layout:fragment="content" class="status-container">
+  <div class="status">
+    <img th:src="${'/images/' + type + '.svg'}" class="status-image" alt="">
+    <img th:if="${type == 'success'}" src="/images/thank-you.svg" class="status-image" alt="">
+
+    <p class="status-message">
+      <span th:if="${type == 'success' }">Success!</span>
+      <span th:if="${type == 'failure' }" th:text="${refusalReason}"></span>
+      <span th:if="${type == 'failure' }">
+        Learn how to resolve Terminal API errors and handle declined payments in
+        <a href="https://docs.adyen.com/point-of-sale/error-scenarios/">our documentation.</a>
+      </span>
+    </p>
+    <a class="button" href="/cashregister">Return</a>
+  </div>
+</div>
+</body>

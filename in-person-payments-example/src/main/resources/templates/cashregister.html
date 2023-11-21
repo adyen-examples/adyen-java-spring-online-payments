@@ -1,0 +1,90 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title>Adyen Cash Register View</title>
+</head>
+<body>
+<div layout:fragment="content" class="main-container">
+  <div class="info">
+    <h2>In-Person Payments Demo</h2>
+    <div id="loading-grid" class="loading-grid disabled">
+      <!-- Loading animation start -->
+      <div class="loading-animation"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+      <!-- Loading animation end -->
+      <div class="loading-description">Waiting for terminal response ...</div>
+      <input type="button" id="cancel-operation-button" class="cancel-operation-button" value="Cancel"/>
+    </div>
+    <div id="tables-section" class="tables-section">
+      <div class="tables-grid">
+        <ul class="tables-grid-list">
+          <li th:each="table : ${tables}" class="tables-grid-item">
+            <p class="tables-grid-item-title" th:text="${table.tableName}"></p>
+            <div class="tables-grid-item-currency-amount">
+              <p class="tables-grid-item-currency" th:text="${table.currency}"></p>
+              <p class="tables-grid-item-amount" th:text="${table.amount}"></p>
+            </div>
+            <p class="tables-grid-item-other" th:if="${table.getPaymentStatusDetails().getSaleTransactionId() != null}">
+              <b>Sale Transaction ID: </b><br/> <span th:text="${table.getPaymentStatusDetails().getSaleTransactionId()}"></span>
+            </p>
+            <p class="tables-grid-item-other" th:if="${table.getPaymentStatusDetails().getSaleTransactionTimeStamp() != null}">
+              <b>Sale Transaction Timestamp: </b><br/> <span th:text="${table.getPaymentStatusDetails().getSaleTransactionTimeStamp()}"></span>
+            </p>
+            <p class="tables-grid-item-other" th:if="${table.getPaymentStatusDetails().getPoiTransactionId() != null}">
+              <b>POI Transaction ID: </b><br/> <span th:text="${table.getPaymentStatusDetails().getPoiTransactionId()}"></span>
+            </p>
+            <p class="tables-grid-item-other" th:if="${table.getPaymentStatusDetails().getPoiTransactionTimeStamp() != null}">
+              <b>POI Transaction Timestamp: </b><br/> <span th:text="${table.getPaymentStatusDetails().getPoiTransactionTimeStamp()}"></span>
+            </p>
+            <div th:switch="${table.getPaymentStatus()}">
+              <p th:case="${T(com.adyen.ipp.model.PaymentStatus).NotPaid}" class="tables-grid-item-status not-paid">NotPaid</p>
+              <p th:case="${T(com.adyen.ipp.model.PaymentStatus).PaymentInProgress}" class="tables-grid-item-status disabled">PaymentInProgress</p>
+              <p th:case="${T(com.adyen.ipp.model.PaymentStatus).Paid}" class="tables-grid-item-status paid">Paid</p>
+              <p th:case="${T(com.adyen.ipp.model.PaymentStatus).RefundInProgress}" class="tables-grid-item-status disabled">RefundInProgress</p>
+              <p th:case="${T(com.adyen.ipp.model.PaymentStatus).Refunded}" class="tables-grid-item-status disabled">Refunded</p>
+              <p th:case="${T(com.adyen.ipp.model.PaymentStatus).RefundFailed}" class="tables-grid-item-status refund-failed">RefundFailed</p>
+              <p th:case="${T(com.adyen.ipp.model.PaymentStatus).RefundedReversed}" class="tables-grid-item-status disabled">RefundedReversed</p>
+              <p th:case="*" class="tables-grid-item-status"></p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="info-grid">
+        <h2>Cash Register</h2>
+        <ul class="info-grid-list">
+          <li class="info-grid-item">
+            <p class="info-grid-item-title">
+              SALE ID:
+              <b class="info-grid-item-description" th:text="${saleId}"></b>
+            </p>
+          </li>
+          <li class="info-grid-item">
+            <p class="info-grid-item-title">
+              POI ID:
+              <b class="info-grid-item-description" th:text="${poiId}"></b>
+            </p>
+          </li>
+        </ul>
+        <form id="payment-request-form" method="post">
+          <input type="text" id="tableName" name="tableName" hidden>
+          <input type="text" id="amount" name="amount" hidden>
+          <input type="text" id="currency" name="currency" hidden>
+          <button type="submit" id="payment-request-button" class="payment-request-button disabled">Pay</button>
+        </form>
+
+        <form id="reversal-request-form" method="post">
+          <input type="text" id="reversalTableName" name="reversalTableName" hidden>
+          <button type="submit" id="reversal-request-button" class="reversal-request-button disabled">Reversal</button>
+        </form>
+
+        <input type="button" id="transaction-status-button" class="transaction-status-button disabled" value="Transaction Status"/>
+      </div>
+    </div>
+
+    <!-- Binds all buttons for table selection and the `api/send-payment-request`/`api/send-payment-reversal-request` endpoints -->
+    <script src="/cashregister-bindings.js"></script>
+  </div>
+</div>
+</body>
+</html>

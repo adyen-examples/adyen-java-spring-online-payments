@@ -24,3 +24,7 @@ updates:
     directory: "/giving-example"
     schedule:
       interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/in-person-payments-example"
+    schedule:
+      interval: "daily"

@@ -1,0 +1,9 @@
+rootProject.name = 'adyen-java-spring-in-person-payments'
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
+}

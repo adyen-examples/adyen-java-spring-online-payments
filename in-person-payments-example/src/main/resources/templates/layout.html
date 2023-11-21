@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head>
+    <title layout:title-pattern="$LAYOUT_TITLE $CONTENT_TITLE">
+      Adyen - In-person Payments Demo
+    </title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="/css/application.css" />
+  </head>
+  <body>
+    <header id="header">
+      <a href="/">
+        <img src="/images/mystore-logo.svg" alt="">
+      </a>
+    </header>
+
+    <div class="container">
+      <th:block layout:fragment="content" />
+    </div>
+  </body>
+</html>
