@@ -3,6 +3,7 @@ package com.adyen.giving.api;
 import com.adyen.Client;
 import com.adyen.giving.ApplicationProperty;
 import com.adyen.enums.Environment;
+import com.adyen.giving.service.DonationService;
 import com.adyen.model.checkout.*;
 import com.adyen.service.checkout.PaymentsApi;
 import com.adyen.service.exception.ApiException;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -31,6 +33,8 @@ public class CheckoutResource {
 
     private final PaymentsApi paymentsApi;
 
+    @Autowired
+    private DonationService donationService;
     private static final String DONATION_TOKEN = "DonationToken";
 
     private static final String PAYMENT_ORIGINAL_PSPREFERENCE = "PaymentOriginalPspReference";
@@ -59,23 +63,13 @@ public class CheckoutResource {
     @PostMapping("/donations")
     public ResponseEntity<DonationPaymentResponse> donations(@RequestBody Amount body, @RequestHeader String host, HttpServletRequest request) throws IOException, ApiException {
         DonationPaymentRequest donationRequest = new DonationPaymentRequest();
-        HttpSession session = request.getSession();
-        var pspReference = session.getAttribute(PAYMENT_ORIGINAL_PSPREFERENCE);
-        var donationToken = session.getAttribute(DONATION_TOKEN);
 
-        if (pspReference == null) {
-            log.info("Could not find the PspReference in the stored session.");
-            return ResponseEntity.badRequest().build();
-        }
-
-        if (donationToken == null) {
-            log.info("Could not find the DonationToken in the stored session.");
-            return ResponseEntity.badRequest().build();
-        }
+        var pspReference = donationService.getPaymentOriginalPspReference();
+        var donationToken = donationService.getDonationToken();
 
         donationRequest.amount(body);
         donationRequest.reference(UUID.randomUUID().toString());
-        donationRequest.setPaymentMethod(new CheckoutPaymentMethod(new CardDetails()));
+        donationRequest.setPaymentMethod(new DonationPaymentMethod(new CardDetails()));
         donationRequest.setDonationToken(donationToken.toString());
         donationRequest.donationOriginalPspReference(pspReference.toString());
         donationRequest.setDonationAccount(this.applicationProperty.getDonationMerchantAccount());
@@ -148,14 +142,8 @@ public class CheckoutResource {
         log.info("REST request to make Adyen payment {}", paymentRequest);
         var response = paymentsApi.payments(paymentRequest);
 
-        var session = request.getSession();
-        if (response.getDonationToken() == null) {
-            log.error("The payments endpoint did not return a donationToken, please enable this in your Customer Area. See README.");
-        }
-        else {
-            session.setAttribute(PAYMENT_ORIGINAL_PSPREFERENCE, response.getPspReference());
-            session.setAttribute(DONATION_TOKEN, response.getDonationToken());
-        }
+        donationService.setDonationTokenAndOriginalPspReference(response.getDonationToken(), response.getPspReference());
+
         return ResponseEntity.ok()
             .body(response);
     }
