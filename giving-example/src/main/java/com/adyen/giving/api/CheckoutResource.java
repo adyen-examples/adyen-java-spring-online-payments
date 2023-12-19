@@ -3,15 +3,14 @@ package com.adyen.giving.api;
 import com.adyen.Client;
 import com.adyen.giving.ApplicationProperty;
 import com.adyen.enums.Environment;
-import com.adyen.giving.service.DonationService;
+import com.adyen.giving.util.DonationUtil;
 import com.adyen.model.checkout.*;
 import com.adyen.service.checkout.PaymentsApi;
 import com.adyen.service.exception.ApiException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import jakarta.ws.rs.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -32,12 +31,6 @@ public class CheckoutResource {
     private final ApplicationProperty applicationProperty;
 
     private final PaymentsApi paymentsApi;
-
-    @Autowired
-    private DonationService donationService;
-    private static final String DONATION_TOKEN = "DonationToken";
-
-    private static final String PAYMENT_ORIGINAL_PSPREFERENCE = "PaymentOriginalPspReference";
 
     public CheckoutResource(ApplicationProperty applicationProperty) {
 
@@ -62,25 +55,32 @@ public class CheckoutResource {
      */
     @PostMapping("/donations")
     public ResponseEntity<DonationPaymentResponse> donations(@RequestBody Amount body, @RequestHeader String host, HttpServletRequest request) throws IOException, ApiException {
-        DonationPaymentRequest donationRequest = new DonationPaymentRequest();
+        try {
+            DonationPaymentRequest donationRequest = new DonationPaymentRequest();
 
-        var pspReference = donationService.getPaymentOriginalPspReference();
-        var donationToken = donationService.getDonationToken();
+            String pspReference = DonationUtil.getPaymentOriginalPspReference(request.getSession());
+            String donationToken = DonationUtil.getDonationToken(request.getSession());
 
-        donationRequest.amount(body);
-        donationRequest.reference(UUID.randomUUID().toString());
-        donationRequest.setPaymentMethod(new DonationPaymentMethod(new CardDetails()));
-        donationRequest.setDonationToken(donationToken.toString());
-        donationRequest.donationOriginalPspReference(pspReference.toString());
-        donationRequest.setDonationAccount(this.applicationProperty.getDonationMerchantAccount());
-        donationRequest.returnUrl(request.getScheme() + "://" + host);
-        donationRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount());
-        donationRequest.shopperInteraction(DonationPaymentRequest.ShopperInteractionEnum.CONTAUTH);
+            donationRequest.amount(body);
+            donationRequest.reference(UUID.randomUUID().toString());
+            donationRequest.setPaymentMethod(new DonationPaymentMethod(new CardDetails()));
+            donationRequest.setDonationToken(donationToken);
+            donationRequest.donationOriginalPspReference(pspReference);
+            donationRequest.setDonationAccount(this.applicationProperty.getDonationMerchantAccount());
+            donationRequest.returnUrl(request.getScheme() + "://" + host);
+            donationRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount());
+            donationRequest.shopperInteraction(DonationPaymentRequest.ShopperInteractionEnum.CONTAUTH);
 
-        DonationPaymentResponse result = this.paymentsApi.donations(donationRequest);
+            DonationPaymentResponse result = this.paymentsApi.donations(donationRequest);
 
-        return ResponseEntity.ok()
-                .body(result);
+            return ResponseEntity.ok().body(result);
+        } catch (NotFoundException e) {
+            log.warn(e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
     }
 
     /**
@@ -92,14 +92,19 @@ public class CheckoutResource {
      */
     @PostMapping("/getPaymentMethods")
     public ResponseEntity<PaymentMethodsResponse> paymentMethods() throws IOException, ApiException {
-        var paymentMethodsRequest = new PaymentMethodsRequest();
-        paymentMethodsRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount());
-        paymentMethodsRequest.setChannel(PaymentMethodsRequest.ChannelEnum.WEB);
+        try {
+            var paymentMethodsRequest = new PaymentMethodsRequest();
+            paymentMethodsRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount());
+            paymentMethodsRequest.setChannel(PaymentMethodsRequest.ChannelEnum.WEB);
 
-        log.info("REST request to get Adyen payment methods {}", paymentMethodsRequest);
-        var response = paymentsApi.paymentMethods(paymentMethodsRequest);
-        return ResponseEntity.ok()
-            .body(response);
+            log.info("REST request to get Adyen payment methods {}", paymentMethodsRequest);
+            var response = paymentsApi.paymentMethods(paymentMethodsRequest);
+            return ResponseEntity.ok()
+                    .body(response);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
     }
 
     /**
@@ -111,41 +116,48 @@ public class CheckoutResource {
      */
     @PostMapping("/initiatePayment")
     public ResponseEntity<PaymentResponse> payments(@RequestHeader String host, @RequestBody PaymentRequest body, HttpServletRequest request) throws IOException, ApiException {
-        var paymentRequest = new PaymentRequest();
+        try {
+            var paymentRequest = new PaymentRequest();
 
-        var orderRef = UUID.randomUUID().toString();
-        var amount = new Amount()
-            .currency("EUR")
-            .value(10000L); // value is 100€ in minor units
+            var orderRef = UUID.randomUUID().toString();
+            var amount = new Amount()
+                    .currency("EUR")
+                    .value(10000L); // value is 100€ in minor units
 
-        paymentRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount()); // required
-        paymentRequest.setChannel(PaymentRequest.ChannelEnum.WEB);
-        paymentRequest.setReference(orderRef); // required
-        paymentRequest.setReturnUrl(request.getScheme() + "://" + host + "/api/handleShopperRedirect?orderRef=" + orderRef);
+            paymentRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount()); // required
+            paymentRequest.setChannel(PaymentRequest.ChannelEnum.WEB);
+            paymentRequest.setReference(orderRef); // required
+            paymentRequest.setReturnUrl(request.getScheme() + "://" + host + "/api/handleShopperRedirect?orderRef=" + orderRef);
 
-        paymentRequest.setAmount(amount);
-        // set lineItems required for some payment methods (ie Klarna)
-        paymentRequest.setLineItems(Arrays.asList(
-            new LineItem().quantity(1L).amountIncludingTax(5000L).description("Sunglasses"),
-            new LineItem().quantity(1L).amountIncludingTax(5000L).description("Headphones"))
-        );
-        // required for 3ds2 native flow
-        paymentRequest.setAdditionalData(Collections.singletonMap("allow3DS2", "true"));
-        // required for 3ds2 native flow
-        paymentRequest.setOrigin(request.getScheme() + "://" + host );
-        // required for 3ds2
-        paymentRequest.setBrowserInfo(body.getBrowserInfo());
-        // required by some issuers for 3ds2
-        paymentRequest.setShopperIP(request.getRemoteAddr());
-        paymentRequest.setPaymentMethod(body.getPaymentMethod());
+            paymentRequest.setAmount(amount);
+            // set lineItems required for some payment methods (ie Klarna)
+            paymentRequest.setLineItems(Arrays.asList(
+                    new LineItem().quantity(1L).amountIncludingTax(5000L).description("Sunglasses"),
+                    new LineItem().quantity(1L).amountIncludingTax(5000L).description("Headphones"))
+            );
+            // required for 3ds2 native flow
+            paymentRequest.setAdditionalData(Collections.singletonMap("allow3DS2", "true"));
+            // required for 3ds2 native flow
+            paymentRequest.setOrigin(request.getScheme() + "://" + host);
+            // required for 3ds2
+            paymentRequest.setBrowserInfo(body.getBrowserInfo());
+            // required by some issuers for 3ds2
+            paymentRequest.setShopperIP(request.getRemoteAddr());
+            paymentRequest.setPaymentMethod(body.getPaymentMethod());
 
-        log.info("REST request to make Adyen payment {}", paymentRequest);
-        var response = paymentsApi.payments(paymentRequest);
+            log.info("REST request to make Adyen payment {}", paymentRequest);
+            var response = paymentsApi.payments(paymentRequest);
 
-        donationService.setDonationTokenAndOriginalPspReference(response.getDonationToken(), response.getPspReference());
+            DonationUtil.setDonationTokenAndOriginalPspReference(request.getSession(), response.getDonationToken(), response.getPspReference());
 
-        return ResponseEntity.ok()
-            .body(response);
+            return ResponseEntity.ok().body(response);
+        } catch (NotFoundException e) {
+            log.warn(e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
     }
 
     /**
@@ -157,10 +169,14 @@ public class CheckoutResource {
      */
     @PostMapping("/submitAdditionalDetails")
     public ResponseEntity<PaymentDetailsResponse> payments(@RequestBody PaymentDetailsRequest detailsRequest) throws IOException, ApiException {
-        log.info("REST request to make Adyen payment details {}", detailsRequest);
-        var response = paymentsApi.paymentsDetails(detailsRequest);
-        return ResponseEntity.ok()
-            .body(response);
+        try {
+            log.info("REST request to make Adyen payment details {}", detailsRequest);
+            var response = paymentsApi.paymentsDetails(detailsRequest);
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
     }
 
     /**
