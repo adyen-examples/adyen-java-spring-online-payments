@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '17' ]
+        java: [ '17', '21' ]
     name: Java ${{ matrix.Java }} sample
     steps:
       - uses: actions/checkout@v3
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '17' ]
+        java: [ '17', '21' ]
     name: Java ${{ matrix.Java }} sample
     steps:
       - uses: actions/checkout@v3
@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '17' ]
+        java: [ '17', '21' ]
     name: Java ${{ matrix.Java }} sample
     steps:
       - uses: actions/checkout@v3
@@ -76,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '17' ]
+        java: [ '17', '21' ]
     name: Java ${{ matrix.Java }} sample
     steps:
       - uses: actions/checkout@v3
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '17' ]
+        java: [ '17', '21' ]
     name: Java ${{ matrix.Java }} sample
     steps:
       - uses: actions/checkout@v3
@@ -111,7 +111,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ '17' ]
+        java: [ '17', '21' ]
     name: Java ${{ matrix.Java }} sample
     steps:
       - uses: actions/checkout@v3
