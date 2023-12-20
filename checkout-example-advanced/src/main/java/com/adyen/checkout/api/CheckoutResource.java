@@ -76,7 +76,7 @@ public class CheckoutResource {
         var orderRef = UUID.randomUUID().toString();
         var amount = new Amount()
             .currency("EUR")
-            .value(10000L); // value is 10€ in minor units
+            .value(10000L); // value is 100€ in minor units
 
         paymentRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount()); // required
         paymentRequest.setChannel(PaymentRequest.ChannelEnum.WEB);
@@ -89,16 +89,27 @@ public class CheckoutResource {
             new LineItem().quantity(1L).amountIncludingTax(5000L).description("Sunglasses"),
             new LineItem().quantity(1L).amountIncludingTax(5000L).description("Headphones"))
         );
-        // required for 3ds2 native flow
-        paymentRequest.setAdditionalData(Collections.singletonMap("allow3DS2", "true"));
-        // required for 3ds2 native flow
-        paymentRequest.setOrigin(request.getScheme() + "://" + host );
+
+        var authenticationData = new AuthenticationData();
+        authenticationData.setAttemptAuthentication(AuthenticationData.AttemptAuthenticationEnum.ALWAYS);
+        // add the following lines for Native 3DS2:
+        //var threeDSRequestData = new ThreeDSRequestData();
+        //threeDSRequestData.setNativeThreeDS(ThreeDSRequestData.NativeThreeDSEnum.PREFERRED);
+        //authenticationData.setThreeDSRequestData(threeDSRequestData);
+
+        paymentRequest.setAuthenticationData(authenticationData);
+
+        // required for 3ds2 redirect flow
+        paymentRequest.setOrigin(request.getScheme() + "://" + host);
         // required for 3ds2
         paymentRequest.setBrowserInfo(body.getBrowserInfo());
         // required by some issuers for 3ds2
         paymentRequest.setShopperIP(request.getRemoteAddr());
         paymentRequest.setPaymentMethod(body.getPaymentMethod());
 
+        // we strongly recommend that you the billingAddress in your request
+        // card schemes require this for channel web, iOS, and Android implementations
+        //paymentRequest.setBillingAddress(new Address());
         log.info("REST request to make Adyen payment {}", paymentRequest);
         var response = paymentsApi.payments(paymentRequest);
         return ResponseEntity.ok()
@@ -133,6 +144,9 @@ public class CheckoutResource {
 
         PaymentCompletionDetails details = new PaymentCompletionDetails();
         if (redirectResult != null && !redirectResult.isEmpty()) {
+            // for redirect, you are redirected to an Adyen domain to complete the 3DS2 challenge
+            // after completing the 3DS2 challenge, you get the redirect result from Adyen in the returnUrl
+            // we then pass on the redirectResult
             details.redirectResult(redirectResult);
         } else if (payload != null && !payload.isEmpty()) {
             details.payload(payload);
