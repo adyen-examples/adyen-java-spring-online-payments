@@ -64,14 +64,12 @@ public class AdminController {
 
     @GetMapping("/admin/details/{reference}")
     public String details(@PathVariable String reference, Model model) {
-        // Assuming getByMerchantReference is a method to fetch data by reference
-        // You should implement this method to retrieve data based on the reference
         PaymentModel data = Storage.findByMerchantReference(reference);
 
         model.addAttribute("title", "Adyen Admin Payment History");
         model.addAttribute("data", data);
 
-        return "details"; // Assuming you have a template named "admin/details.html"
+        return "admin/details";
     }
 
     @PostMapping("/admin/capture-payment")

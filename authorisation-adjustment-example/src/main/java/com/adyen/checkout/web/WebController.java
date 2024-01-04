@@ -11,19 +11,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class BookingWebController {
+public class WebController {
 
-    private final Logger log = LoggerFactory.getLogger(BookingWebController.class);
+    private final Logger log = LoggerFactory.getLogger(WebController.class);
 
     @Autowired
     private ApplicationProperty applicationProperty;
 
     @Autowired
-    public BookingWebController(ApplicationProperty applicationProperty) {
+    public WebController(ApplicationProperty applicationProperty) {
         this.applicationProperty = applicationProperty;
 
         if(this.applicationProperty.getClientKey() == null) {
-            Logger log = LoggerFactory.getLogger(BookingWebController.class);
+            Logger log = LoggerFactory.getLogger(WebController.class);
             log.warn("ADYEN_CLIENT_KEY is undefined ");
         }
     }

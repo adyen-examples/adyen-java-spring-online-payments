@@ -2,6 +2,7 @@ package com.adyen.checkout.api;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -79,7 +80,7 @@ public class ApiController {
         var orderRef = UUID.randomUUID().toString();
         var amount = new Amount()
             .currency("EUR")
-            .value(10000L); // value is 100€ in minor units
+            .value(24999L); // value is 249.99€ in minor units
 
         paymentRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount()); // required
         paymentRequest.setChannel(PaymentRequest.ChannelEnum.WEB);
@@ -91,7 +92,7 @@ public class ApiController {
         authenticationData.setAttemptAuthentication(AuthenticationData.AttemptAuthenticationEnum.ALWAYS);
         paymentRequest.setAuthenticationData(authenticationData);
 
-        paymentRequest.setAdditionalData(new HashMap<String, String>() { {
+        paymentRequest.setAdditionalData(new HashMap<>() { {
             put ("authorisationType", "PreAuth");
         }});
 
@@ -110,12 +111,14 @@ public class ApiController {
         var response = paymentsApi.payments(paymentRequest);
 
         if (response.getResultCode() == PaymentResponse.ResultCodeEnum.AUTHORISED) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
             var payment = new PaymentModel(response.getMerchantReference(),
                     response.getPspReference(),
                     response.getAmount().getValue(),
                     response.getAmount().getCurrency(),
-                    LocalDateTime.now().toString(),
-                    LocalDateTime.now().plusDays(28).toString(),
+                    LocalDateTime.now().format(formatter),
+                    LocalDateTime.now().plusDays(28).format(formatter),
                     response.getPaymentMethod().getBrand(),
                     new ArrayList<>()
             );
