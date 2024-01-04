@@ -1,5 +1,9 @@
 package com.adyen.checkout.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class PaymentModel {
@@ -21,6 +25,11 @@ public class PaymentModel {
         this.expiryDate = expiryDate;
         this.paymentMethodBrand = paymentMethodBrand;
         this.paymentDetailsModelList = paymentDetailsModelList;
+    }
+
+    public long getDaysUntilExpiry() {
+        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // For visual-purposes in this demo, we ignore the values after the time and show the date time
+        return ChronoUnit.DAYS.between(LocalDateTime.parse(bookingDate, formatter), LocalDateTime.parse(expiryDate, formatter));
     }
 
     public String getMerchantReference() {

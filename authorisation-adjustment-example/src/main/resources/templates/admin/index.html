@@ -17,24 +17,18 @@
                 <div class="admin-panel-token-container">
                     <th:block th:each="payment, index : ${data}">
                         <ul class="adminList">
-                            <li><b>Merchant Reference: &nbsp;</b> <a
-                                    th:href="@{'/admin/details/' + ${payment.merchantReference}}"><span
-                                    th:text="${payment.merchantReference}"></span></a></li>
-                            <li><b>Pre-authorisation PspReference: &nbsp;</b><span
-                                    th:text="${payment.pspReference}"></span></li>
-                            <li><b>Amount: &nbsp;</b><span
-                                    th:text="${payment.currency + ' ' + #numbers.formatDecimal(payment.amount, 2, 'COMMA', 2, 'POINT')}"></span>
+                            <li><b>Merchant Reference: &nbsp;</b> <a th:href="@{'/admin/details/' + ${payment.merchantReference}}"><span th:text="${payment.merchantReference}"></span></a></li>
+                            <li><b>Pre-authorisation PspReference: &nbsp;</b><span th:text="${payment.pspReference}"></span></li>
+                            <li><b>Amount: &nbsp;</b><span th:text="${payment.currency + ' ' + (payment.amount / 100d)}"></span>
                             </li>
-                            <li><b>PaymentMethodBrand: &nbsp;</b><span
-                                    th:text="${payment.paymentMethodBrand}"></span></li>
-                            <li><b>Expiry Date: &nbsp;</b><span th:text="${payment.expiryDate}"></span> (<span
-                                    th:text="${payment.expiryDate}"></span> days until&nbsp;<a
-                                    href="https://docs.adyen.com/online-payments/classic-integrations/modify-payments/adjust-authorisation#validity">expiry</a>)
+                            <li><b>PaymentMethodBrand: &nbsp;</b><span th:text="${payment.paymentMethodBrand}"></span></li>
+                            <li><b>Expiry Date: &nbsp;</b><span th:text="${payment.expiryDate}"></span>
+                                &nbsp; (<span th:text="${payment.getDaysUntilExpiry()}"> </span> &nbsp; days until&nbsp;<a href="https://docs.adyen.com/online-payments/classic-integrations/modify-payments/adjust-authorisation#validity">expiry</a>)
                             </li>
 
                             <li><b>Actions: &nbsp;&nbsp;&nbsp;</b>
-                                <a href="#/" th:onclick="showForm('adjustmentForm' + ${index})">Adjust</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <a href="#/" th:onclick="showForm('extendForm' + ${index})">Extend</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="#/" th:onclick="showForm(adjustmentForm + ${index})">Adjust</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="#/" th:onclick="showForm(extendForm + ${index})">Extend</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <a href="#/" th:onclick="showForm('captureForm' + ${index})">Capture</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <a href="#/" th:onclick="showForm('reversalForm' + ${index})">Reversal</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </li>
@@ -44,7 +38,7 @@
                                 <div>
                                     <form name="updatePaymentAmountForm" method="post">
                                         <b>Adjust amount:</b> <input type="text" name="amount"
-                                                                     th:value="${#numbers.formatDecimal(payment.amount, 2, 'COMMA', 2, 'POINT')}"
+                                                                     th:value="${(payment.amount / 100d)}"
                                                                      class="adjustAmountText">
                                         <input type="hidden" name="reference"
                                                th:value="${payment.merchantReference}"/>
