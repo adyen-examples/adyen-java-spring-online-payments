@@ -1,12 +1,14 @@
 package com.adyen.checkout.api;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
 import com.adyen.checkout.ApplicationProperty;
+import com.adyen.checkout.model.PaymentModel;
+import com.adyen.checkout.util.Storage;
 import com.adyen.service.checkout.PaymentsApi;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -24,14 +26,14 @@ import com.adyen.service.exception.ApiException;
  */
 @RestController
 @RequestMapping("/api")
-public class CheckoutResource {
-    private final Logger log = LoggerFactory.getLogger(CheckoutResource.class);
+public class ApiController {
+    private final Logger log = LoggerFactory.getLogger(ApiController.class);
 
     private final ApplicationProperty applicationProperty;
 
     private final PaymentsApi paymentsApi;
 
-    public CheckoutResource(ApplicationProperty applicationProperty) {
+    public ApiController(ApplicationProperty applicationProperty) {
 
         this.applicationProperty = applicationProperty;
 
@@ -108,7 +110,16 @@ public class CheckoutResource {
         var response = paymentsApi.payments(paymentRequest);
 
         if (response.getResultCode() == PaymentResponse.ResultCodeEnum.AUTHORISED) {
-
+            var payment = new PaymentModel(response.getMerchantReference(),
+                    response.getPspReference(),
+                    response.getAmount().getValue(),
+                    response.getAmount().getCurrency(),
+                    LocalDateTime.now().toString(),
+                    LocalDateTime.now().plusDays(28).toString(),
+                    response.getPaymentMethod().getBrand(),
+                    new ArrayList<>()
+            );
+            Storage.put(payment);
         }
         return ResponseEntity.ok()
             .body(response);

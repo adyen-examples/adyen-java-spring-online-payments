@@ -8,7 +8,7 @@
 <body>
 <div layout:fragment="content" class="status-container">
     <div class="status">
-        <img src="/images/${type}.svg" class="status-image" alt="">
+        <img th:src="${'/images/' + type + '.svg'}" class="status-image" alt="">
 
         <p class="status-message" th:switch="${type}">
             <span th:case="'success'">Your payment has been successfully authorised.</span>

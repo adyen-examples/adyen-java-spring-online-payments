@@ -22,13 +22,13 @@ import java.security.SignatureException;
  */
 @RestController
 @RequestMapping("/api")
-public class WebhookResource {
-    private final Logger log = LoggerFactory.getLogger(WebhookResource.class);
+public class WebhookController {
+    private final Logger log = LoggerFactory.getLogger(WebhookController.class);
 
     private final ApplicationProperty applicationProperty;
 
     @Autowired
-    public WebhookResource(ApplicationProperty applicationProperty) {
+    public WebhookController(ApplicationProperty applicationProperty) {
         this.applicationProperty = applicationProperty;
 
         if (this.applicationProperty.getHmacKey() == null) {

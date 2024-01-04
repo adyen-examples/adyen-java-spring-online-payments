@@ -11,17 +11,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class CheckoutController {
+public class BookingWebController {
+
+    private final Logger log = LoggerFactory.getLogger(BookingWebController.class);
 
     @Autowired
     private ApplicationProperty applicationProperty;
 
     @Autowired
-    public CheckoutController(ApplicationProperty applicationProperty) {
+    public BookingWebController(ApplicationProperty applicationProperty) {
         this.applicationProperty = applicationProperty;
 
         if(this.applicationProperty.getClientKey() == null) {
-            Logger log = LoggerFactory.getLogger(CheckoutController.class);
+            Logger log = LoggerFactory.getLogger(BookingWebController.class);
             log.warn("ADYEN_CLIENT_KEY is undefined ");
         }
     }

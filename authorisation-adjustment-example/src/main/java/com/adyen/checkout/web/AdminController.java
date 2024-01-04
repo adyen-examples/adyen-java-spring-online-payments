@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
-@RequestMapping("/admin")
 public class AdminController {
-
     private final Logger log = LoggerFactory.getLogger(AdminController.class);
 
     private final ModificationsApi modificationsApi;
@@ -40,20 +38,17 @@ public class AdminController {
         this.modificationsApi = new ModificationsApi(client);
     }
 
-    @GetMapping("/")
-    public String adminIndex(Model model) {
+    @GetMapping("/admin")
+    public String index(Model model) {
         model.addAttribute("data", Storage.getAll());
         return "admin/index";
     }
 
-    @GetMapping("/result/{status}/{reference}")
-    public String adminResult(@PathVariable String status,
-                              @PathVariable String reference,
-                              @RequestParam(required = false) String refusalReason,
-                              Model model) {
+    @GetMapping("/admin/result/{status}/{reference}")
+    public String result(@PathVariable String status, @PathVariable String reference, @RequestParam(required = false) String refusalReason, Model model) {
         String result;
 
-        if ("received".equals(status)) {
+        if (status.equals("received")) {
             result = "success";
         } else {
             result = "error";
@@ -68,7 +63,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/details/{reference}")
-    public String adminDetails(@PathVariable String reference, Model model) {
+    public String details(@PathVariable String reference, Model model) {
         // Assuming getByMerchantReference is a method to fetch data by reference
         // You should implement this method to retrieve data based on the reference
         PaymentModel data = Storage.findByMerchantReference(reference);
@@ -76,7 +71,7 @@ public class AdminController {
         model.addAttribute("title", "Adyen Admin Payment History");
         model.addAttribute("data", data);
 
-        return "admin/details"; // Assuming you have a template named "admin/details.html"
+        return "details"; // Assuming you have a template named "admin/details.html"
     }
 
     @PostMapping("/admin/capture-payment")
@@ -108,7 +103,6 @@ public class AdminController {
         }
     }
 
-
     @PostMapping("/admin/update-payment-amount")
     public ResponseEntity<PaymentAmountUpdateResponse> updatePaymentAmount(@RequestBody String reference) {
         try {
@@ -138,7 +132,6 @@ public class AdminController {
             return ResponseEntity.status(500).build();
         }
     }
-
 
     @PostMapping("/admin/reversal-payment")
     public ResponseEntity<PaymentReversalResponse> reversalPayment(@RequestBody String reference) {
