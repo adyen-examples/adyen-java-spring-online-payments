@@ -43,6 +43,10 @@ tasks:
           echo "Build paybylink-example application"
           cd paybylink-example && ./gradlew bootJar
         ;;
+        "authorisation-adjustment-example")
+          echo "Build authorisation-adjustment-example application"
+          cd authorisation-adjustment-example && ./gradlew bootJar
+        ;;
         *)
           echo "Build default checkout-example application instead because '$path' is not defined ..."
           cd checkout-example && ./gradlew bootJar

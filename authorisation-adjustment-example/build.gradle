@@ -1,0 +1,29 @@
+plugins {
+    alias(libs.plugins.spring.framework)
+    alias(libs.plugins.spring.dependency)
+
+    id 'java'
+}
+
+group = 'com.adyen'
+version = '0.0.1-SNAPSHOT'
+
+sourceCompatibility = 17
+targetCompatibility = 17
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    implementation libs.adyen.java
+    implementation libs.bundles.spring
+
+    testImplementation(libs.bundles.spring.test){
+        exclude (group: 'org.junit.vintage', module: 'junit-vintage-engine')
+    }
+}
+
+test {
+	useJUnitPlatform()
+}
