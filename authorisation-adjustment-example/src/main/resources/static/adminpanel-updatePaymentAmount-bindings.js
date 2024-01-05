@@ -1,4 +1,4 @@
-/ Sends POST request to url
+// Sends POST request to url
 async function sendPostRequest(url, data) {
     const res = await fetch(url, {
         method: "POST",
@@ -21,7 +21,7 @@ async function sendUpdatePaymentAmountRequest(reference, amount) {
                 window.location.href = "admin/result/received/" + reference;
                 break;
             default:
-                window.location.href = "admin/result/error" + reference;
+                window.location.href = "admin/result/error/" + reference;
                 break;
         };
     } catch (error) {

@@ -11,12 +11,12 @@ public class PaymentModel {
     private String pspReference;
     private long amount;
     private String currency;
-    private String bookingDate;
-    private String expiryDate;
+    private LocalDateTime bookingDate;
+    private LocalDateTime expiryDate;
     private String paymentMethodBrand;
     private List<PaymentDetailsModel> paymentDetailsModelList;
 
-    public PaymentModel(String merchantReference, String pspReference, long amount, String currency, String bookingDate, String expiryDate, String paymentMethodBrand, List<PaymentDetailsModel> paymentDetailsModelList) {
+    public PaymentModel(String merchantReference, String pspReference, long amount, String currency, LocalDateTime bookingDate, LocalDateTime expiryDate, String paymentMethodBrand, List<PaymentDetailsModel> paymentDetailsModelList) {
         this.merchantReference = merchantReference;
         this.pspReference = pspReference;
         this.amount = amount;
@@ -28,8 +28,7 @@ public class PaymentModel {
     }
 
     public long getDaysUntilExpiry() {
-        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // For visual-purposes in this demo, we ignore the values after the time and show the date time
-        return ChronoUnit.DAYS.between(LocalDateTime.parse(bookingDate, formatter), LocalDateTime.parse(expiryDate, formatter));
+        return ChronoUnit.DAYS.between(bookingDate, expiryDate);
     }
 
     public String getMerchantReference() {
@@ -64,19 +63,19 @@ public class PaymentModel {
         this.currency = currency;
     }
 
-    public String getBookingDate() {
+    public LocalDateTime getBookingDate() {
         return bookingDate;
     }
 
-    public void setBookingDate(String bookingDate) {
+    public void setBookingDate(LocalDateTime bookingDate) {
         this.bookingDate = bookingDate;
     }
 
-    public String getExpiryDate() {
+    public LocalDateTime getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(LocalDateTime expiryDate) {
         this.expiryDate = expiryDate;
     }
 

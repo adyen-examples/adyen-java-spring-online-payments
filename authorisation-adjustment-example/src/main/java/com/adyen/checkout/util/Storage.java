@@ -2,6 +2,7 @@ package com.adyen.checkout.util;
 
 import com.adyen.checkout.model.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class Storage {
         }
     }
 
-    public static void updatePayment(String merchantReference, long amount, String expiryDate) {
+    public static void updatePayment(String merchantReference, long amount, LocalDateTime expiryDate) {
         PaymentModel payment = findByMerchantReference(merchantReference);
 
         if (payment != null) {

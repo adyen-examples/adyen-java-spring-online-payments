@@ -21,7 +21,7 @@ async function sendCapturePaymentRequest(reference) {
                 window.location.href = "admin/result/received/" + reference;
                 break;
             default:
-                window.location.href = "admin/result/error" + reference;
+                window.location.href = "admin/result/error/" + reference;
                 break;
         };
     } catch (error) {

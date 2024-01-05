@@ -1,18 +1,20 @@
 package com.adyen.checkout.model;
 
+import java.time.LocalDateTime;
+
 public class PaymentDetailsModel {
     private String merchantReference;
     private String pspReference;
     private String originalReference;
     private long amount;
     private String currency;
-    private String dateTime;
+    private LocalDateTime dateTime;
     private String eventCode;
     private String refusalReason;
     private String paymentMethodBrand;
     private boolean success;
 
-    public PaymentDetailsModel(String merchantReference, String pspReference, String originalReference, long amount, String currency, String dateTime, String eventCode, String refusalReason, String paymentMethodBrand, boolean success) {
+    public PaymentDetailsModel(String merchantReference, String pspReference, String originalReference, long amount, String currency, LocalDateTime dateTime, String eventCode, String refusalReason, String paymentMethodBrand, boolean success) {
         this.merchantReference = merchantReference;
         this.pspReference = pspReference;
         this.originalReference = originalReference;
@@ -65,11 +67,11 @@ public class PaymentDetailsModel {
         this.currency = currency;
     }
 
-    public String getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 

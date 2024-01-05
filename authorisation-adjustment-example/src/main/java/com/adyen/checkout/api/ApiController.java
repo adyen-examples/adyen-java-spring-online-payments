@@ -35,7 +35,6 @@ public class ApiController {
     private final PaymentsApi paymentsApi;
 
     public ApiController(ApplicationProperty applicationProperty) {
-
         this.applicationProperty = applicationProperty;
 
         if(applicationProperty.getApiKey() == null) {
@@ -111,14 +110,12 @@ public class ApiController {
         var response = paymentsApi.payments(paymentRequest);
 
         if (response.getResultCode() == PaymentResponse.ResultCodeEnum.AUTHORISED) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
             var payment = new PaymentModel(response.getMerchantReference(),
                     response.getPspReference(),
                     response.getAmount().getValue(),
                     response.getAmount().getCurrency(),
-                    LocalDateTime.now().format(formatter),
-                    LocalDateTime.now().plusDays(28).format(formatter),
+                    LocalDateTime.now(),
+                    LocalDateTime.now().plusDays(28),
                     response.getPaymentMethod().getBrand(),
                     new ArrayList<>()
             );

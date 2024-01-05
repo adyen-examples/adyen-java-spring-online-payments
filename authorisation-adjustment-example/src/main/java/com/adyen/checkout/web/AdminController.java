@@ -3,6 +3,9 @@ package com.adyen.checkout.web;
 import com.adyen.Client;
 import com.adyen.checkout.ApplicationProperty;
 import com.adyen.checkout.model.PaymentModel;
+import com.adyen.checkout.request.CapturePaymentRequest;
+import com.adyen.checkout.request.ReversalPaymentRequest;
+import com.adyen.checkout.request.UpdatePaymentAmountRequest;
 import com.adyen.checkout.util.Storage;
 import com.adyen.enums.Environment;
 import com.adyen.model.checkout.*;
@@ -73,12 +76,12 @@ public class AdminController {
     }
 
     @PostMapping("/admin/capture-payment")
-    public ResponseEntity<PaymentCaptureResponse> capturePayment(@RequestBody String reference) {
+    public ResponseEntity<PaymentCaptureResponse> capturePayment(@RequestBody CapturePaymentRequest request) {
         try {
-            PaymentModel payment = Storage.findByMerchantReference(reference);
+            PaymentModel payment = Storage.findByMerchantReference(request.getReference());
 
             if (payment == null) {
-                throw new Exception("Payment not found in storage - Reference: " + reference);
+                throw new Exception("Payment not found in storage - Reference: " + request.getReference());
             }
 
             var paymentCaptureRequest = new PaymentCaptureRequest();
@@ -102,12 +105,12 @@ public class AdminController {
     }
 
     @PostMapping("/admin/update-payment-amount")
-    public ResponseEntity<PaymentAmountUpdateResponse> updatePaymentAmount(@RequestBody String reference) {
+    public ResponseEntity<PaymentAmountUpdateResponse> updatePaymentAmount(@RequestBody UpdatePaymentAmountRequest request) {
         try {
-            PaymentModel payment = Storage.findByMerchantReference(reference);
+            PaymentModel payment = Storage.findByMerchantReference(request.getReference());
 
             if (payment == null) {
-                throw new Exception("Payment not found in storage - Reference: " + reference);
+                throw new Exception("Payment not found in storage - Reference: " + request.getReference());
             }
 
             var paymentAmountUpdateRequest = new PaymentAmountUpdateRequest();
@@ -115,10 +118,10 @@ public class AdminController {
             paymentAmountUpdateRequest.setReference(payment.getMerchantReference());
             paymentAmountUpdateRequest.setIndustryUsage(PaymentAmountUpdateRequest.IndustryUsageEnum.DELAYEDCHARGE);
 
-            var amount = new Amount();
-            amount.setValue(payment.getAmount());
-            amount.setCurrency(payment.getCurrency());
-            paymentAmountUpdateRequest.setAmount(amount);
+            var a = new Amount();
+            a.setValue(request.getAmount());
+            a.setCurrency(payment.getCurrency());
+            paymentAmountUpdateRequest.setAmount(a);
 
             var response = modificationsApi.updateAuthorisedAmount(payment.getPspReference(), paymentAmountUpdateRequest);
 
@@ -132,12 +135,12 @@ public class AdminController {
     }
 
     @PostMapping("/admin/reversal-payment")
-    public ResponseEntity<PaymentReversalResponse> reversalPayment(@RequestBody String reference) {
+    public ResponseEntity<PaymentReversalResponse> reversalPayment(@RequestBody ReversalPaymentRequest request) {
         try {
-            PaymentModel payment = Storage.findByMerchantReference(reference);
+            PaymentModel payment = Storage.findByMerchantReference(request.getReference());
 
             if (payment == null) {
-                throw new Exception("Payment not found in storage - Reference: " + reference);
+                throw new Exception("Payment not found in storage - Reference: " + request.getReference());
             }
 
             var paymentReversalRequest = new PaymentReversalRequest();
