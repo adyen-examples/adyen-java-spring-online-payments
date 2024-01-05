@@ -36,7 +36,6 @@ public class AdminController {
             log.warn("ADYEN_KEY is UNDEFINED");
             throw new RuntimeException("ADYEN_KEY is UNDEFINED");
         }
-
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
         this.modificationsApi = new ModificationsApi(client);
     }
@@ -57,7 +56,6 @@ public class AdminController {
             result = "error";
         }
 
-        model.addAttribute("title", "Adyen Admin Result");
         model.addAttribute("type", result);
         model.addAttribute("reference", reference);
         model.addAttribute("refusalReason", refusalReason);
@@ -68,10 +66,7 @@ public class AdminController {
     @GetMapping("/admin/details/{reference}")
     public String details(@PathVariable String reference, Model model) {
         PaymentModel data = Storage.findByMerchantReference(reference);
-
-        model.addAttribute("title", "Adyen Admin Payment History");
         model.addAttribute("data", data);
-
         return "admin/details";
     }
 
