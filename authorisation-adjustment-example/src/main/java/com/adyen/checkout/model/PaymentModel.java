@@ -31,6 +31,10 @@ public class PaymentModel {
         return ChronoUnit.DAYS.between(bookingDate, expiryDate);
     }
 
+    public String getFormattedExpiryDate() {
+        return expiryDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
     public String getMerchantReference() {
         return merchantReference;
     }

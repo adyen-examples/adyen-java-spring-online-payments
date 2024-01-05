@@ -94,9 +94,7 @@ public class AdminController {
             paymentCaptureRequest.setAmount(amount);
 
             var response = modificationsApi.captureAuthorisedPayment(payment.getPspReference(), paymentCaptureRequest);
-
             log.info(response.toJson());
-
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -124,9 +122,7 @@ public class AdminController {
             paymentAmountUpdateRequest.setAmount(a);
 
             var response = modificationsApi.updateAuthorisedAmount(payment.getPspReference(), paymentAmountUpdateRequest);
-
             log.info(response.toJson());
-
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -147,11 +143,8 @@ public class AdminController {
             paymentReversalRequest.setMerchantAccount(applicationProperty.getMerchantAccount());
             paymentReversalRequest.setReference(payment.getMerchantReference());
 
-
             var response = modificationsApi.refundOrCancelPayment(payment.getPspReference(), paymentReversalRequest);
-
             log.info(response.toJson());
-
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error(e.getMessage());

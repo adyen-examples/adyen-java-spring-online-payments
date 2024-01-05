@@ -22,7 +22,7 @@
                             <li><b>Amount: &nbsp;</b><span th:text="${payment.currency + ' ' + (payment.amount / 100d)}"></span>
                             </li>
                             <li><b>PaymentMethodBrand: &nbsp;</b><span th:text="${payment.paymentMethodBrand}"></span></li>
-                            <li><b>Expiry Date: &nbsp;</b><span th:text="${payment.expiryDate}"></span>
+                            <li><b>Expiry Date: &nbsp;</b><span th:text="${payment.getFormattedExpiryDate()}"></span>
                                 &nbsp; (<span th:text="${payment.getDaysUntilExpiry()}"> </span> &nbsp; days until&nbsp;<a href="https://docs.adyen.com/online-payments/classic-integrations/modify-payments/adjust-authorisation#validity">expiry</a>)
                             </li>
                             <li>
