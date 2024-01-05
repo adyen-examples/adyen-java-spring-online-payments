@@ -1,6 +1,8 @@
 package com.adyen.checkout.api;
 
 import com.adyen.checkout.ApplicationProperty;
+import com.adyen.checkout.model.PaymentDetailsModel;
+import com.adyen.checkout.util.Storage;
 import com.adyen.model.notification.NotificationRequest;
 import com.adyen.model.notification.NotificationRequestItem;
 import com.adyen.util.HMACValidator;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.security.SignatureException;
+import java.time.LocalDateTime;
 
 /**
  * REST controller for receiving Adyen webhook notifications
@@ -46,7 +49,6 @@ public class WebhookController {
      */
     @PostMapping("/webhooks/notifications")
     public ResponseEntity<String> webhooks(@RequestBody String json) throws IOException {
-
         // from JSON string to object
         var notificationRequest = NotificationRequest.fromJson(json);
 
@@ -54,17 +56,16 @@ public class WebhookController {
         var notificationRequestItem = notificationRequest.getNotificationItems().stream().findFirst();
 
         if (notificationRequestItem.isPresent()) {
-
             var item = notificationRequestItem.get();
 
             try {
                 if (getHmacValidator().validateHMAC(item, this.applicationProperty.getHmacKey())) {
                     log.info("""
-                            Received webhook with event {} :\s
-                            Merchant Reference: {}
-                            Alias : {}
-                            PSP reference : {}"""
-                        , item.getEventCode(), item.getMerchantReference(), item.getAdditionalData().get("alias"), item.getPspReference());
+                                    Received webhook with event {} :\s
+                                    Merchant Reference: {}
+                                    Alias : {}
+                                    PSP reference : {}"""
+                            , item.getEventCode(), item.getMerchantReference(), item.getAdditionalData().get("alias"), item.getPspReference());
 
                     // consume event asynchronously
                     consumeEvent(item);
@@ -89,15 +90,68 @@ public class WebhookController {
     }
 
     // process payload asynchronously
-    void consumeEvent(NotificationRequestItem item) {
-        // add item to DB, queue or different thread
+    private void consumeEvent(NotificationRequestItem notification) {
+        switch (notification.getEventCode()) {
+            case "AUTHORISATION":
+                log.info("Payment authorised - pspReference: {} eventCode: {}", notification.getPspReference(), notification.getEventCode());
+                savePayment(notification);
+                break;
 
-        // example: send to Kafka consumer
+            case "AUTHORISATION_ADJUSTMENT":
+                log.info("Authorisation adjustment - pspReference: {} eventCode: {}", notification.getPspReference(), notification.getEventCode());
+                savePayment(notification);
+                if (notification.isSuccess()) {
+                    // see documentation for the different expiry dates per card scheme: https://docs.adyen.com/online-payments/adjust-authorisation/#validity
+                    var expiryDate = LocalDateTime.now().plusDays(28);
+                    Storage.updatePayment(notification.getMerchantReference(), notification.getAmount().getValue(), expiryDate);
+                }
+                break;
 
-        // producer.send(producerRecord);
-        // producer.flush();
-        // producer.close();
+            case "CAPTURE":
+                log.info("Payment capture - pspReference: {} eventCode: {}", notification.getPspReference(), notification.getEventCode());
+                savePayment(notification);
+                break;
 
+            case "CAPTURE_FAILED":
+                log.info("Payment capture failed - pspReference: {} eventCode: {}", notification.getPspReference(), notification.getEventCode());
+                savePayment(notification);
+                break;
+
+            case "CANCEL_OR_REFUND":
+                log.info("Payment cancel_or_refund - pspReference: {} eventCode: {}", notification.getPspReference(), notification.getEventCode());
+                savePayment(notification);
+                break;
+
+            case "REFUND_FAILED":
+                log.info("Payment refund failed - pspReference: {} eventCode: {}", notification.getPspReference(), notification.getEventCode());
+                savePayment(notification);
+                break;
+
+            case "REFUNDED_REVERSED":
+                log.info("Payment refund reversed - pspReference: {} eventCode: {}", notification.getPspReference(), notification.getEventCode());
+                savePayment(notification);
+                break;
+
+            default:
+                log.warn("Unexpected eventCode: {}", notification.getEventCode());
+                break;
+        }
+    }
+
+    private void savePayment(NotificationRequestItem notification) {
+        PaymentDetailsModel paymentDetails = new PaymentDetailsModel(
+                notification.getMerchantReference(),
+                notification.getPspReference(),
+                notification.getOriginalReference(),
+                notification.getAmount().getValue(),
+                notification.getAmount().getCurrency(),
+                LocalDateTime.now(),
+                notification.getEventCode(),
+                notification.getReason(),
+                notification.getPaymentMethod(),
+                notification.isSuccess()
+        );
+        Storage.addPaymentToHistory(paymentDetails);
     }
 
     @Bean

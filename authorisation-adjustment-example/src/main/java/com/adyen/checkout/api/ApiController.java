@@ -23,7 +23,7 @@ import com.adyen.model.checkout.*;
 import com.adyen.service.exception.ApiException;
 
 /**
- * REST controller for using Adyen checkout API
+ * REST controller for using Adyen Payments API
  */
 @RestController
 @RequestMapping("/api")
