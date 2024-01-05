@@ -140,6 +140,6 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
       - name: Grant execute permission for gradlew
-        run: chmod +x authorisation--example/gradlew
+        run: chmod +x authorisation-adjustment-example/gradlew
       - name: Build with Gradle
         run: cd authorisation-adjustment-example; ./gradlew build
