@@ -147,7 +147,7 @@ jobs:
       - name: Build authorisation-adjustment-example with Gradle
         run: cd authorisation-adjustment-example; ./gradlew build
       - name: Build authorisation-adjustment-example image
-        run: docker build -t authorisation-adjustment-example:latest authorisation-adjustment
+        run: docker build -t authorisation-adjustment-example:latest authorisation-adjustment-example
       - name: Start authorisation-adjustment container
         run: docker run --rm -d --name authorisation-adjustment-example -p 8080:8080 -e ADYEN_API_KEY="${{ secrets.ADYEN_API_KEY }}" -e ADYEN_MERCHANT_ACCOUNT=${{ secrets.ADYEN_MERCHANT_ACCOUNT }} -e ADYEN_CLIENT_KEY=${{ secrets.ADYEN_CLIENT_KEY }} -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} authorisation-adjustment-example:latest
       - name: Run testing suite
