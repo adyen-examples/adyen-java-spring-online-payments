@@ -1,0 +1,115 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Adyen Admin Panel</title>
+</head>
+<body>
+<div layout:fragment="content" class="main-container">
+    <div class="info">
+        <h1>ADMIN PANEL</h1>
+        <div class="admin-panel-container">
+            <p>The Admin Panel shows all payments of the hotel bookings. In order to perform actions on the
+                payments, follow the readme to ensure that <b>you have set up your webhooks</b> correctly to receive
+                payment updates asynchronously. </p>
+            <th:block th:if="${data != null and data.size() > 0}">
+                <div class="admin-panel-token-container">
+                    <th:block th:each="payment, item : ${data}">
+                        <ul class="adminList">
+                            <li><b>Merchant Reference: &nbsp;</b> <a th:href="@{'/admin/details/' + ${payment.merchantReference}}"><span th:text="${payment.merchantReference}"></span></a></li>
+                            <li><b>Pre-authorisation PspReference: &nbsp;</b><span th:text="${payment.pspReference}"></span></li>
+                            <li><b>Amount: &nbsp;</b><span th:text="${payment.currency + ' ' + (payment.amount / 100d)}"></span>
+                            </li>
+                            <li><b>PaymentMethodBrand: &nbsp;</b><span th:text="${payment.paymentMethodBrand}"></span></li>
+                            <li><b>Expiry Date: &nbsp;</b><span th:text="${payment.getFormattedExpiryDate()}"></span>
+                                &nbsp; (<span th:text="${payment.getDaysUntilExpiry()}"> </span> &nbsp; days until&nbsp;<a href="https://docs.adyen.com/online-payments/classic-integrations/modify-payments/adjust-authorisation#validity">expiry</a>)
+                            </li>
+                            <li>
+                                <b>Actions:&nbsp;&nbsp;&nbsp;</b>
+                                <a href="#/" th:onclick="|showForm('adjustmentForm${item.index}')|">Adjust</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="#/" th:onclick="|showForm('extendForm${item.index}')|">Extend</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="#/" th:onclick="|showForm('captureForm${item.index}')|">Capture</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="#/" th:onclick="|showForm('reversalForm${item.index}')|">Reversal</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </li>
+
+                            <li th:id="'adjustmentForm' + ${item.index}" class="paymentOperationForm" hidden>
+                                <div>
+                                    <form name="updatePaymentAmountForm" method="post">
+                                        <b>Adjust amount:</b> <input type="text" name="amount"
+                                                                     th:value="${(payment.amount / 100d)}"
+                                                                     class="adjustAmountText">
+                                        <input type="hidden" name="reference"
+                                               th:value="${payment.merchantReference}"/>
+                                        <button type="submit" class="adjustSubmitButton">Adjust</button>
+                                    </form>
+                                    Increases/decreases the payment amount of a pre-authorisation.
+                                </div>
+                            </li>
+
+                            <li th:id="'extendForm' + ${item.index}" class="paymentOperationForm" hidden>
+                                <div>
+                                    <form name="extendPaymentForm" method="post">
+                                        <input type="hidden" name="amount"
+                                               th:value="${(payment.amount /100d)}"/>
+                                        <input type="hidden" name="reference"
+                                               th:value="${payment.merchantReference}"/>
+                                        <button type="submit" class="submitButton">Extend</button>
+                                    </form>
+                                    Extends expiry date of the pre-authorisation.
+                                </div>
+                            </li>
+
+                            <li th:id="'captureForm' + ${item.index}" class="paymentOperationForm" hidden>
+                                <div>
+                                    <form name="capturePaymentForm" method="post">
+                                        <input type="hidden" name="reference"
+                                               th:value="${payment.merchantReference}"/>
+                                        <button type="submit" class="submitButton">Capture</button>
+                                    </form>
+                                    The reserved funds are transferred from the shopper to your account.
+                                </div>
+                            </li>
+
+                            <li th:id="'reversalForm' + ${item.index}" class="paymentOperationForm" hidden>
+                                <div>
+                                    <form name="reversalPaymentForm" method="post">
+                                        <input type="hidden" name="reference"
+                                               th:value="${payment.merchantReference}"/>
+                                        <button type="submit" class="submitButton">Reversal</button>
+                                    </form>
+                                    Cancels or refunds the payment.
+                                </div>
+                            </li>
+
+                        </ul>
+                    </th:block>
+                </div>
+            </th:block>
+            <th:block th:unless="${data != null and data.size() > 0}">
+                <p>
+                    <b>No payments are stored. You can make a card payment in the <a th:href="@{/}">Booking
+                        View</a>.</b>
+                </p>
+            </th:block>
+            </ul>
+            </th:block>
+        </div>
+        </th:block>
+    </div>
+
+    <script src="/adminpanel-scripts.js"></script>
+
+    <!-- Binds all submit form buttons for `/update-payment-amount` endpoint -->
+    <script src="/adminpanel-updatePaymentAmount-bindings.js"></script>
+
+    <!-- Binds all submit form buttons for `/capture-payment` endpoint -->
+    <script src="/adminpanel-capturePayment-bindings.js"></script>
+
+    <!-- Binds all submit form buttons for `/reversal-payment` endpoint -->
+    <script src="/adminpanel-reversalPayment-bindings.js"></script>
+
+</div>
+
+</body>
+</html>

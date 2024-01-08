@@ -28,3 +28,7 @@ updates:
     directory: "/in-person-payments-example"
     schedule:
       interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/authorisation-adjustment-example"
+    schedule:
+      interval: "daily"

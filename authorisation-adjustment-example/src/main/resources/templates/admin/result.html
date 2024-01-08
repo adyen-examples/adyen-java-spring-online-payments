@@ -1,0 +1,27 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="${result}"></title>
+</head>
+<body>
+<div layout:fragment="content" class="status-container">
+    <div class="status">
+        <img th:if="${type == 'success'}" src="/images/thank-you.svg" class="status-image" alt="">
+        <img th:if="${type == 'error'}" src="/images/error.svg" class="status-image" alt="">
+
+        <p class="status-message" th:if="${type == 'success'}">
+            Request received for Merchant Reference: <span th:text="${reference}"></span>. Wait a bit to receive the
+            asynchronous webhook response.
+        </p>
+        <p class="status-message" th:if="${type == 'error'}">
+            Error! Refusal reason: <span th:text="${refusalReason}"></span>.
+            Please review response in console and refer to <a
+                href="https://docs.adyen.com/development-resources/refusal-reasons" target="_blank">refusal reasons.</a>
+        </p>
+        <a class="button" href="/admin" th:href="@{'/admin'}">Return to Admin panel</a>
+
+    </div>
+</div>
+</body>

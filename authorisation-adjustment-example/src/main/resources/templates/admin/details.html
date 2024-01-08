@@ -1,0 +1,55 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Admin Details View</title>
+</head>
+<body>
+<div layout:fragment="content" class="main-container">
+    <div class="info">
+        <h2>Payment History</h2>
+        <p>This page shows all payment details for this reference, as they are delivered by webhooks.</p>
+
+        <div class="details-panel-payment-container">
+            <th:block th:if="${data != null}">
+                <th:block th:each="payment : ${data.paymentDetailsModelList}">
+                    <ul class="detailsList">
+                        <li><b>Merchant Reference: &nbsp;</b> <span th:text="${payment.merchantReference}"></span>
+                        </li>
+                        <li><b>Event Code: &nbsp;</b><span th:text="${payment.eventCode}"></span></li>
+                        <li><b>PspReference: &nbsp;</b><span th:text="${payment.pspReference}"></span></li>
+                        <li><b>Original Reference: &nbsp;</b><span th:text="${payment.originalReference}"></span>
+                        </li>
+                        <th:block th:if="${payment.success == 'false'}">
+                            <li><b>Refusal Reason: &nbsp;</b><span th:text="${payment.refusalReason}"></span></li>
+                        </th:block>
+                        <li><b>Amount: &nbsp;</b><span th:text="${payment.currency} + ${(payment.amount / 100d)}"></span>
+                        </li>
+                        <li><b>PaymentMethodBrand: &nbsp;</b><span th:text="${payment.paymentMethodBrand}"></span>
+                        </li>
+                        <li><b>DateTime: &nbsp;</b><span th:text="${payment.dateTime}"></span></li>
+                        <th:block th:if="${payment.success == 'true'}">
+                            <li><b>Success: &nbsp;</b><b><span class="success" th:text="${payment.success}"></span></b>
+                            </li>
+                        </th:block>
+                        <th:block th:unless="${payment.success == 'true'}">
+                            <li><b>Success: &nbsp;</b><b><span class="failure" th:text="${payment.success}"></span></b>
+                            </li>
+                        </th:block>
+                    </ul>
+                </th:block>
+            </th:block>
+            <th:block th:unless="${data != null}">
+                <p>
+                    <b>No payment history is found for this Merchant Reference.</b>
+                </p>
+            </th:block>
+
+            <a class="button" href="/admin" th:href="@{'/'}">Return</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Booking</title>
+</head>
+<body>
+<div layout:fragment="content" id="payment-page">
+    <!-- Hidden divs with data passed from the Express server -->
+    <div id="clientKey" class="hidden" th:text="${clientKey}"></div>
+
+    <div class="container">
+        <!-- The Checkout integration type will be rendered below.-->
+        <!-- Drop-in includes styling out-of-the-box, so no additional styling is needed. -->
+        <div class="payment-container">
+            <div id="payment" class="payment"></div>
+        </div>
+    </div>
+    <!-- Adyen Component client code -->
+    <script type="text/javascript" src="adyenAuthorisationAdjustmentImplementation.js"></script>
+</div>
+</body>
