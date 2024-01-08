@@ -107,8 +107,8 @@ public class ApiController {
         // we strongly recommend that you the billingAddress in your request
         // card schemes require this for channel web, iOS, and Android implementations
         BillingAddress billingAddress = new BillingAddress();
-        billingAddress.setCountry("Amsterdam");
-        billingAddress.setCity("The Netherlands");
+        billingAddress.setCountry("NL");
+        billingAddress.setCity("Amsterdam");
         billingAddress.setStreet("Street");
         billingAddress.setHouseNumberOrName("1");
         billingAddress.setStateOrProvince("North Holland");
