@@ -82,7 +82,6 @@ public class ApiController {
             .value(24999L); // value is 249.99€ in minor units
 
         paymentRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount()); // required
-        paymentRequest.setChannel(PaymentRequest.ChannelEnum.WEB);
         paymentRequest.setReference(orderRef); // required
         paymentRequest.setReturnUrl(request.getScheme() + "://" + host + "/api/handleShopperRedirect?orderRef=" + orderRef);
 
@@ -102,10 +101,20 @@ public class ApiController {
         // required by some issuers for 3ds2
         paymentRequest.setShopperIP(request.getRemoteAddr());
         paymentRequest.setPaymentMethod(body.getPaymentMethod());
+        paymentRequest.setShopperEmail("test@adyen.com");
 
+        paymentRequest.setChannel(PaymentRequest.ChannelEnum.WEB);
         // we strongly recommend that you the billingAddress in your request
         // card schemes require this for channel web, iOS, and Android implementations
-        //paymentRequest.setBillingAddress(new Address());
+        BillingAddress billingAddress = new BillingAddress();
+        billingAddress.setCountry("Amsterdam");
+        billingAddress.setCity("The Netherlands");
+        billingAddress.setStreet("Street");
+        billingAddress.setHouseNumberOrName("1");
+        billingAddress.setStateOrProvince("North Holland");
+        billingAddress.setPostalCode("1000XX");
+        paymentRequest.setBillingAddress(billingAddress);
+
         log.info("REST request to make Adyen payment {}", paymentRequest);
         var response = paymentsApi.payments(paymentRequest);
 
@@ -115,6 +124,8 @@ public class ApiController {
                     response.getAmount().getValue(),
                     response.getAmount().getCurrency(),
                     LocalDateTime.now(),
+                    // for demo purposes, we add 28 days pre-authorisation to the expiry date
+                    // the value of '28' varies per scheme, see: https://docs.adyen.com/online-payments/adjust-authorisation/#validity
                     LocalDateTime.now().plusDays(28),
                     response.getPaymentMethod().getBrand(),
                     new ArrayList<>()

@@ -33,11 +33,8 @@ public class Storage {
 
         PaymentModel paymentModel = findByMerchantReference(paymentDetailsModel.getMerchantReference());
 
-        if (paymentModel == null) {
-            System.out.println("Payment not found in storage - Reference: " + paymentDetailsModel.getMerchantReference());
-        } else {
+        if (paymentModel != null) {
             paymentModel.getPaymentDetailsModelList().add(paymentDetailsModel);
-            //paymentModel.setLastUpdated(new Date());
         }
     }
 
@@ -47,8 +44,6 @@ public class Storage {
         if (payment != null) {
             payment.setAmount(amount);
             payment.setExpiryDate(expiryDate);
-        } else {
-            System.out.println("Payment not found in storage - Reference: " + merchantReference);
         }
     }
 

@@ -46,7 +46,7 @@ public class WebhookController {
      * @return
          */
     @PostMapping("/webhooks/notifications")
-    public ResponseEntity<String> webhooks(@RequestBody String json) throws IOException {
+    public ResponseEntity<String> webhooks(@RequestBody String json) throws Exception {
 
         // from JSON string to object
         var notificationRequest = NotificationRequest.fromJson(json);
@@ -55,7 +55,6 @@ public class WebhookController {
         var notificationRequestItem = notificationRequest.getNotificationItems().stream().findFirst();
 
         if (notificationRequestItem.isPresent()) {
-
             var item = notificationRequestItem.get();
 
             try {
@@ -78,11 +77,13 @@ public class WebhookController {
             } catch (SignatureException e) {
                 // Unexpected error during HMAC validation: do not send [accepted] response
                 log.error("Error while validating HMAC Key", e);
+                throw new SignatureException(e);
             }
 
         } else {
             // Unexpected event with no payload: do not send [accepted] response
             log.warn("Empty NotificationItem");
+            throw new Exception("empty");
         }
 
         // Acknowledge event has been consumed

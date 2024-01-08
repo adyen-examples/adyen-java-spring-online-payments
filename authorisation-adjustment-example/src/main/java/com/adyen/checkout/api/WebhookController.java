@@ -35,8 +35,8 @@ public class WebhookController {
         this.applicationProperty = applicationProperty;
 
         if (this.applicationProperty.getHmacKey() == null) {
-            log.warn("ADYEN_HMAC_KEY is UNDEFINED (Webhook cannot be authenticated)");
-            //throw new RuntimeException("ADYEN_HMAC_KEY is UNDEFINED");
+            log.warn("ADYEN_HMAC_KEY is UNDEFINED (HMAC signatures cannot be validated when the app receives webhooks)");
+            throw new RuntimeException("ADYEN_HMAC_KEY is UNDEFINED");
         }
     }
 
@@ -48,7 +48,7 @@ public class WebhookController {
      * @return
      */
     @PostMapping("/webhooks/notifications")
-    public ResponseEntity<String> webhooks(@RequestBody String json) throws IOException {
+    public ResponseEntity<String> webhooks(@RequestBody String json) throws IOException, RuntimeException, SignatureException, Exception {
         // from JSON string to object
         var notificationRequest = NotificationRequest.fromJson(json);
 
@@ -78,11 +78,13 @@ public class WebhookController {
             } catch (SignatureException e) {
                 // Unexpected error during HMAC validation: do not send [accepted] response
                 log.error("Error while validating HMAC Key", e);
+                throw new SignatureException(e);
             }
 
         } else {
             // Unexpected event with no payload: do not send [accepted] response
             log.warn("Empty NotificationItem");
+            throw new Exception("empty");
         }
 
         // Acknowledge event has been consumed
@@ -101,7 +103,8 @@ public class WebhookController {
                 log.info("Authorisation adjustment - pspReference: {} eventCode: {}", notification.getPspReference(), notification.getEventCode());
                 savePayment(notification);
                 if (notification.isSuccess()) {
-                    // see documentation for the different expiry dates per card scheme: https://docs.adyen.com/online-payments/adjust-authorisation/#validity
+                    // for demo purposes, we add 28 days pre-authorisation to the expiry date
+                    // the value of '28' varies per scheme, see: https://docs.adyen.com/online-payments/adjust-authorisation/#validity
                     var expiryDate = LocalDateTime.now().plusDays(28);
                     Storage.updatePayment(notification.getMerchantReference(), notification.getAmount().getValue(), expiryDate);
                 }
