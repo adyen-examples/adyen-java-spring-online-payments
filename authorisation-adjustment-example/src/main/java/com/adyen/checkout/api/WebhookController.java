@@ -48,7 +48,7 @@ public class WebhookController {
      * @return
      */
     @PostMapping("/webhooks/notifications")
-    public ResponseEntity<String> webhooks(@RequestBody String json) throws IOException, RuntimeException, SignatureException, Exception {
+    public ResponseEntity<String> webhooks(@RequestBody String json) throws Exception {
         // from JSON string to object
         var notificationRequest = NotificationRequest.fromJson(json);
 
