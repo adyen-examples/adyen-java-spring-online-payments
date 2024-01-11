@@ -22,6 +22,10 @@ public class TerminalCloudApiService {
         }
 
         client = new Client(applicationProperty.getApiKey(), Environment.TEST);
+        if(applicationProperty.getAdyenTerminalApiCloudEndpoint() != null) {
+            // override AdyenTerminalApiCloudEndpoint TEST URL (for example using Mock Terminal app)
+            client.getConfig().setTerminalApiCloudEndpoint(applicationProperty.getAdyenTerminalApiCloudEndpoint());
+        }
         terminalCloudAPI = new TerminalCloudAPI(client);
     }
 
