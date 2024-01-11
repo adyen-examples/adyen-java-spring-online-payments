@@ -18,8 +18,11 @@ public class ApplicationProperty {
     @Value("${ADYEN_POS_POI_ID:#{null}}")
     private String poiId;
 
-    @Value("${saleId:POS_SALE_ID_42}")
+    @Value("${saleId:POS_SALE_ID}")
     private String saleId;
+
+    @Value("${ADYEN_TERMINAL_API_CLOUD_ENDPOINT:#{null}}")
+    private String adyenTerminalApiCloudEndpoint;
 
     public int getServerPort() {
         return serverPort;
@@ -52,4 +55,12 @@ public class ApplicationProperty {
     public String getSaleId() {  return saleId; }
 
     public void setSaleId(String saleId) {  this.saleId = saleId ; }
+
+    public String getAdyenTerminalApiCloudEndpoint() {
+        return this.adyenTerminalApiCloudEndpoint;
+    }
+
+    public void setAdyenTerminalApiCloudEndpoint(String adyenTerminalApiCloudEndpoint) {
+        this.adyenTerminalApiCloudEndpoint = adyenTerminalApiCloudEndpoint;
+    }
 }
