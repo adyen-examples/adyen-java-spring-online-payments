@@ -21,7 +21,6 @@ on:
 
 jobs:
   checkout:
-
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
@@ -43,7 +42,6 @@ jobs:
         run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=checkout -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} --network host ghcr.io/adyen-examples/adyen-testing-suite:main
 
   checkout-advanced:
-
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
@@ -65,7 +63,6 @@ jobs:
         run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=advanced-checkout -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} --network host ghcr.io/adyen-examples/adyen-testing-suite:main
 
   giftcard:
-
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
@@ -87,7 +84,6 @@ jobs:
         run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=giftcard -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} --network host ghcr.io/adyen-examples/adyen-testing-suite:main
 
   subscription:
-
     runs-on: ubuntu-latest
     steps:
       - name: Subscription project
@@ -109,7 +105,6 @@ jobs:
         run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=subscription -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} --network host ghcr.io/adyen-examples/adyen-testing-suite:main
 
   giving:
-
     runs-on: ubuntu-latest
     steps:
       - name: Giving project
@@ -132,7 +127,6 @@ jobs:
 
 
   authorisation-adjustment:
-
     runs-on: ubuntu-latest
     steps:
       - name: Authorisation Adjustment project
@@ -154,3 +148,25 @@ jobs:
         run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=authorisation-adjustment -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} --network host ghcr.io/adyen-examples/adyen-testing-suite:main
 
 
+  in-person-payments:
+    runs-on: ubuntu-latest
+    steps:
+      - name: In-person Payments project
+        uses: actions/checkout@v3
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Grant execute permission for gradlew
+        run: chmod +x in-person-payments-example/gradlew
+      - name: Build in-person-payments-example with Gradle
+        run: cd in-person-payments-example; ./gradlew build
+      - name: Build in-person-payments-example image
+        run: docker build -t in-person-payments-example-image:latest in-person-payments-example
+      - name: Start in-person-payments-example container, set ADYEN_TERMINAL_API_CLOUD_ENDPOINT to default docker bridge and port 3000
+        run: docker run --rm -d --name in-person-payments-example-image -p 8080:8080 -e ADYEN_API_KEY="${{ secrets.ADYEN_API_KEY }}" -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} -e ADYEN_TERMINAL_API_CLOUD_ENDPOINT=http://172.17.0.1:3000 -e ADYEN_POS_POI_ID=V400m-123456789 in-person-payments-example-image:latest
+      - name: Start the Adyen Mock Terminal API Application on port 3000
+        run: docker run --rm -d --name adyen-mock-terminal-api -p 3000:3000 -e PORT=3000 ghcr.io/adyen-examples/adyen-mock-terminal-api:main
+      - name: Run testing suite against in-person-payments-example-image
+        run: docker run --rm --name adyen-testing-suite -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} -e PLAYWRIGHT_FOLDERNAME=in-person-payments --network host ghcr.io/adyen-examples/adyen-testing-suite:main

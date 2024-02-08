@@ -22,6 +22,12 @@ public class TerminalCloudApiService {
         }
 
         client = new Client(applicationProperty.getApiKey(), Environment.TEST);
+        if(applicationProperty.getAdyenTerminalApiCloudEndpoint() != null) {
+            /// Default: null, unless you want to override this to point to a different endpoint based on your region.
+            /// See https://docs.adyen.com/point-of-sale/design-your-integration/terminal-api/#cloud.
+            /// Optionally, if you do not own an Adyen Terminal/POS (yet), you can test this application using Adyen's Mock Terminal-API Application on GitHub: https://github.com/adyen-examples/adyen-mock-terminal-api (see README).
+            client.getConfig().setTerminalApiCloudEndpoint(applicationProperty.getAdyenTerminalApiCloudEndpoint());
+        }
         terminalCloudAPI = new TerminalCloudAPI(client);
     }
 
