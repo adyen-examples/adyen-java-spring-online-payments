@@ -5,6 +5,7 @@ import com.adyen.giving.ApplicationProperty;
 import com.adyen.enums.Environment;
 import com.adyen.giving.util.DonationUtil;
 import com.adyen.model.checkout.*;
+import com.adyen.service.checkout.DonationsApi;
 import com.adyen.service.checkout.PaymentsApi;
 import com.adyen.service.exception.ApiException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +32,7 @@ public class CheckoutResource {
     private final ApplicationProperty applicationProperty;
 
     private final PaymentsApi paymentsApi;
+    private final DonationsApi donationsApi;
 
     public CheckoutResource(ApplicationProperty applicationProperty) {
 
@@ -43,6 +45,7 @@ public class CheckoutResource {
 
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
         this.paymentsApi = new PaymentsApi(client);
+        this.donationsApi = new DonationsApi(client);
     }
 
 
@@ -63,7 +66,7 @@ public class CheckoutResource {
 
             donationRequest.amount(body);
             donationRequest.reference(UUID.randomUUID().toString());
-            donationRequest.setPaymentMethod(new DonationPaymentMethod(new CardDetails()));
+            donationRequest.setPaymentMethod(new DonationPaymentMethod(new CardDonations()));
             donationRequest.setDonationToken(donationToken);
             donationRequest.donationOriginalPspReference(pspReference);
             donationRequest.setDonationAccount(this.applicationProperty.getDonationMerchantAccount());
@@ -71,7 +74,7 @@ public class CheckoutResource {
             donationRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount());
             donationRequest.shopperInteraction(DonationPaymentRequest.ShopperInteractionEnum.CONTAUTH);
 
-            DonationPaymentResponse result = this.paymentsApi.donations(donationRequest);
+            DonationPaymentResponse result = this.donationsApi.donations(donationRequest);
 
             return ResponseEntity.ok().body(result);
         } catch (NotFoundException e) {
