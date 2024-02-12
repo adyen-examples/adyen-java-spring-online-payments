@@ -24,7 +24,7 @@ jobs:
     strategy:
       matrix:
         java: [ '17' ]
-    name: Java ${{ matrix.Java }} sample
+    name: checkout-example build with Java ${{ matrix.Java }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup java
@@ -41,7 +41,7 @@ jobs:
     strategy:
       matrix:
         java: [ '17' ]
-    name: Java ${{ matrix.Java }} sample
+    name: checkout-example-advanced build with Java ${{ matrix.Java }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup java
@@ -59,7 +59,7 @@ jobs:
     strategy:
       matrix:
         java: [ '17' ]
-    name: Java ${{ matrix.Java }} sample
+    name: giftcard-example build with Java ${{ matrix.Java }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup java
@@ -77,7 +77,7 @@ jobs:
     strategy:
       matrix:
         java: [ '17' ]
-    name: Java ${{ matrix.Java }} sample
+    name: subscription-example build with Java ${{ matrix.Java }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup java
@@ -95,7 +95,7 @@ jobs:
     strategy:
       matrix:
         java: [ '17' ]
-    name: Java ${{ matrix.Java }} sample
+    name: paybylink-example build with Java ${{ matrix.Java }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup java
@@ -113,7 +113,7 @@ jobs:
     strategy:
       matrix:
         java: [ '17' ]
-    name: Java ${{ matrix.Java }} sample
+    name: giving-example build with Java ${{ matrix.Java }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup java
@@ -131,7 +131,7 @@ jobs:
     strategy:
       matrix:
         java: [ '17' ]
-    name: Java ${{ matrix.Java }} sample
+    name: authorisation-adjustment-example build with Java ${{ matrix.Java }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup java
