@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +43,7 @@ public class WebhookController {
 
     /**
      * Process incoming Webhook notification: get NotificationRequestItem, validate HMAC signature,
-     * consume the event asynchronously, send response ["accepted"]
+     * consume the event asynchronously, send response status 202
      *
      * @param json Payload of the webhook event
      * @return
@@ -71,24 +72,25 @@ public class WebhookController {
                     consumeEvent(item);
 
                 } else {
-                    // invalid HMAC signature: do not send [accepted] response
+                    // invalid HMAC signature
                     log.warn("Could not validate HMAC signature for incoming webhook message: {}", item);
                     throw new RuntimeException("Invalid HMAC signature");
                 }
             } catch (SignatureException e) {
-                // Unexpected error during HMAC validation: do not send [accepted] response
+                // Unexpected error during HMAC validation
                 log.error("Error while validating HMAC Key", e);
                 throw new SignatureException(e);
             }
 
         } else {
-            // Unexpected event with no payload: do not send [accepted] response
+            // Unexpected event with no payload
             log.warn("Empty NotificationItem");
-            throw new Exception("empty");
+            throw new Exception("empty payload");
         }
 
         // Acknowledge event has been consumed
-        return ResponseEntity.ok().body("[accepted]");
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+
     }
 
     // process payload asynchronously
