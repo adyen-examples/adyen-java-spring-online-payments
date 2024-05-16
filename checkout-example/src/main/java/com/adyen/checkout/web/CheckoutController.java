@@ -38,11 +38,29 @@ public class CheckoutController {
         return "preview";
     }
 
-    @GetMapping("/checkout")
-    public String checkout(@RequestParam String type, Model model) {
+    @GetMapping("/card")
+    public String card(Model model) {
+        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
+        return "card";
+    }
+
+    @GetMapping("/ideal")
+    public String ideal(Model model) {
+        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
+        return "ideal";
+    }
+
+    @GetMapping("/googlepay")
+    public String googlepay(Model model) {
+        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
+        return "googlepay";
+    }
+
+    @GetMapping("/dropin")
+    public String dropin(@RequestParam String type, Model model) {
         model.addAttribute("type", type);
         model.addAttribute("clientKey", this.applicationProperty.getClientKey());
-        return "checkout";
+        return "dropin";
     }
 
     @GetMapping("/result/{type}")
@@ -54,6 +72,6 @@ public class CheckoutController {
     @GetMapping("/redirect")
     public String redirect(Model model) {
         model.addAttribute("clientKey", this.applicationProperty.getClientKey());
-        return "redirect";
+        return "ideal";
     }
 }

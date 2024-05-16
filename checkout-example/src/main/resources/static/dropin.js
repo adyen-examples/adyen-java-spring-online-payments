@@ -1,3 +1,5 @@
+const { AdyenCheckout, Dropin } = window.AdyenWeb;
+
 const clientKey = document.getElementById("clientKey").innerHTML;
 
 // Used to finalize a checkout call in case of redirect
@@ -12,8 +14,14 @@ async function startCheckout() {
 
   try {
     const checkoutSessionResponse = await callServer("/api/sessions?type=" + type);
+
     const checkout = await createAdyenCheckout(checkoutSessionResponse);
-    checkout.create(type).mount(document.getElementById("payment"));
+
+    const dropin = new Dropin(checkout, {
+      paymentMethodsConfiguration: {},
+      instantPaymentTypes: ['applepay', 'googlepay'],
+    }).mount(document.getElementById("payment"));
+
 
   } catch (error) {
     console.error(error);
@@ -30,50 +38,6 @@ async function finalizeCheckout() {
     console.error(error);
     alert("Error occurred. Look at console for details");
   }
-}
-
-async function createAdyenCheckout(session){
-  return new AdyenCheckout(
-    {
-      clientKey,
-      locale: "en_US",
-      environment: "test",
-      session: session,
-      showPayButton: true,
-      paymentMethodsConfiguration: {
-        ideal: {
-          showImage: true,
-        },
-        card: {
-          hasHolderName: true,
-          holderNameRequired: true,
-          name: "Credit or debit card",
-          amount: {
-            value: 10000,  // in minor units
-            currency: "EUR",
-          },
-        },
-        paypal: {
-          amount: {
-            value: 10000, // in minor units
-            currency: "USD",
-          },
-          environment: "test", // Change this to "live" when you're ready to accept live PayPal payments
-          countryCode: "US", // Only needed for test. This will be automatically retrieved when you are in production.
-        }
-      },
-      onPaymentCompleted: (result, component) => {
-        console.info("onPaymentCompleted");
-        console.info(result, component);
-        handleServerResponse(result, component);
-      },
-      onError: (error, component) => {
-        console.error("onError");
-        console.error(error.name, error.message, error.stack, component);
-        handleServerResponse(error, component);
-      },
-    }
-  );
 }
 
 // Calls your server endpoints
@@ -105,6 +69,34 @@ function handleServerResponse(res, _component) {
         window.location.href = "/result/error";
         break;
     }
+}
+
+async function createAdyenCheckout(session) {
+
+  return AdyenCheckout(
+    {
+      clientKey,
+      locale: "en_US",
+      environment: "test",
+      session: session,
+      showPayButton: true,
+      onPaymentCompleted: (result, component) => {
+        console.info("onPaymentCompleted");
+        console.info(result, component);
+        handleServerResponse(result, component);
+      },
+      onPaymentFailed: (result, component) => {
+        console.info("onPaymentFailed");
+        console.info(result, component);
+        handleServerResponse(result, component);
+      },
+      onError: (error, component) => {
+        console.error("onError");
+        console.error(error.name, error.message, error.stack, component);
+        handleServerResponse(error, component);
+      },
+    }
+  );
 }
 
 if (!sessionId) { startCheckout() } else { finalizeCheckout(); }
