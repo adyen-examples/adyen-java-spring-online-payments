@@ -37,11 +37,16 @@ public class CheckoutController {
         return "preview";
     }
 
-    @GetMapping("/checkout")
-    public String checkout(@RequestParam String type, Model model) {
-        model.addAttribute("type", type);
+    @GetMapping("/dropin")
+    public String dropin(Model model) {
         model.addAttribute("clientKey", this.applicationProperty.getClientKey());
-        return "checkout";
+        return "dropin";
+    }
+
+    @GetMapping("/card")
+    public String card(Model model) {
+        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
+        return "card";
     }
 
     @GetMapping("/result/{type}")
