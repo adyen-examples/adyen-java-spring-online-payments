@@ -84,7 +84,8 @@ public class CheckoutResource {
         paymentRequest.setReturnUrl(request.getScheme() + "://" + host + "/api/handleShopperRedirect?orderRef=" + orderRef);
 
         paymentRequest.setAmount(amount);
-        // set lineItems required for some payment methods (ie Klarna)
+        // set countryCode and lineItems required for some payment methods (ie Klarna)
+        paymentRequest.setCountryCode("NL");
         paymentRequest.setLineItems(Arrays.asList(
             new LineItem().quantity(1L).amountIncludingTax(5000L).description("Sunglasses"),
             new LineItem().quantity(1L).amountIncludingTax(5000L).description("Headphones"))
