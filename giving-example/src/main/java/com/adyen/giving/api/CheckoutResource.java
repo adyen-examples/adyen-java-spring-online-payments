@@ -66,7 +66,10 @@ public class CheckoutResource {
 
             donationRequest.amount(body);
             donationRequest.reference(UUID.randomUUID().toString());
-            donationRequest.setPaymentMethod(new DonationPaymentMethod(new CardDonations()));
+            // set payment method for donation
+            CardDonations cardDetails = new CardDonations().type(CardDonations.TypeEnum.SCHEME);
+            donationRequest.paymentMethod(new DonationPaymentMethod(cardDetails));
+            // set donaton token
             donationRequest.setDonationToken(donationToken);
             donationRequest.donationOriginalPspReference(pspReference);
             donationRequest.setDonationAccount(this.applicationProperty.getDonationMerchantAccount());
@@ -81,7 +84,7 @@ public class CheckoutResource {
             log.warn(e.getMessage());
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(500).build();
         }
     }
