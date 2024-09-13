@@ -1,5 +1,7 @@
 # Adyen [Pay By Link](https://docs.adyen.com/unified-commerce/pay-by-link) Integration Demo
 
+[![Java CI with Gradle](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/build-paybylink.yml/badge.svg)](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/paybylink.yml) 
+
 If you want to know more about Pay by link, check out our related [blog post](https://www.adyen.com/blog/pay-by-link-for-developers) or the [documentation](https://docs.adyen.com/checkout/pay-by-link).
 
 ## Run this integration in seconds using [Gitpod](https://gitpod.io/)
