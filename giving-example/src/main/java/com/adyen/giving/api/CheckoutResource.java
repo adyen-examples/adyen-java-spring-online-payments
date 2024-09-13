@@ -81,7 +81,7 @@ public class CheckoutResource {
             log.warn(e.getMessage());
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(500).build();
         }
     }
