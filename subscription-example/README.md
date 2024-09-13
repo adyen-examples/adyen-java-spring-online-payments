@@ -1,5 +1,9 @@
 # Adyen [Tokenization](https://docs.adyen.com/online-payments-tokenization) Integration Demo
 
+[![Java CI with Gradle](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/build-subscription.yml/badge.svg)](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/build-subscription.yml) 
+[![E2E (Playwright)](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/e2e-subscription.yml/badge.svg)](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/e2e-subscription.yml)
+
+
 This repository includes a tokenization example for subscriptions. Within this demo app, you'll find a simplified version of a website that offers a music subscription service.
 The shopper can purchase a subscription and administrators can manage the saved (tokenized) payment methods on a separate admin panel.
 The panel allows admins to make payments on behalf of the shopper using this token. We refer to this token as `recurringDetailReference` in this application.
