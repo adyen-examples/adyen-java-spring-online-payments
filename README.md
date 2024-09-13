@@ -1,8 +1,5 @@
 # Adyen Online Payment Integration Demos
 
-[![Java CI with Gradle](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/build.yml/badge.svg)](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/build.yml) 
-[![E2E (Playwright)](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/e2e.yml/badge.svg)](https://github.com/adyen-examples/adyen-java-spring-online-payments/actions/workflows/e2e.yml)
-
 This repository includes a collection of PCI-compliant UI integrations that show how to integrate with Adyen using different payment methods. 
 The demos below leverages Adyen's API Library for Java using Spring ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Documentation](https://docs.adyen.com/development-resources/libraries?tab=java_2)).
 
