@@ -1,0 +1,32 @@
+name: Build Checkout Advanced
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'checkout-example-advanced/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'checkout-example-advanced/**'
+        
+jobs:
+
+  build-checkout-advanced:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '17' ]
+    name: checkout-example-advanced build with Java ${{ matrix.Java }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+      - name: Grant checkout-example-advanced execute permission for gradlew
+        run: chmod +x checkout-example-advanced/gradlew
+      - name: Build checkout-example-advanced with Gradle
+        run: cd checkout-example-advanced; ./gradlew build
