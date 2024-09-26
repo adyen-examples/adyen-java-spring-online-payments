@@ -2,7 +2,6 @@ package com.adyen.checkout.api;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.UUID;
 
 import com.adyen.checkout.ApplicationProperty;
@@ -110,7 +109,16 @@ public class CheckoutResource {
 
         // we strongly recommend that you the billingAddress in your request
         // card schemes require this for channel web, iOS, and Android implementations
-        //paymentRequest.setBillingAddress(new Address());
+//        paymentRequest.setBillingAddress(new BillingAddress()
+//            .city("Amsterdam")
+//            .country("NL")
+//            .postalCode("1234AA")
+//            .street("Street 1")
+//            .houseNumberOrName("1"));
+
+        // emailShopper recommended for fraud checks
+//         paymentRequest.setShopperEmail("youremail@email.com");
+
         log.info("REST request to make Adyen payment {}", paymentRequest);
         var response = paymentsApi.payments(paymentRequest);
         return ResponseEntity.ok()
