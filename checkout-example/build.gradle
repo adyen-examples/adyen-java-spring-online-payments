@@ -19,7 +19,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-    implementation 'com.adyen:adyen-java-api-library:28.4.0'
+    implementation 'com.adyen:adyen-java-api-library:28.5.1'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
