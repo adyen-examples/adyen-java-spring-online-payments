@@ -42,7 +42,12 @@ function mountGiftcardComponentButton(checkout) {
   document.getElementById("add-giftcard-button")
     .addEventListener('click', async () => {
       // Create the gift card component
-      const giftcardComponent = checkout.create("giftcard");
+      const giftcardComponent = checkout.create("giftcard",
+                      {
+                          type: 'giftcard',
+                          brand: 'givex'
+                      }
+                  );
       giftcardComponent.mount("#giftcard-container");
 
       // Binds event listener to the 'Go back'-button for the gift card component
