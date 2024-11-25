@@ -25,7 +25,7 @@ public class WebhookController {
     private HMACValidator hmacValidator;
 
     @Autowired
-    public WebhookController(ApplicationProperty applicationProperty) {
+    public WebhookController(ApplicationProperty applicationProperty, HMACValidator hmacValidator) {
         this.applicationProperty = applicationProperty;
 
         if (this.applicationProperty.getHmacKey() == null) {
