@@ -8,7 +8,6 @@ import com.adyen.util.HMACValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,15 +27,17 @@ public class WebhookController {
     private PaymentLinkService paymentLinkService;
 
     private final ApplicationProperty applicationProperty;
+    private final HMACValidator hmacValidator;
 
     @Autowired
-    public WebhookController(ApplicationProperty applicationProperty) {
+    public WebhookController(ApplicationProperty applicationProperty, HMACValidator hmacValidator) {
         this.applicationProperty = applicationProperty;
 
         if (this.applicationProperty.getHmacKey() == null) {
             log.warn("ADYEN_HMAC_KEY is UNDEFINED (Webhook cannot be authenticated)");
             //throw new RuntimeException("ADYEN_HMAC_KEY is UNDEFINED");
         }
+        this.hmacValidator = hmacValidator;
     }
 
     /** Process incoming Webhook event: get NotificationRequestItem, validate HMAC signature,
@@ -59,7 +60,7 @@ public class WebhookController {
             var item = notificationRequestItem.get();
 
             try {
-                if (getHmacValidator().validateHMAC(item, this.applicationProperty.getHmacKey())) {
+                if (hmacValidator.validateHMAC(item, this.applicationProperty.getHmacKey())) {
                     log.info("""
                             Received webhook with event {} :\s
                             Merchant Reference: {}
@@ -104,10 +105,5 @@ public class WebhookController {
             System.out.println("No paymentLinkId found in webhook payload");
         }
 
-    }
-
-    @Bean
-    public HMACValidator getHmacValidator() {
-        return new HMACValidator();
     }
 }

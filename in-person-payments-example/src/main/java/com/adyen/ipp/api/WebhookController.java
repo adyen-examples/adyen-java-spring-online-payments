@@ -6,7 +6,6 @@ import com.adyen.util.HMACValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +22,7 @@ public class WebhookController {
     private final Logger log = LoggerFactory.getLogger(WebhookController.class);
 
     private ApplicationProperty applicationProperty;
+    private HMACValidator hmacValidator;
 
     @Autowired
     public WebhookController(ApplicationProperty applicationProperty) {
@@ -31,6 +31,7 @@ public class WebhookController {
         if (this.applicationProperty.getHmacKey() == null) {
             log.warn("ADYEN_HMAC_KEY is UNDEFINED (Webhook cannot be authenticated)");
         }
+        this.hmacValidator = hmacValidator;
     }
 
     /**
@@ -54,7 +55,7 @@ public class WebhookController {
             var item = notificationRequestItem.get();
 
             try {
-                if (!getHmacValidator().validateHMAC(item, this.applicationProperty.getHmacKey())) {
+                if (!hmacValidator.validateHMAC(item, this.applicationProperty.getHmacKey())) {
                     // invalid HMAC signature
                     log.warn("Could not validate HMAC signature for incoming webhook message: {}", item);
                     throw new RuntimeException("Invalid HMAC signature");
@@ -95,10 +96,5 @@ public class WebhookController {
 
         // Acknowledge event has been consumed
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-    }
-
-    @Bean
-    public HMACValidator getHmacValidator() {
-        return new HMACValidator();
     }
 }

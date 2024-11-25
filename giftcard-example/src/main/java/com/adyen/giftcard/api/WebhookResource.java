@@ -7,7 +7,6 @@ import com.adyen.util.HMACValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.security.SignatureException;
 
 /**
@@ -27,15 +25,17 @@ public class WebhookResource {
     private final Logger log = LoggerFactory.getLogger(WebhookResource.class);
 
     private ApplicationProperty applicationProperty;
+    private HMACValidator hmacValidator;
 
     @Autowired
-    public WebhookResource(ApplicationProperty applicationProperty) {
+    public WebhookResource(ApplicationProperty applicationProperty, HMACValidator hmacValidator) {
         this.applicationProperty = applicationProperty;
 
         if (this.applicationProperty.getHmacKey() == null) {
             log.warn("ADYEN_HMAC_KEY is UNDEFINED (Webhook cannot be authenticated)");
             throw new RuntimeException("ADYEN_HMAC_KEY is UNDEFINED");
         }
+        this.hmacValidator = hmacValidator;
     }
 
     /**
@@ -59,7 +59,7 @@ public class WebhookResource {
             var item = notificationRequestItem.get();
 
             try {
-                if (!getHmacValidator().validateHMAC(item, this.applicationProperty.getHmacKey())) {
+                if (!hmacValidator.validateHMAC(item, this.applicationProperty.getHmacKey())) {
                     // invalid HMAC signature
                     log.warn("Could not validate HMAC signature for incoming webhook message: {}", item);
                     throw new RuntimeException("Invalid HMAC signature");
@@ -131,10 +131,5 @@ public class WebhookResource {
         // producer.flush();
         // producer.close();
 
-    }
-
-    @Bean
-    public HMACValidator getHmacValidator() {
-        return new HMACValidator();
     }
 }
