@@ -1,105 +1,143 @@
 const clientKey = document.getElementById("clientKey").innerHTML;
-const type = document.getElementById("type").innerHTML;
+const { AdyenCheckout, Dropin } = window.AdyenWeb;
 
-async function initCheckout() {
-  try {
-    const paymentMethodsResponse = await callServer("/api/getPaymentMethods");
-    const configuration = {
-      paymentMethodsResponse: paymentMethodsResponse,
-      clientKey,
-      locale: "en_US",
-      environment: "test",
-      showPayButton: true,
-      paymentMethodsConfiguration: {
-        ideal: {
-          showImage: true,
-        },
-        card: {
-          hasHolderName: true,
-          holderNameRequired: true,
-          name: "Credit or debit card",
-          amount: {
-            value: 10000,
-            currency: "EUR",
-          },
-        },
-        paypal: {
-          amount: {
-            value: 10000,
-            currency: "USD",
-          },
-          environment: "test", // Change this to "live" when you're ready to accept live PayPal payments
-          countryCode: "US", // Only needed for test. This will be automatically retrieved when you are in production.
-          onCancel: (data, component) => {
-            component.setStatus('ready');
-          },
-        }
-      },
-      onSubmit: (state, component) => {
-        if (state.isValid) {
-          handleSubmission(state, component, "/api/initiatePayment");
-        }
-      },
-      onAdditionalDetails: (state, component) => {
-        handleSubmission(state, component, "/api/submitAdditionalDetails");
-      },
-    };
-    // `spring.jackson.default-property-inclusion=non_null` needs to set in
-    // src/main/resources/application.properties to avoid NPE here
-    const checkout = await new AdyenCheckout(configuration);
-    checkout.create(type).mount(document.getElementById("payment"));
-  } catch (error) {
-    console.error(error);
-    alert("Error occurred. Look at console for details");
-  }
-}
+async function startCheckout() {
+    try {
+        const paymentMethodsResponse = await fetch("/api/paymentMethods", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => response.json());
 
-// Event handlers called when the shopper selects the pay button,
-// or when additional information is required to complete the payment
-async function handleSubmission(state, component, url) {
-  try {
-    const res = await callServer(url, state.data);
-    handleServerResponse(res, component);
-  } catch (error) {
-    console.error(error);
-    alert("Error occurred. Look at console for details");
-  }
-}
+        const configuration = {
+            paymentMethodsResponse: paymentMethodsResponse,
+            clientKey,
+            locale: "en_US",
+            countryCode: 'NL',
+            environment: "test",
+            showPayButton: true,
+            translations: {
+                'en-US': {
+                    'creditCard.securityCode.label': 'CVV/CVC'
+                }
+            },
+            onSubmit: async (state, component, actions) => {
+                console.info("onSubmit", state, component, actions);
+                try {
+                    if (state.isValid) {
+                        const {action, order, resultCode, donationToken} = await fetch("/api/payments", {
+                            method: "POST",
+                            body: state.data ? JSON.stringify(state.data) : "",
+                            headers: {
+                                "Content-Type": "application/json",
+                            }
+                        }).then(response => response.json());
 
-// Calls your server endpoints
-async function callServer(url, data) {
-  const res = await fetch(url, {
-    method: "POST",
-    body: data ? JSON.stringify(data) : "",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+                        if (!resultCode) {
+                            actions.reject();
+                        }
 
-  return await res.json();
-}
+                        actions.resolve({
+                            resultCode,
+                            action,
+                            order,
+                            donationToken
+                        });
+                    }
+                } catch (error) {
+                    console.error(error);
+                    actions.reject();
+                }
+            },
+            onPaymentCompleted: (result, component) => {
+                console.info("onPaymentCompleted", result, component);
+                handleOnPaymentCompleted(result, component);
+            },
+            onPaymentFailed: (result, component) => {
+                console.info("onPaymentFailed", result, component);
+                handleOnPaymentFailed(result, component);
+            },
+            onError: (error, component) => {
+                console.error("onError", error.name, error.message, error.stack, component);
+                window.location.href = "/result/error";
+            },
+            onAdditionalDetails: async (state, component) => {
+                console.info("onAdditionalDetails", state, component);
+                const response = await fetch("/api/payments/details", {
+                    method: "POST",
+                    body: state.data ? JSON.stringify(state.data) : "",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                }).then(response => response.json());
 
-// Handles responses sent from your server to the client
-function handleServerResponse(res, component) {
-  if (res.action) {
-    component.handleAction(res.action);
-  } else {
-    switch (res.resultCode) {
-      case "Authorised":
-        window.location.href = "/result/success";
-        break;
-      case "Pending":
-      case "Received":
-        window.location.href = "/result/pending";
-        break;
-      case "Refused":
-        window.location.href = "/result/failed";
-        break;
-      default:
-        window.location.href = "/result/error";
-        break;
+                if (response.action) {
+                    component.handleAction(response.action);
+                } else {
+                    handleOnPaymentCompleted(response);
+                }
+            }
+        };
+
+        const paymentMethodsConfiguration = {
+            card: {
+                showBrandIcon: true,
+                hasHolderName: true,
+                holderNameRequired: true,
+                name: "Credit or debit card",
+                amount: {
+                    value: 10000,
+                    currency: "EUR",
+                },
+                placeholders: {
+                    cardNumber: '1234 5678 9012 3456',
+                    expiryDate: 'MM/YY',
+                    securityCodeThreeDigits: '123',
+                    securityCodeFourDigits: '1234',
+                    holderName: 'Developer Relations Team'
+                }
+            }
+        };
+
+        // Start the AdyenCheckout and mount the element onto the `payment`-div.
+        const adyenCheckout = await AdyenCheckout(configuration);
+        const dropin = new Dropin(adyenCheckout, {
+            paymentMethodsConfiguration: paymentMethodsConfiguration
+        }).mount(document.getElementById("payment"));
+    } catch (error) {
+        console.error(error);
+        alert("Error occurred. Look at console for details.");
     }
-  }
 }
 
-initCheckout();
+// Function to handle payment completion redirects
+function handleOnPaymentCompleted(response) {
+    switch (response.resultCode) {
+        case "Authorised":
+            window.location.href = "/result/success";
+            break;
+        case "Pending":
+        case "Received":
+            window.location.href = "/result/pending";
+            break;
+        default:
+            window.location.href = "/result/error";
+            break;
+    }
+}
+
+// Function to handle payment failure redirects
+function handleOnPaymentFailed(response) {
+    switch (response.resultCode) {
+        case "Cancelled":
+        case "Refused":
+            window.location.href = "/result/failed";
+            break;
+        default:
+            window.location.href = "/result/error";
+            break;
+    }
+}
+
+startCheckout();

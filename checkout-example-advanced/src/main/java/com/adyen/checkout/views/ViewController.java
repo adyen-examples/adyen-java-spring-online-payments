@@ -1,4 +1,4 @@
-package com.adyen.checkout.web;
+package com.adyen.checkout.views;
 
 import com.adyen.checkout.ApplicationProperty;
 import org.slf4j.Logger;
@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class CheckoutController {
+public class ViewController {
 
     @Autowired
     private ApplicationProperty applicationProperty;
 
     @Autowired
-    public CheckoutController(ApplicationProperty applicationProperty) {
+    public ViewController(ApplicationProperty applicationProperty) {
         this.applicationProperty = applicationProperty;
 
-        if(this.applicationProperty.getClientKey() == null) {
-            Logger log = LoggerFactory.getLogger(CheckoutController.class);
+        if (this.applicationProperty.getClientKey() == null) {
+            Logger log = LoggerFactory.getLogger(ViewController.class);
             log.warn("ADYEN_CLIENT_KEY is undefined ");
         }
     }
