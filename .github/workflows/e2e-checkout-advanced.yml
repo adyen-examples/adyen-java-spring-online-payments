@@ -12,8 +12,30 @@ on:
       - 'checkout-example-advanced/**'
 
 jobs:
+  # e2e testing with Adyen.Web Drop-in/Components v5 (see /_archive/v5 folder)
+  checkout-advanced-v5:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Grant execute permission for gradlew
+        run: chmod +x checkout-example-advanced/_archive/v5/gradlew
+      - name: Build checkout-example-advanced/v5 with Gradle
+        run: cd checkout-example-advanced/_archive/v5; ./gradlew build
+      - name: Build checkout-example-advanced image
+        run: docker build -t checkout-example-advanced-v5:latest -f ./checkout-example-advanced/_archive/v5/Dockerfile ./checkout-example-advanced/_archive/v5
+      - name: Start checkout-example-advanced container
+        run: docker run --rm -d --name checkout-example-advanced-v5 -p 8080:8080 -e ADYEN_API_KEY="${{ secrets.ADYEN_API_KEY }}" -e ADYEN_MERCHANT_ACCOUNT=${{ secrets.ADYEN_MERCHANT_ACCOUNT }} -e ADYEN_CLIENT_KEY=${{ secrets.ADYEN_CLIENT_KEY }} -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} checkout-example-advanced-v5:latest
+      - name: Run testing suite
+        run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=advanced-checkout/v5 -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} --network host ghcr.io/adyen-examples/adyen-testing-suite:main
 
-  checkout-advanced:
+  # e2e testing with Adyen.Web Drop-in/Components v6
+  checkout-advanced-v6:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
@@ -33,3 +55,4 @@ jobs:
         run: docker run --rm -d --name checkout-example-advanced -p 8080:8080 -e ADYEN_API_KEY="${{ secrets.ADYEN_API_KEY }}" -e ADYEN_MERCHANT_ACCOUNT=${{ secrets.ADYEN_MERCHANT_ACCOUNT }} -e ADYEN_CLIENT_KEY=${{ secrets.ADYEN_CLIENT_KEY }} -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} checkout-example-advanced:latest
       - name: Run testing suite
         run: docker run --rm --name adyen-testing-suite -e PLAYWRIGHT_FOLDERNAME=advanced-checkout -e ADYEN_HMAC_KEY=${{ secrets.ADYEN_HMAC_KEY }} --network host ghcr.io/adyen-examples/adyen-testing-suite:main
+
