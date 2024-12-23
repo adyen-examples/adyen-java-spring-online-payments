@@ -95,12 +95,12 @@ async function startCheckout() {
                     expiryDate: 'MM/YY',
                     securityCodeThreeDigits: '123',
                     securityCodeFourDigits: '1234',
-                    holderName: 'Developer Relations Team'
+                    holderName: 'J. Smith'
                 }
             }
         };
 
-        // Start the AdyenCheckout and mount the element onto the `payment`-div.
+        // Start the AdyenCheckout and mount the element onto the 'payment' div.
         const adyenCheckout = await AdyenCheckout(configuration);
         const dropin = new Dropin(adyenCheckout, {
             paymentMethodsConfiguration: paymentMethodsConfiguration
