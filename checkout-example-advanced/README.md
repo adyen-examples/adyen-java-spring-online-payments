@@ -15,7 +15,7 @@ Checkout advanced sample application using `Adyen.Web Drop-in/Components v6.x.x`
 This repository showcases a PCI-compliant integration of the **Advanced Flow**. Explore this simplified e-commerce demo to discover the code, libraries and configuration you need to enable various payment options in your checkout experience.
 
 It includes a **Java + Spring Boot + Thymeleaf** application that supports [Adyen Drop-in and Components](https://docs.adyen.com/online-payments/build-your-integration) 
-(ACH, Alipay, Cards, Dotpay, iDEAL, Klarna, PayPal, etc..) using the Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library)).   
+(Google Pay, Cards, iDEAL, Klarna, SEPA, etc..) using the Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library)).
 
       
 > **Note:**

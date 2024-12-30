@@ -37,11 +37,40 @@ public class ViewController {
         return "preview";
     }
 
-    @GetMapping("/checkout")
-    public String checkout(@RequestParam String type, Model model) {
-        model.addAttribute("type", type);
+    @GetMapping("/checkout/dropin")
+    public String checkoutDropin(Model model) {
         model.addAttribute("clientKey", this.applicationProperty.getClientKey());
-        return "checkout";
+        return "checkout/dropin";
+    }
+
+    @GetMapping("/checkout/card")
+    public String checkoutCard(Model model) {
+        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
+        return "checkout/card";
+    }
+
+    @GetMapping("/checkout/googlepay")
+    public String checkoutGooglepay(Model model) {
+        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
+        return "checkout/googlepay";
+    }
+
+    @GetMapping("/checkout/ideal")
+    public String checkoutiDeal(Model model) {
+        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
+        return "checkout/ideal";
+    }
+
+    @GetMapping("/checkout/sepa")
+    public String checkoutSepa(Model model) {
+        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
+        return "checkout/sepa";
+    }
+
+    @GetMapping("/checkout/klarna")
+    public String checkoutKlarna(Model model) {
+        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
+        return "checkout/klarna";
     }
 
     @GetMapping("/result/{type}")
