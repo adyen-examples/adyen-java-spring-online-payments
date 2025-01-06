@@ -70,7 +70,7 @@ async function startCheckout() {
             // See: https://docs.adyen.com/payment-methods/klarna/web-component/#component-configuration
             type: "klarna_paynow",
             useKlarnaWidget: false,
-        }).mount(document.getElementById("payment"));
+        }).mount('#component-container');
     } catch (error) {
         console.error(error);
         alert("Error occurred. Look at console for details.");

@@ -79,43 +79,28 @@ async function startCheckout() {
             }
         };
 
-        const paymentMethodsConfiguration = {
-            card: {
-                showBrandIcon: true,
-                hasHolderName: true,
-                holderNameRequired: true,
-                name: "Credit or debit card",
-                amount: {
-                    value: 10000,
-                    currency: "EUR",
-                },
-                placeholders: {
-                    cardNumber: '1234 5678 9012 3456',
-                    expiryDate: 'MM/YY',
-                    securityCodeThreeDigits: '123',
-                    securityCodeFourDigits: '1234',
-                    holderName: 'J. Smith'
-                }
-            }
-        };
-
         // Start the AdyenCheckout and mount the element onto the 'payment' div.
         const adyenCheckout = await AdyenCheckout(configuration);
         const card = new Card(adyenCheckout, {
             // Optional configuration.
-            billingAddressRequired: false, // when true show the billing address input fields and mark them as required.
-            showBrandIcon: true, // when false not showing the brand logo
-            hasHolderName: true, // show holder name
-            holderNameRequired: true, // make holder name mandatory
-            // configure placeholders
+            billingAddressRequired: false, // When true show the billing address input fields and mark them as required.
+            showBrandIcon: true, // When false not showing the brand logo
+            hasHolderName: true, // Show holder name
+            holderNameRequired: true, // Make holder name mandatory
+            name: "Credit or debit card",
+            amount: {
+                value: 10000,
+                currency: "EUR",
+            },
+            // Configure placeholders
             placeholders: {
                 cardNumber: '1234 5678 9012 3456',
                 expiryDate: 'MM/YY',
                 securityCodeThreeDigits: '123',
                 securityCodeFourDigits: '1234',
-                holderName: 'J. Smith'
+                holderName: 'JF. Smith'
             }
-        }).mount(document.getElementById("payment"));
+        }).mount('#component-container');
     } catch (error) {
         console.error(error);
         alert("Error occurred. Look at console for details.");

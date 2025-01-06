@@ -103,7 +103,7 @@ async function startCheckout() {
         const adyenCheckout = await AdyenCheckout(configuration);
         const dropin = new Dropin(adyenCheckout, {
             paymentMethodsConfiguration: paymentMethodsConfiguration
-        }).mount(document.getElementById("payment"));
+        }).mount('#dropin-container');
     } catch (error) {
         console.error(error);
         alert("Error occurred. Look at console for details.");

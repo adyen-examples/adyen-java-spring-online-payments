@@ -66,7 +66,7 @@ async function startCheckout() {
         // Start the AdyenCheckout and mount the element onto the 'payment' div.
         const adyenCheckout = await AdyenCheckout(configuration);
         const ideal = new Redirect(adyenCheckout, { type: 'ideal' })
-            .mount(document.getElementById("payment"));
+            .mount('#component-container');
     } catch (error) {
         console.error(error);
         alert("Error occurred. Look at console for details.");

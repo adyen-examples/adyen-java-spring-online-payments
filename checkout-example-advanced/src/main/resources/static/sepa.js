@@ -68,7 +68,7 @@ async function startCheckout() {
         const sepa = new SepaDirectDebit(adyenCheckout, {
             countryCode: 'NL',
             holderName: true
-        }).mount(document.getElementById("payment"));
+        }).mount('#component-container');
     } catch (error) {
         console.error(error);
         alert("Error occurred. Look at console for details.");

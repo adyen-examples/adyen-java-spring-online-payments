@@ -7,14 +7,13 @@
 </head>
 <body>
 <div layout:fragment="content" id="payment-page">
-  <!-- Hidden divs with data passed from the Express server -->
+  <!-- Hidden divs with data passed from the server -->
   <div id="clientKey" class="hidden" th:text="${clientKey}"></div>
 
   <div class="container">
-    <!-- The Checkout integration type will be rendered below.-->
-    <!-- Drop-in includes styling out-of-the-box, so no additional styling is needed. -->
     <div class="payment-container">
-      <div id="payment" class="payment"></div>
+      <!-- The Adyen.Web `.mount(...)`-function will target this div element -->
+      <div id="dropin-container" class="payment"></div>
     </div>
   </div>
   <!-- Adyen Component client code -->
