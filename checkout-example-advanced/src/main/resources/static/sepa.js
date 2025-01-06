@@ -60,22 +60,6 @@ async function startCheckout() {
             onError: (error, component) => {
                 console.error("onError", error.name, error.message, error.stack, component);
                 window.location.href = "/result/error";
-            },
-            onAdditionalDetails: async (state, component) => {
-                console.info("onAdditionalDetails", state, component);
-                const response = await fetch("/api/payments/details", {
-                    method: "POST",
-                    body: state.data ? JSON.stringify(state.data) : "",
-                    headers: {
-                        "Content-Type": "application/json",
-                    }
-                }).then(response => response.json());
-
-                if (response.action) {
-                    component.handleAction(response.action);
-                } else {
-                    handleOnPaymentCompleted(response);
-                }
             }
         };
 
