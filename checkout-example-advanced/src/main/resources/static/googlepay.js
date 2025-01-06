@@ -26,7 +26,7 @@ async function startCheckout() {
                 console.info("onSubmit", state, component, actions);
                 try {
                     if (state.isValid) {
-                        const {action, order, resultCode, donationToken} = await fetch("/api/payments", {
+                        const { action, order, resultCode } = await fetch("/api/payments", {
                             method: "POST",
                             body: state.data ? JSON.stringify(state.data) : "",
                             headers: {
@@ -41,8 +41,7 @@ async function startCheckout() {
                         actions.resolve({
                             resultCode,
                             action,
-                            order,
-                            donationToken
+                            order
                         });
                     }
                 } catch (error) {
