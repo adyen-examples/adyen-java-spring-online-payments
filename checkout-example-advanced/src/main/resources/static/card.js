@@ -35,6 +35,7 @@ async function startCheckout() {
                         }).then(response => response.json());
 
                         if (!resultCode) {
+                            console.warn("reject");
                             actions.reject();
                         }
 
@@ -61,20 +62,27 @@ async function startCheckout() {
                 console.error("onError", error.name, error.message, error.stack, component);
                 window.location.href = "/result/error";
             },
-            onAdditionalDetails: async (state, component) => {
+            // Used for the Native 3DS2 Authentication flow, see: https://docs.adyen.com/online-payments/3d-secure/native-3ds2/
+            onAdditionalDetails: async (state, component, actions) => {
                 console.info("onAdditionalDetails", state, component);
-                const response = await fetch("/api/payments/details", {
-                    method: "POST",
-                    body: state.data ? JSON.stringify(state.data) : "",
-                    headers: {
-                        "Content-Type": "application/json",
-                    }
-                }).then(response => response.json());
+                try {
+                    const { resultCode } = await fetch("/api/payments/details", {
+                        method: "POST",
+                        body: state.data ? JSON.stringify(state.data) : "",
+                        headers: {
+                            "Content-Type": "application/json",
+                        }
+                    }).then(response => response.json());
 
-                if (response.action) {
-                    component.handleAction(response.action);
-                } else {
-                    handleOnPaymentCompleted(response);
+                    if (!resultCode) {
+                        console.warn("reject");
+                        actions.reject();
+                    }
+
+                    actions.resolve({ resultCode });
+                } catch (error) {
+                    console.error(error);
+                    actions.reject();
                 }
             }
         };
