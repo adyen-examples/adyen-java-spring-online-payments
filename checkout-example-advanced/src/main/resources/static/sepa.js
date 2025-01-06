@@ -17,11 +17,6 @@ async function startCheckout() {
             countryCode: 'NL',
             environment: "test",
             showPayButton: true,
-            translations: {
-                'en-US': {
-                    'creditCard.securityCode.label': 'CVV/CVC'
-                }
-            },
             onSubmit: async (state, component, actions) => {
                 console.info("onSubmit", state, component, actions);
                 try {
