@@ -6,6 +6,7 @@ plugins {
 }
 
 group = 'com.adyen'
+version = '0.0.1-SNAPSHOT'
 
 sourceCompatibility = 17
 targetCompatibility = 17
@@ -18,7 +19,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-    implementation 'com.adyen:adyen-java-api-library:29.1.0'
+    implementation 'com.adyen:adyen-java-api-library:32.0.0'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 

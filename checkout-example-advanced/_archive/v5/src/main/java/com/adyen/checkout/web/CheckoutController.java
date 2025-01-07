@@ -1,4 +1,4 @@
-package com.adyen.checkout.web;
+package com.adyen.checkout.views;
 
 import com.adyen.checkout.ApplicationProperty;
 import org.slf4j.Logger;
