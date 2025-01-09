@@ -8,8 +8,6 @@ updates:
     directory: "/checkout-example-advanced"
     schedule:
       interval: "daily"
-    ignore-paths:
-      - "_archive/**"
   - package-ecosystem: "gradle"
     directory: "/paybylink-example"
     schedule:
