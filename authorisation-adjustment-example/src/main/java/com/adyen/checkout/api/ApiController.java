@@ -47,13 +47,13 @@ public class ApiController {
     }
 
     /**
-     * {@code POST  /getPaymentMethods} : Get valid payment methods.
+     * {@code POST  /paymentMethods} : Get valid payment methods.
      *
      * @return the {@link ResponseEntity} with status {@code 200 (Ok)} and with body the paymentMethods response.
      * @throws IOException  from Adyen API.
      * @throws ApiException from Adyen API.
      */
-    @PostMapping("/getPaymentMethods")
+    @PostMapping("/paymentMethods")
     public ResponseEntity<PaymentMethodsResponse> paymentMethods() throws IOException, ApiException {
         var paymentMethodsRequest = new PaymentMethodsRequest();
         paymentMethodsRequest.setMerchantAccount(this.applicationProperty.getMerchantAccount());
@@ -143,7 +143,7 @@ public class ApiController {
      * @throws IOException  from Adyen API.
      * @throws ApiException from Adyen API.
      */
-    @PostMapping("/submitAdditionalDetails")
+    @PostMapping("/payments/details")
     public ResponseEntity<PaymentDetailsResponse> payments(@RequestBody PaymentDetailsRequest detailsRequest) throws IOException, ApiException {
         log.info("REST request to make Adyen payment details {}", detailsRequest);
         var response = paymentsApi.paymentsDetails(detailsRequest);
