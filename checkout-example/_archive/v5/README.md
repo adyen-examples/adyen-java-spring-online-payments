@@ -4,17 +4,18 @@ This folder contains the **previous version** of the sample application that use
 
 **Check the root folder of the repository to use the latest version of Adyen Web/Components 6.x.x**
 
-# Adyen [Online Payments](https://docs.adyen.com/online-payments) Integration Demo - Advanced Flow
+# Adyen [Online Payments](https://docs.adyen.com/online-payments) Integration Demo - Sessions Flow
 
-## Description
-This repository showcases a PCI-compliant integration of the **Advanced Flow**. Explore this simplified e-commerce demo to discover the code, libraries and configuration you need to enable various payment options in your checkout experience.
+# Description
+
+This repository showcases a PCI-compliant integration of the **Sessions Flow**, the default integration that we recommend for merchants. Explore this simplified e-commerce demo to discover the code, libraries and configuration you need to enable various payment options in your checkout experience.  
 
 It includes a **Java + Spring Boot + Thymeleaf** application that supports [Adyen Drop-in and Components](https://docs.adyen.com/online-payments/build-your-integration) 
 (ACH, Alipay, Cards, Dotpay, iDEAL, Klarna, PayPal, etc..) using the Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library)).   
 
       
 > **Note:**
-For a simpler flow using `/sessions`, check out the demo in the [`checkout-example`](../checkout-example) folder.
+For a three-steps [advanced use case](https://docs.adyen.com/online-payments/build-your-integration/additional-use-cases/) check out the **Advanced Flow** demo in the [`checkout-example-advanced`](../checkout-example-advanced) folder.
 
 ![Card checkout demo](src/main/resources/static/images/cardcheckout.gif)
 
@@ -37,7 +38,7 @@ git clone https://github.com/adyen-examples/adyen-java-spring-online-payments.gi
 * [Merchant Account](https://docs.adyen.com/account/account-structure)
 * [HMAC Key](https://docs.adyen.com/development-resources/webhooks/verify-hmac-signatures)
 
-On Linux/Mac/Windows export/set the environment variables.
+On Linux/Mac/Windows export/set the environment variables. 
 ```shell
 export ADYEN_API_KEY=yourAdyenApiKey
 export ADYEN_MERCHANT_ACCOUNT=yourAdyenMerchantAccount
@@ -73,7 +74,7 @@ Try out the different payment methods with our [test card numbers](https://docs.
 
 # Webhooks
 
-Webhooks deliver asynchronous notifications about the payment status and other events that are important to receive and process.
+Webhooks deliver asynchronous notifications about the payment status and other events that are important to receive and process. 
 You can find more information about webhooks in [this blog post](https://www.adyen.com/knowledge-hub/consuming-webhooks).
 
 ### Webhook setup
@@ -96,3 +97,4 @@ The following webhooks `events` should be enabled:
 
 To make sure that the Adyen platform can reach your application, we have written a [Webhooks Testing Guide](https://github.com/adyen-examples/.github/blob/main/pages/webhooks-testing.md)
 that explores several options on how you can easily achieve this (e.g. running on localhost or cloud).
+

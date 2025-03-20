@@ -38,40 +38,11 @@ public class CheckoutController {
         return "preview";
     }
 
-    @GetMapping("/checkout/dropin")
-    public String checkoutDropin(Model model) {
+    @GetMapping("/checkout")
+    public String checkout(@RequestParam String type, Model model) {
+        model.addAttribute("type", type);
         model.addAttribute("clientKey", this.applicationProperty.getClientKey());
-        return "checkout/dropin";
-    }
-
-    @GetMapping("/checkout/card")
-    public String checkoutCard(Model model) {
-        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
-        return "checkout/card";
-    }
-
-    @GetMapping("/checkout/googlepay")
-    public String checkoutGooglepay(Model model) {
-        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
-        return "checkout/googlepay";
-    }
-
-    @GetMapping("/checkout/ideal")
-    public String checkoutiDeal(Model model) {
-        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
-        return "checkout/ideal";
-    }
-
-    @GetMapping("/checkout/sepa")
-    public String checkoutSepa(Model model) {
-        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
-        return "checkout/sepa";
-    }
-
-    @GetMapping("/checkout/klarna")
-    public String checkoutKlarna(Model model) {
-        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
-        return "checkout/klarna";
+        return "checkout";
     }
 
     @GetMapping("/result/{type}")
@@ -80,4 +51,9 @@ public class CheckoutController {
         return "result";
     }
 
+    @GetMapping("/redirect")
+    public String redirect(Model model) {
+        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
+        return "redirect";
+    }
 }

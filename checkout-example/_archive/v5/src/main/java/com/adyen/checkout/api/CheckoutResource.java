@@ -47,7 +47,7 @@ public class CheckoutResource {
     }
 
     @PostMapping("/sessions")
-    public ResponseEntity<CreateCheckoutSessionResponse> sessions(@RequestHeader String host, HttpServletRequest request) throws IOException, ApiException {
+    public ResponseEntity<CreateCheckoutSessionResponse> sessions(@RequestHeader String host, @RequestParam String type, HttpServletRequest request) throws IOException, ApiException {
         var orderRef = UUID.randomUUID().toString();
         var amount = new Amount()
             .currency("EUR")
