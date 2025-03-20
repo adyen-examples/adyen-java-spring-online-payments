@@ -1,0 +1,22 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title>Checkout Demo Advanced</title>
+</head>
+<body>
+<div layout:fragment="content" id="payment-page">
+  <!-- Hidden divs with data passed from the server -->
+  <div id="clientKey" class="hidden" th:text="${clientKey}"></div>
+
+  <div class="container">
+    <div class="payment-container">
+      <!-- The Adyen.Web `.mount(...)`-function will target this div element -->
+      <div id="component-container" class="payment"></div>
+    </div>
+  </div>
+  <!-- Adyen Component client code -->
+  <script type="text/javascript" src="/googlepay.js"></script>
+</div>
+</body>

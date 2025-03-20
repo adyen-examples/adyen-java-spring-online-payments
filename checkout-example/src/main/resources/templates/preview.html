@@ -25,7 +25,7 @@
     </div>
     <div class="cart-footer"><span class="cart-footer-label">Total:</span><span
       class="cart-footer-amount">100.00</span>
-      <a th:href="@{/checkout(type=${type})}">
+        <a th:href="@{/checkout/{type}(type=${type})}">
         <p class="button">Continue to checkout</p>
       </a>
     </div>
