@@ -51,9 +51,4 @@ public class CheckoutController {
         return "result";
     }
 
-    @GetMapping("/redirect")
-    public String redirect(Model model) {
-        model.addAttribute("clientKey", this.applicationProperty.getClientKey());
-        return "redirect";
-    }
 }
