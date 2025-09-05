@@ -3,6 +3,10 @@
 This repository includes a collection of PCI-compliant UI integrations that show how to integrate with Adyen using different payment methods. 
 The demos below leverages Adyen's API Library for Java using Spring ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Documentation](https://docs.adyen.com/development-resources/libraries?tab=java_2)).
 
+## One-click setup with GitHub Codespaces
+
+You can run these examples in a pre-configured, cloud-based development environment using GitHub Codespaces. For setup instructions, see the [GitHub Codespaces Instructions](codespaces-instructions.md).
+
 Get started by navigating to one of the supported demos below.
 
 |                                                                   Demos | Description                                                                              | Details                                        |
