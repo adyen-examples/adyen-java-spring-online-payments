@@ -1,5 +1,5 @@
 {
-  "name": "Adyen Java Spring Online Payments",
+  "name": "Adyen Java Spring Online Payments - Gift Card Example",
   "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
 
   "features": {
@@ -11,11 +11,11 @@
 
   // Runs once when the Codespace is created.
   // Makes the startup script executable and builds the specified example.
-  "postCreateCommand": "chmod +x .devcontainer/run_example.sh && cd $(git remote -v | awk -F'/' '/fetch/{print $NF}' | sed 's/.git//' | tr -d '[:space:]' | head -n 1) && ./gradlew build",
+  "postCreateCommand": "chmod +x .devcontainer/run_example.sh && cd giftcard-example && ./gradlew build",
 
   // Runs after the user attaches to the Codespace.
   // This will automatically start the selected example application in the terminal.
-  "postAttachCommand": ".devcontainer/run_example.sh",
+  "postAttachCommand": ".devcontainer/run_example.sh giftcard-example",
   "forwardPorts": [8080],
 
   "portsAttributes": {
