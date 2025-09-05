@@ -1,5 +1,5 @@
 {
-  "name": "Adyen Java Spring Online Payments - Gift Card Example",
+  "name": "Gift Card Example",
   "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
 
   "features": {

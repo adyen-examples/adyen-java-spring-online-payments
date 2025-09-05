@@ -1,5 +1,5 @@
 {
-  "name": "Adyen Java Spring Online Payments - Advanced Checkout Example",
+  "name": "Advanced Checkout Example",
   "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
 
   "features": {

@@ -1,5 +1,5 @@
 {
-  "name": "Adyen Java Spring Online Payments - Pay By Link Example",
+  "name": "Pay By Link Example",
   "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
 
   "features": {

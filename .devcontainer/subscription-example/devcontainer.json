@@ -1,5 +1,5 @@
 {
-  "name": "Adyen Java Spring Online Payments - Subscription Example",
+  "name": "Subscription Example",
   "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
 
   "features": {

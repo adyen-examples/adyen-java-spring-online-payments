@@ -1,5 +1,5 @@
 {
-  "name": "Adyen Java Spring Online Payments - In-person Payments Example",
+  "name": "In-person Payments Example",
   "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
 
   "features": {
