@@ -24,7 +24,7 @@ The sample app implements the following workflow:
 This demo leverages Adyen's API Library for Java ([GitHub](https://github.com/Adyen/adyen-java-api-library) | [Docs](https://docs.adyen.com/development-resources/libraries#java)).
 
 ## Run demo in one-click
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/adyen-examples/adyen-java-spring-online-payments?ref=main&dev_container_path=.devcontainer%2Fsubscription-example%2Fdevcontainer.json)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/adyen-examples/adyen-java-spring-online-payments?ref=main&dev_container_path=.devcontainer%2Fsubscription-example%2Fdevcontainer.json) &nbsp;[First time with Codespaces?](../codespaces-instructions.md)
 
 
 ## Run integration on localhost using a proxy

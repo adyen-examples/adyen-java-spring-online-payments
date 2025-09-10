@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Check for required secrets
 if [ -z "${ADYEN_API_KEY}" ] || [ -z "${ADYEN_MERCHANT_ACCOUNT}" ] || [ -z "${ADYEN_CLIENT_KEY}" ] || [ -z "${ADYEN_HMAC_KEY}" ]; then

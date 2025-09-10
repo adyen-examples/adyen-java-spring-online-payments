@@ -71,7 +71,7 @@ The shopper can choose to use gift cards to complete their purchase or use their
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/adyen-examples/adyen-java-spring-online-payments?ref=main&dev_container_path=.devcontainer%2Fpaybylink-example%2Fdevcontainer.json)
 
 The [paybylink example](paybylink-example) repository includes a simple example interface to manage pay by links payment. Within this demo app, you can create payment links, and see their status updated in real-time.
-If you want to know more about Pay by link, check out our related [blog post](https://www.adyen.com/blog/pay-by-link-for-developers) or the [documentation](https://docs.adye.com/checkout/pay-by-link).
+If you want to know more about Pay by link, check out our related [blog post](https://www.adyen.com/blog/pay-by-link-for-developers) or the [documentation](https://docs.adyen.com/checkout/pay-by-link).
 
 
 ![Pay By Link Demo](paybylink-example/src/main/resources/images/paybylink.gif)
@@ -87,7 +87,7 @@ The panel allows admins to make payments on behalf of the shopper using this tok
 
 ![Subscription Demo](subscription-example/src/main/resources/static/images/cardsubscription.gif)
 
-## [Giving Example](subscription-example)
+## [Giving Example](giving-example)
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/adyen-examples/adyen-java-spring-online-payments?ref=main&dev_container_path=.devcontainer%2Fgiving-example%2Fdevcontainer.json)
 
