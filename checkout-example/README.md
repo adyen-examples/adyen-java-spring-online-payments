@@ -6,8 +6,7 @@
 
 ## Run demo in one-click
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/adyen-examples/adyen-java-spring-online-payments/tree/main/checkout-example)  
-&nbsp;[First time with Gitpod?](https://github.com/adyen-examples/.github/blob/main/pages/gitpod-get-started.md)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/adyen-examples/adyen-java-spring-online-payments?ref=main&dev_container_path=.devcontainer%2Fcheckout-example%2Fdevcontainer.json) &nbsp;[First time with Codespaces?](../codespaces-instructions.md)
 
 # Description
 

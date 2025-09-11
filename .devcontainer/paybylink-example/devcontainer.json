@@ -1,0 +1,38 @@
+{
+  "name": "Pay By Link Example",
+  "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
+
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "17",
+      "installGradle": "true"
+    }
+  },
+
+  // Runs once when the Codespace is created.
+  // Makes the startup script executable and builds the specified example.
+  "postCreateCommand": "chmod +x .devcontainer/run_example.sh && cd paybylink-example && ./gradlew build",
+
+  // Runs after the user attaches to the Codespace.
+  // This will automatically start the selected example application in the terminal.
+  "postAttachCommand": ".devcontainer/run_example.sh paybylink-example",
+  "forwardPorts": [8080],
+
+  "portsAttributes": {
+    "8080": {
+      "label": "Application",
+      "onAutoForward": "openPreview"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "redhat.java",
+        "vscjava.vscode-java-debug",
+        "vscjava.vscode-java-test",
+        "pivotal.vscode-spring-boot"
+      ]
+    }
+  }
+}
