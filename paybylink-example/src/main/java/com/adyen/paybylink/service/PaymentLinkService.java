@@ -38,6 +38,7 @@ public class PaymentLinkService {
         }
 
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
+        client.setApplicationName("adyen-java-spring-online-payments-paybylink-example");
         this.paymentLinksApi = new PaymentLinksApi(client);
     }
 

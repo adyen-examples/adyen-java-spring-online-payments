@@ -43,6 +43,7 @@ public class GiftcardResource {
         }
 
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
+        client.setApplicationName("adyen-java-spring-online-payments-giftcard-example");
         this.paymentsApi = new PaymentsApi(client);
     }
 

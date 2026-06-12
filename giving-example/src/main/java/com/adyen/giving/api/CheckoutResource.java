@@ -44,6 +44,7 @@ public class CheckoutResource {
         }
 
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
+        client.setApplicationName("adyen-java-spring-online-payments-giving-example");
         this.paymentsApi = new PaymentsApi(client);
         this.donationsApi = new DonationsApi(client);
     }

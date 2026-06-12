@@ -43,6 +43,7 @@ public class ApiController {
         }
 
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
+        client.setApplicationName("adyen-java-spring-online-payments-authorisation-adjustment-example");
         this.paymentsApi = new PaymentsApi(client);
     }
 

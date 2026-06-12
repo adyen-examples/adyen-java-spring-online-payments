@@ -42,6 +42,7 @@ public class SubscriptionResource {
         }
         
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
+        client.setApplicationName("adyen-java-spring-online-payments-subscription-example");
         this.paymentsApi = new PaymentsApi(client);
     }
 

@@ -37,6 +37,7 @@ public class AdminController {
             throw new RuntimeException("ADYEN_KEY is UNDEFINED");
         }
         var client = new Client(applicationProperty.getApiKey(), Environment.TEST);
+        client.setApplicationName("adyen-java-spring-online-payments-authorisation-adjustment-example");
         this.modificationsApi = new ModificationsApi(client);
     }
 
