@@ -43,7 +43,7 @@ public class DependencyInjectionConfiguration {
         Config config = new Config();
         config.setApiKey(applicationConfiguration.getAdyenApiKey());
         config.setEnvironment(Environment.TEST);
-        config.setApplicationName("adyen-java-spring-online-payments checkout-example-advanced adyen-web/6.6.0");
+        config.setApplicationName("[adyen-java-spring-online-payments checkout-example-advanced adyen-web/6.6.0]");
         return new Client(config);
     }
 
