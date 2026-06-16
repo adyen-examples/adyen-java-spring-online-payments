@@ -22,6 +22,7 @@ public class TerminalCloudApiService {
         }
 
         client = new Client(applicationProperty.getApiKey(), Environment.TEST);
+        client.setApplicationName("[adyen-java-spring-online-payments in-person-payments-example]");
         if(applicationProperty.getAdyenTerminalApiCloudEndpoint() != null) {
             /// Default: null, unless you want to override this to point to a different endpoint based on your region.
             /// See https://docs.adyen.com/point-of-sale/design-your-integration/terminal-api/#cloud.
